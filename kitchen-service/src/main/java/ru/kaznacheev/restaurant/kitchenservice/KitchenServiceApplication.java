@@ -1,4 +1,4 @@
-package ru.kaznacheev.restaurant.kitchen_service;
+package ru.kaznacheev.restaurant.kitchenservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
