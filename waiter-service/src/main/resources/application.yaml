@@ -3,7 +3,7 @@ spring:
     name: Waiter service
 
 server:
-  port: 8080
+  port: 8082
 
 management:
   endpoint:
