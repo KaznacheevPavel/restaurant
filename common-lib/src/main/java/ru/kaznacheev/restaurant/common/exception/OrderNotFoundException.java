@@ -1,12 +1,10 @@
 package ru.kaznacheev.restaurant.common.exception;
 
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 /**
  * Исключение, выбрасываемое при попытке получения несуществующего заказа.
  */
-@Getter
 public class OrderNotFoundException extends BaseException {
     /**
      * Создает экземпляр класса {@link OrderNotFoundException} с указанными значениями для {@link BaseException}.
