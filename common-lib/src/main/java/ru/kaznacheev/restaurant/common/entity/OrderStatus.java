@@ -1,4 +1,4 @@
-package ru.kaznacheev.restaurant.kitchenservice.entity;
+package ru.kaznacheev.restaurant.common.entity;
 
 /**
  * Класс, представляющий статус заказа.

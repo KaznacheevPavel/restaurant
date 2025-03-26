@@ -1,4 +1,4 @@
-package ru.kaznacheev.restaurant.waiterservice.exception;
+package ru.kaznacheev.restaurant.common.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

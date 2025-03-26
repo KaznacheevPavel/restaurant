@@ -20,6 +20,7 @@
 
     <modules>
         <module>dependency-bom</module>
+        <module>common-lib</module>
         <module>kitchen-service</module>
         <module>waiter-service</module>
     </modules>

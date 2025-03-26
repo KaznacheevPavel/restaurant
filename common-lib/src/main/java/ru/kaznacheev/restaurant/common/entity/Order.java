@@ -1,4 +1,4 @@
-package ru.kaznacheev.restaurant.waiterservice.entity;
+package ru.kaznacheev.restaurant.common.entity;
 
 import lombok.Builder;
 import lombok.Getter;

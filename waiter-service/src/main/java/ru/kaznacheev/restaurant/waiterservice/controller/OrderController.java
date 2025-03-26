@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.kaznacheev.restaurant.waiterservice.dto.NewOrderDto;
-import ru.kaznacheev.restaurant.waiterservice.dto.response.BaseResponse;
-import ru.kaznacheev.restaurant.waiterservice.dto.response.ResponseWithData;
-import ru.kaznacheev.restaurant.waiterservice.entity.Order;
-import ru.kaznacheev.restaurant.waiterservice.entity.OrderStatus;
+import ru.kaznacheev.restaurant.common.dto.NewOrderDto;
+import ru.kaznacheev.restaurant.common.dto.response.BaseResponse;
+import ru.kaznacheev.restaurant.common.dto.response.ResponseWithData;
+import ru.kaznacheev.restaurant.common.entity.Order;
+import ru.kaznacheev.restaurant.common.entity.OrderStatus;
 import ru.kaznacheev.restaurant.waiterservice.service.OrderService;
 
 import java.util.List;

@@ -2,7 +2,7 @@ package ru.kaznacheev.restaurant.kitchenservice.repository.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import ru.kaznacheev.restaurant.kitchenservice.entity.Order;
+import ru.kaznacheev.restaurant.common.entity.Order;
 import ru.kaznacheev.restaurant.kitchenservice.repository.SimpleRepository;
 
 import java.util.HashMap;
