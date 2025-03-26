@@ -1,4 +1,4 @@
-package ru.kaznacheev.restaurant.waiterservice.dto.response;
+package ru.kaznacheev.restaurant.common.dto.response;
 
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;

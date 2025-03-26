@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.kaznacheev.restaurant.kitchenservice.dto.response.BaseResponse;
-import ru.kaznacheev.restaurant.kitchenservice.exception.BaseException;
+import ru.kaznacheev.restaurant.common.dto.response.BaseResponse;
+import ru.kaznacheev.restaurant.common.exception.BaseException;
 
 /**
  * Контроллер для обработки исключений.

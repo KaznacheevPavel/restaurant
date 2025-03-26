@@ -1,4 +1,4 @@
-package ru.kaznacheev.restaurant.waiterservice.dto;
+package ru.kaznacheev.restaurant.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.util.Map;
 
 /**
- * DTO для создание нового заказа.
+ * DTO для создания нового заказа.
  */
 @AllArgsConstructor
 @Getter

@@ -1,4 +1,4 @@
-package ru.kaznacheev.restaurant.kitchenservice.exception;
+package ru.kaznacheev.restaurant.common.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

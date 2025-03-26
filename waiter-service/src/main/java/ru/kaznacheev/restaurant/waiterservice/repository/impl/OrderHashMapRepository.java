@@ -2,7 +2,7 @@ package ru.kaznacheev.restaurant.waiterservice.repository.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import ru.kaznacheev.restaurant.waiterservice.entity.Order;
+import ru.kaznacheev.restaurant.common.entity.Order;
 import ru.kaznacheev.restaurant.waiterservice.repository.SimpleRepository;
 
 import java.util.HashMap;
