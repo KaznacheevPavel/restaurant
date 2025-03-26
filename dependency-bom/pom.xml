@@ -6,12 +6,12 @@
     <parent>
         <groupId>ru.kaznacheev.restaurant</groupId>
         <artifactId>restaurant</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>dependency-bom</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
 
     <properties>
