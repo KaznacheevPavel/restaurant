@@ -6,12 +6,12 @@
 	<parent>
 		<groupId>ru.kaznacheev.restaurant</groupId>
 		<artifactId>dependency-bom</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0</version>
 		<relativePath>../dependency-bom/pom.xml</relativePath>
 	</parent>
 
 	<artifactId>kitchen-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 
 	<name>Kitchen service</name>
 	<description>Kitchen service for digital league restaurant application</description>
