@@ -6,17 +6,22 @@
 	<parent>
 		<groupId>ru.kaznacheev.restaurant</groupId>
 		<artifactId>dependency-bom</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0</version>
 		<relativePath>../dependency-bom/pom.xml</relativePath>
 	</parent>
 
 	<artifactId>waiter-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 
 	<name>Waiter service</name>
 	<description>Waiter service for digital league restaurant application</description>
 
 	<dependencies>
+		<dependency>
+			<groupId>ru.kaznacheev.restaurant</groupId>
+			<artifactId>common-lib</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
