@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.kaznacheev.restaurant.common.dto.NewOrderDto;
-import ru.kaznacheev.restaurant.common.entity.Order;
-import ru.kaznacheev.restaurant.common.entity.OrderStatus;
+import ru.kaznacheev.restaurant.kitchenservice.entity.Order;
 import ru.kaznacheev.restaurant.common.exception.OrderNotFoundException;
+import ru.kaznacheev.restaurant.kitchenservice.entity.OrderStatus;
 import ru.kaznacheev.restaurant.kitchenservice.repository.SimpleRepository;
 import ru.kaznacheev.restaurant.kitchenservice.service.OrderService;
 
@@ -34,7 +34,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = Order.builder()
                 .dishes(newOrderDto.getDishes())
                 .comment(newOrderDto.getComment())
-                .status(OrderStatus.ACCEPTED)
+                .status(OrderStatus.WAITING_FOR_STARTING)
                 .build();
         orderRepository.save(order);
         log.info("Order with id: {} successfully accepted {}", order.getId(), newOrderDto.hashCode());

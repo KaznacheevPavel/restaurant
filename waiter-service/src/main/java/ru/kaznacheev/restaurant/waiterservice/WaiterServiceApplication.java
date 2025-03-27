@@ -6,7 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Основной класс приложения waiter-service.
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {
+		"ru.kaznacheev.restaurant.waiterservice",
+		"ru.kaznacheev.restaurant.common"
+})
 public class WaiterServiceApplication {
 
 	/**

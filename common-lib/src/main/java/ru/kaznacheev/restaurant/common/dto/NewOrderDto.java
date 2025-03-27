@@ -11,6 +11,14 @@ import java.util.Map;
 @AllArgsConstructor
 @Getter
 public class NewOrderDto {
-    private final Map<String, Integer> dishes; // Ключ - название блюда, значение - количество
+    /**
+     * Заказанные блюда.
+     * Ключ - название блюда, значение - количество
+     */
+    private final Map<String, Integer> dishes;
+
+    /**
+     * Комментарий к заказу.
+     */
     private final String comment;
 }

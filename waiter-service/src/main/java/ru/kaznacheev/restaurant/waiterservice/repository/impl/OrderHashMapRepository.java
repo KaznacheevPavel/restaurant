@@ -2,7 +2,7 @@ package ru.kaznacheev.restaurant.waiterservice.repository.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import ru.kaznacheev.restaurant.common.entity.Order;
+import ru.kaznacheev.restaurant.waiterservice.entity.Order;
 import ru.kaznacheev.restaurant.waiterservice.repository.SimpleRepository;
 
 import java.util.HashMap;
@@ -41,10 +41,7 @@ public class OrderHashMapRepository implements SimpleRepository<Integer, Order> 
     @Override
     public Optional<Order> getOrderById(Integer id) {
         log.debug("Getting order with id: {}", id);
-        if (orders.containsKey(id)) {
-            return Optional.of(orders.get(id));
-        }
-        return Optional.empty();
+        return Optional.ofNullable(orders.get(id));
     }
 
     /**

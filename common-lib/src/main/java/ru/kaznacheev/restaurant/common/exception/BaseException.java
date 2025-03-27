@@ -2,7 +2,6 @@ package ru.kaznacheev.restaurant.common.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 /**
  * Базовое исключение.
@@ -10,7 +9,18 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @Getter
 public class BaseException extends RuntimeException{
+    /**
+     * Название ошибки.
+     */
     private final String title;
-    private final HttpStatus status;
+
+    /**
+     * Статус код ответа.
+     */
+    private final int status;
+
+    /**
+     * Детальное описание ошибки.
+     */
     private final String detail;
 }

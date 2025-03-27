@@ -1,4 +1,4 @@
-package ru.kaznacheev.restaurant.common.entity;
+package ru.kaznacheev.restaurant.waiterservice.entity;
 
 /**
  * Класс, представляющий статус заказа.
@@ -6,6 +6,5 @@ package ru.kaznacheev.restaurant.common.entity;
 public enum OrderStatus {
     ACCEPTED,
     IN_PROGRESS,
-    COMPLETED,
-    REJECTED
+    COMPLETED
 }

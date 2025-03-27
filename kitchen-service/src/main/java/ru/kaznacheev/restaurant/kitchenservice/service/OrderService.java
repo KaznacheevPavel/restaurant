@@ -1,7 +1,7 @@
 package ru.kaznacheev.restaurant.kitchenservice.service;
 
 import ru.kaznacheev.restaurant.common.dto.NewOrderDto;
-import ru.kaznacheev.restaurant.common.entity.Order;
+import ru.kaznacheev.restaurant.kitchenservice.entity.Order;
 
 import java.util.List;
 

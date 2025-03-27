@@ -1,6 +1,6 @@
 package ru.kaznacheev.restaurant.common.exception;
 
-import org.springframework.http.HttpStatus;
+import ru.kaznacheev.restaurant.common.dto.response.ResponseTitle;
 
 /**
  * Исключение, выбрасываемое при попытке получения несуществующего заказа.
@@ -12,6 +12,6 @@ public class OrderNotFoundException extends BaseException {
      * @param id Идентификатор заказа, который вызвал исключение
      */
     public OrderNotFoundException(int id) {
-        super("NOT_FOUND", HttpStatus.NOT_FOUND, "Заказ с идентификатором " + id + " не найден");
+        super(ResponseTitle.NOT_FOUND.name(), ResponseTitle.NOT_FOUND.getStatus(), "Заказ с идентификатором " + id + " не найден");
     }
 }

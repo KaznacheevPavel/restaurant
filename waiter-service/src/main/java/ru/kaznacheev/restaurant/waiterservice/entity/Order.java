@@ -1,4 +1,4 @@
-package ru.kaznacheev.restaurant.common.entity;
+package ru.kaznacheev.restaurant.waiterservice.entity;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -13,8 +13,23 @@ import java.util.Map;
 @Setter
 @Builder
 public class Order {
+    /**
+     * Идентификатор заказа.
+     */
     private Integer id;
+
+    /**
+     * Список блюд в заказе и их количество.
+     */
     private Map<String, Integer> dishes;
+
+    /**
+     * Комментарий к заказу.
+     */
     private String comment;
+
+    /**
+     * Статус заказа {@link OrderStatus}.
+     */
     private OrderStatus status;
 }

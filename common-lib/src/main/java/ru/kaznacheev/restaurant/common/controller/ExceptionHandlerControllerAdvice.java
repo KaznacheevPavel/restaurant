@@ -1,10 +1,10 @@
-package ru.kaznacheev.restaurant.kitchenservice.controller;
+package ru.kaznacheev.restaurant.common.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.kaznacheev.restaurant.common.dto.response.BaseResponse;
+import ru.kaznacheev.restaurant.common.dto.response.BaseResponseBody;
 import ru.kaznacheev.restaurant.common.exception.BaseException;
 
 /**
@@ -18,14 +18,14 @@ public class ExceptionHandlerControllerAdvice {
      * Метод для обработки {@link BaseException} и его наследников.
      *
      * @param e Исключение
-     * @return {@link BaseResponse} с информацией о возникшем исключении
+     * @return {@link BaseResponseBody} с информацией о возникшем исключении
      */
     @ExceptionHandler(BaseException.class)
-    public ResponseEntity<BaseResponse> handleBaseException(BaseException e) {
+    public ResponseEntity<BaseResponseBody> handleBaseException(BaseException e) {
         log.warn("Exception: {}", e.getDetail());
-        BaseResponse response = BaseResponse.builder()
+        BaseResponseBody response = BaseResponseBody.builder()
                 .title(e.getTitle())
-                .status(e.getStatus().value())
+                .status(e.getStatus())
                 .detail(e.getDetail())
                 .build();
         return ResponseEntity.status(response.getStatus()).body(response);

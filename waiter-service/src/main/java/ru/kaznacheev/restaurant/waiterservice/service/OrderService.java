@@ -1,8 +1,8 @@
 package ru.kaznacheev.restaurant.waiterservice.service;
 
 import ru.kaznacheev.restaurant.common.dto.NewOrderDto;
-import ru.kaznacheev.restaurant.common.entity.Order;
-import ru.kaznacheev.restaurant.common.entity.OrderStatus;
+import ru.kaznacheev.restaurant.waiterservice.entity.Order;
+import ru.kaznacheev.restaurant.waiterservice.entity.OrderStatus;
 
 import java.util.List;
 
