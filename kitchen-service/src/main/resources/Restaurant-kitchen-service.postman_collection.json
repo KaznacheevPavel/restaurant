@@ -1,0 +1,107 @@
+{
+	"info": {
+		"_postman_id": "05631841-2027-447b-ae39-630b1948f97b",
+		"name": "Restaurant/kitchen-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24014501"
+	},
+	"item": [
+		{
+			"name": "Accept order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dishes\" : {\r\n        \"Борщ\" : 2,\r\n        \"Цезарь\" : 1\r\n    },\r\n    \"comment\" : \"Цезарь без сухариков\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all orders",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/v1/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reject order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/v1/orders/1/reject",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"orders",
+						"1",
+						"reject"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Complete order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/v1/orders/1/complete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"orders",
+						"1",
+						"complete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

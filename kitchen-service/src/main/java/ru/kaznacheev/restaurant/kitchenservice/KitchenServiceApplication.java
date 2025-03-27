@@ -6,7 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Основной класс приложения kitchen-service.
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {
+		"ru.kaznacheev.restaurant.kitchenservice",
+		"ru.kaznacheev.restaurant.common"
+})
 public class KitchenServiceApplication {
 
 	/**
