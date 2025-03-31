@@ -1,9 +1,16 @@
+server:
+  port: 8081
+
 spring:
   application:
     name: Kitchen service
-
-server:
-  port: 8081
+  datasource:
+    url: jdbc:postgresql://localhost:5433/kitchen_db
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
 
 management:
   endpoint:
