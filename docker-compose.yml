@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  postgres-kitchen:
+    image: postgres:17.4-alpine3.21
+    container_name: kitchen_db
+    environment:
+      POSTGRES_DB: kitchen_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5433:5432"
+
+  postgres-waiter:
+    image: postgres:17.4-alpine3.21
+    container_name: waiter_db
+    environment:
+      POSTGRES_DB: waiter_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5434:5432"
