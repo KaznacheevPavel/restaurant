@@ -4,14 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * Класс для определения названий и статус кодов ответов.
+ * Названия и статус-коды ответов.
  */
 @AllArgsConstructor
 @Getter
 public enum ResponseTitle {
     SUCCESS(200),
     CREATED(201),
-    NOT_FOUND(404);
+    VALIDATION_ERROR(400),
+    NOT_FOUND(404),
+    CONFLICT(409);
 
     /**
      * Статус код ответа.

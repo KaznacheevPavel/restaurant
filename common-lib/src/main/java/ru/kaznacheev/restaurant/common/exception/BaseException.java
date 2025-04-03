@@ -9,6 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class BaseException extends RuntimeException{
+
     /**
      * Название ошибки.
      */
@@ -23,4 +24,5 @@ public class BaseException extends RuntimeException{
      * Детальное описание ошибки.
      */
     private final String detail;
+
 }

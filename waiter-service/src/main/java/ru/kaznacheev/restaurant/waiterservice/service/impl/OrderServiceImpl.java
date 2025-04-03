@@ -1,80 +1,93 @@
 package ru.kaznacheev.restaurant.waiterservice.service.impl;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.kaznacheev.restaurant.common.dto.NewOrderDto;
-import ru.kaznacheev.restaurant.waiterservice.entity.Order;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import ru.kaznacheev.restaurant.common.exception.OrderNotFoundException;
+import ru.kaznacheev.restaurant.waiterservice.dto.NewOrderDto;
+import ru.kaznacheev.restaurant.waiterservice.entity.Order;
 import ru.kaznacheev.restaurant.waiterservice.entity.OrderStatus;
-import ru.kaznacheev.restaurant.waiterservice.repository.SimpleRepository;
+import ru.kaznacheev.restaurant.waiterservice.exception.WaiterNotFoundException;
+import ru.kaznacheev.restaurant.waiterservice.mapper.OrderMapper;
+import ru.kaznacheev.restaurant.waiterservice.service.OrderPositionService;
 import ru.kaznacheev.restaurant.waiterservice.service.OrderService;
+import ru.kaznacheev.restaurant.waiterservice.service.WaiterService;
 
+import java.time.Clock;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Реализация интерфейса сервиса для обработки заказов.
+ * Реализация интерфейса {@link OrderService}.
  */
 @Service
+@Validated
 @RequiredArgsConstructor
-@Slf4j
 public class OrderServiceImpl implements OrderService {
 
-    private final SimpleRepository<Integer, Order> orderRepository;
+    private final OrderMapper orderMapper;
+    private final Clock clock;
+    private final WaiterService waiterService;
+    private final OrderPositionService orderPositionService;
 
     /**
-     * Создает новый заказ на основе переданного DTO.
+     * {@inheritDoc}
      *
-     * @param newOrderDto DTO, содержащий информацию о новом заказе
+     * @param newOrderDto {@inheritDoc}
+     * @throws WaiterNotFoundException Если был передан неверный идентификатор официанта
      */
+    @Transactional
     @Override
-    public void createOrder(NewOrderDto newOrderDto) {
-        log.info("Creating order {}", newOrderDto.hashCode());
+    public void createOrder(@Valid NewOrderDto newOrderDto) {
+        if (!waiterService.existsWaiterById(newOrderDto.getWaiterId())) {
+            throw new WaiterNotFoundException(newOrderDto.getWaiterId());
+        }
         Order order = Order.builder()
-                .dishes(newOrderDto.getDishes())
-                .comment(newOrderDto.getComment())
+                .waiterId(newOrderDto.getWaiterId())
                 .status(OrderStatus.ACCEPTED)
+                .createdAt(OffsetDateTime.now(clock))
+                .tableNumber(newOrderDto.getTableNumber())
                 .build();
-        orderRepository.save(order);
-        log.info("Order with id: {} successfully created {}", order.getId(), newOrderDto.hashCode());
+        orderMapper.save(order);
+        orderPositionService.addDishesToOrder(order.getId(), newOrderDto.getDishes());
     }
 
     /**
-     * Возвращает заказ по его идентификатору.
+     * {@inheritDoc}
      *
-     * @param id Идентификатор заказа
-     * @return Заказ
-     * @throws OrderNotFoundException если заказ не найден
+     * @param id {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws OrderNotFoundException Если заказ не найден
      */
     @Override
-    public Order getOrderById(int id) {
-        log.info("Getting order with id: {}", id);
-        Optional<Order> order = orderRepository.getOrderById(id);
+    public Order getOrderById(Long id) {
+        Optional<Order> order = orderMapper.getOrderById(id);
         return order.orElseThrow(() -> new OrderNotFoundException(id));
     }
 
     /**
-     * Возвращает список всех заказов.
+     * {@inheritDoc}
      *
-     * @return Список всех заказов
+     * @return {@inheritDoc}
      */
     @Override
     public List<Order> getAllOrders() {
-        log.info("Getting all orders");
-        return orderRepository.getAllOrders();
+        return orderMapper.getAllOrders();
     }
 
     /**
-     * Возвращает статус заказа по его идентификатору.
+     * {@inheritDoc}
      *
-     * @param id Идентификатор заказа
-     * @return Статус заказа
+     * @param id {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws OrderNotFoundException Если заказ не найден
      */
     @Override
-    public OrderStatus getOrderStatusById(int id) {
-        log.info("Getting order status with id: {}", id);
-        Order order = getOrderById(id);
-        return order.getStatus();
+    public OrderStatus getOrderStatusById(Long id) {
+        Optional<OrderStatus> orderStatus = orderMapper.getOrderStatusById(id);
+        return orderStatus.orElseThrow(() -> new OrderNotFoundException(id));
     }
 }

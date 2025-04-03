@@ -9,18 +9,20 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 public class BaseResponseBody {
+
     /**
-     * Название результата операции {@link ResponseTitle}.
+     * Название результата операции из {@link ResponseTitle}.
      */
     private final String title;
 
     /**
-     * Статус код ответа {@link ResponseTitle}.
+     * Статус код ответа из {@link ResponseTitle}.
      */
     private final int status;
 
     /**
-     * Детальное описание результата операции.
+     * Детальное описание результата.
      */
     private final String detail;
+
 }

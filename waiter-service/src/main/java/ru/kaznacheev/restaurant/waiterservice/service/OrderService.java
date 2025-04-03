@@ -1,13 +1,14 @@
 package ru.kaznacheev.restaurant.waiterservice.service;
 
-import ru.kaznacheev.restaurant.common.dto.NewOrderDto;
+import jakarta.validation.Valid;
+import ru.kaznacheev.restaurant.waiterservice.dto.NewOrderDto;
 import ru.kaznacheev.restaurant.waiterservice.entity.Order;
 import ru.kaznacheev.restaurant.waiterservice.entity.OrderStatus;
 
 import java.util.List;
 
 /**
- * Интерфейс сервиса для обработки заказов.
+ * Интерфейс сервиса для работы с заказами.
  */
 public interface OrderService {
 
@@ -16,20 +17,20 @@ public interface OrderService {
      *
      * @param newOrderDto DTO, содержащий информацию о новом заказе
      */
-    void createOrder(NewOrderDto newOrderDto);
+    void createOrder(@Valid NewOrderDto newOrderDto);
 
     /**
      * Возвращает заказ по его идентификатору.
      *
      * @param id Идентификатор заказа
-     * @return Заказ
+     * @return {@link Order} Заказ
      */
-    Order getOrderById(int id);
+    Order getOrderById(Long id);
 
     /**
      * Возвращает список всех заказов.
      *
-     * @return Список всех заказов
+     * @return {@link List} {@link Order} Список всех заказов
      */
     List<Order> getAllOrders();
 
@@ -37,8 +38,8 @@ public interface OrderService {
      * Возвращает статус заказа по его идентификатору.
      *
      * @param id Идентификатор заказа
-     * @return Статус заказа
+     * @return {@link OrderStatus} Статус заказа
      */
-    OrderStatus getOrderStatusById(int id);
+    OrderStatus getOrderStatusById(Long id);
 
 }

@@ -1,13 +1,18 @@
 package ru.kaznacheev.restaurant.kitchenservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import ru.kaznacheev.restaurant.common.dto.NewOrderDto;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import ru.kaznacheev.restaurant.common.dto.response.BaseResponseBody;
-import ru.kaznacheev.restaurant.common.dto.response.ResponseTitle;
 import ru.kaznacheev.restaurant.common.dto.response.ResponseBodyWithData;
+import ru.kaznacheev.restaurant.common.dto.response.ResponseTitle;
+import ru.kaznacheev.restaurant.kitchenservice.dto.NewOrderDto;
 import ru.kaznacheev.restaurant.kitchenservice.entity.Order;
 import ru.kaznacheev.restaurant.kitchenservice.service.OrderService;
 
@@ -20,38 +25,35 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
-@Slf4j
 public class OrderController {
 
     private final OrderService orderService;
 
     /**
-     *  Принимает заказ на основе переданного DTO.
+     *  Создает новый заказ.
      *
-     * @param newOrderDto DTO, содержащий информацию о заказе
+     * @param newOrderDto DTO, содержащий информацию о новом заказе
      * @return {@link BaseResponseBody} с информацией о создании заказа
      */
     @PostMapping
-    @org.springframework.web.bind.annotation.ResponseStatus(HttpStatus.CREATED)
-    public BaseResponseBody acceptOrder(@RequestBody NewOrderDto newOrderDto) {
-        log.info("POST: /api/v1/orders {}", newOrderDto.hashCode());
-        orderService.acceptOrder(newOrderDto);
+    @ResponseStatus(HttpStatus.CREATED)
+    public BaseResponseBody createOrder(@RequestBody NewOrderDto newOrderDto) {
+        orderService.createOrder(newOrderDto);
         return BaseResponseBody.builder()
                 .title(ResponseTitle.CREATED.name())
                 .status(ResponseTitle.CREATED.getStatus())
-                .detail("Заказ успешно принят")
+                .detail("Заказ успешно создан")
                 .build();
     }
 
     /**
-     * Отклоняет заказ по указанному идентификатору.
+     * Отклоняет заказ по идентификатору.
      *
      * @param id Идентификатор заказа
      * @return {@link BaseResponseBody} с информацией об отмене заказа
      */
     @PostMapping("/{id}/reject")
-    public BaseResponseBody rejectOrder(@PathVariable int id) {
-        log.info("GET: /api/v1/{}/reject", id);
+    public BaseResponseBody rejectOrder(@PathVariable Long id) {
         orderService.rejectOrder(id);
         return BaseResponseBody.builder()
                 .title(ResponseTitle.SUCCESS.name())
@@ -61,14 +63,13 @@ public class OrderController {
     }
 
     /**
-     * Завершает заказ по указанному идентификатору.
+     * Завершает заказ по идентификатору.
      *
      * @param id Идентификатор заказа
      * @return {@link BaseResponseBody} с информацией о завершении заказа
      */
     @PostMapping("/{id}/complete")
-    public BaseResponseBody completeOrder(@PathVariable int id) {
-        log.info("GET: /api/v1/{}/complete", id);
+    public BaseResponseBody completeOrder(@PathVariable Long id) {
         orderService.completeOrder(id);
         return BaseResponseBody.builder()
                 .title(ResponseTitle.SUCCESS.name())
@@ -84,7 +85,6 @@ public class OrderController {
      */
     @GetMapping
     public ResponseBodyWithData getAllOrders() {
-        log.info("GET: /api/v1/orders");
         List<Order> orders = orderService.getAllOrders();
         return ResponseBodyWithData.builder()
                 .title(ResponseTitle.SUCCESS.name())

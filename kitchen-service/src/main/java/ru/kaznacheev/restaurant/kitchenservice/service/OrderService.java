@@ -1,35 +1,36 @@
 package ru.kaznacheev.restaurant.kitchenservice.service;
 
-import ru.kaznacheev.restaurant.common.dto.NewOrderDto;
+import jakarta.validation.Valid;
+import ru.kaznacheev.restaurant.kitchenservice.dto.NewOrderDto;
 import ru.kaznacheev.restaurant.kitchenservice.entity.Order;
 
 import java.util.List;
 
 /**
- * Интерфейс сервиса для обработки заказов.
+ * Интерфейс сервиса для работы с заказами.
  */
 public interface OrderService {
 
     /**
-     * Принимает заказ на основе переданного DTO.
+     * Создает новый заказ на основе переданного DTO.
      *
      * @param newOrderDto DTO, содержащий информацию о заказе
      */
-    void acceptOrder(NewOrderDto newOrderDto);
+    void createOrder(@Valid NewOrderDto newOrderDto);
 
     /**
      * Отклоняет заказ по его идентификатору.
      *
      * @param id Идентификатор заказа
      */
-    void rejectOrder(int id);
+    void rejectOrder(Long id);
 
     /**
      * Завершает заказ по его идентификатору.
      *
      * @param id Идентификатор заказа
      */
-    void completeOrder(int id);
+    void completeOrder(Long id);
 
     /**
      * Возвращает заказ по его идентификатору.
@@ -37,12 +38,12 @@ public interface OrderService {
      * @param id Идентификатор заказа
      * @return Заказ
      */
-    Order getOrderById(int id);
+    Order getOrderById(Long id);
 
     /**
      * Возвращает список всех заказов.
      *
-     * @return Список всех заказов
+     * @return {@link List} {@link Order} Список всех заказов
      */
     List<Order> getAllOrders();
 

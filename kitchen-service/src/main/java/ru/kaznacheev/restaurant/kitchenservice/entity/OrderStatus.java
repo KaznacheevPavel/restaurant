@@ -1,10 +1,10 @@
 package ru.kaznacheev.restaurant.kitchenservice.entity;
 
 /**
- * Класс, представляющий статус заказа.
+ * Статусы заказа.
  */
 public enum OrderStatus {
-    WAITING_FOR_STARTING,
+    NEW,
     IN_PROGRESS,
     COMPLETED,
     REJECTED

@@ -1,7 +1,7 @@
 package ru.kaznacheev.restaurant.waiterservice.entity;
 
 /**
- * Класс, представляющий статус заказа.
+ * Статусы заказа.
  */
 public enum OrderStatus {
     ACCEPTED,

@@ -16,7 +16,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"dishes\" : {\r\n        \"Борщ\" : 2,\r\n        \"Цезарь\" : 1\r\n    },\r\n    \"comment\" : \"Цезарь без сухариков\"\r\n}",
+					"raw": "{\r\n    \"waiterId\" : 1,\r\n    \"tableNumber\" : 1,\r\n    \"dishes\" : {\r\n        \"Борщ\" : 2,\r\n        \"Паста карбонара\" : 1\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

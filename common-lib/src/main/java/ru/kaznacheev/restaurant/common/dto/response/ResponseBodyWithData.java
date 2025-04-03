@@ -11,9 +11,12 @@ import java.util.Map;
 @Getter
 @SuperBuilder
 public class ResponseBodyWithData extends BaseResponseBody {
+
     /**
      * Дополнительные данные.
+     * <p>
      * Ключ - имя поля при сериализации в ответ, значение - содержимое поля
      */
     private final Map<String, ?> data;
+
 }
