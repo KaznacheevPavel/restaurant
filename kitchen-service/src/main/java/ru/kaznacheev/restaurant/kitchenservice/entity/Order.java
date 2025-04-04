@@ -13,8 +13,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /**
  * Сущность заказа.
@@ -54,5 +56,34 @@ public class Order {
      */
     @Column(name = "create_dttm")
     private OffsetDateTime createdAt;
+
+    /**
+     * Сравнивает два заказа.
+     *
+     * @param o Объект для сравнения
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o)
+                .getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this)
+                .getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        Order dish = (Order) o;
+        return Objects.equals(id, dish.id);
+    }
+
+    /**
+     * Возвращает хэш-код заказа.
+     *
+     * @return Хэш-код
+     */
+    @Override
+    public int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this)
+                .getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
 
 }

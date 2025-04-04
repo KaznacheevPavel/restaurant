@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.kaznacheev.restaurant.common.dto.response.BaseResponseBody;
 import ru.kaznacheev.restaurant.common.dto.response.ResponseBodyWithData;
+import ru.kaznacheev.restaurant.common.dto.response.ResponseDetailMessages;
 import ru.kaznacheev.restaurant.common.dto.response.ResponseTitle;
 import ru.kaznacheev.restaurant.common.exception.BaseException;
 import ru.kaznacheev.restaurant.common.exception.ExceptionWithData;
@@ -80,7 +81,7 @@ public class GlobalExceptionHandlerControllerAdvice {
         return ResponseBodyWithData.builder()
                 .title(ResponseTitle.VALIDATION_ERROR.name())
                 .status(ResponseTitle.VALIDATION_ERROR.getStatus())
-                .detail("Ошибка валидации")
+                .detail(ResponseDetailMessages.VALIDATION_ERROR.getDetail())
                 .data(invalidFields)
                 .build();
     }

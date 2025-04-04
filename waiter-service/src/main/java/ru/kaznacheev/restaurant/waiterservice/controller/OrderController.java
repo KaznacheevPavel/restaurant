@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.kaznacheev.restaurant.common.dto.response.BaseResponseBody;
 import ru.kaznacheev.restaurant.common.dto.response.ResponseBodyWithData;
+import ru.kaznacheev.restaurant.common.dto.response.ResponseDetailMessages;
 import ru.kaznacheev.restaurant.common.dto.response.ResponseTitle;
-import ru.kaznacheev.restaurant.waiterservice.dto.NewOrderDto;
+import ru.kaznacheev.restaurant.waiterservice.dto.NewOrderRequest;
 import ru.kaznacheev.restaurant.waiterservice.entity.Order;
 import ru.kaznacheev.restaurant.waiterservice.entity.OrderStatus;
 import ru.kaznacheev.restaurant.waiterservice.service.OrderService;
@@ -33,17 +34,17 @@ public class OrderController {
     /**
      * Создает новый заказ.
      *
-     * @param newOrderDto DTO, содержащий информацию о новом заказе
+     * @param newOrderRequest DTO, содержащий информацию о новом заказе
      * @return {@link BaseResponseBody} с информацией о создании заказа
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BaseResponseBody createOrder(@RequestBody NewOrderDto newOrderDto) {
-        orderService.createOrder(newOrderDto);
+    public BaseResponseBody createOrder(@RequestBody NewOrderRequest newOrderRequest) {
+        orderService.createOrder(newOrderRequest);
         return BaseResponseBody.builder()
                 .title(ResponseTitle.CREATED.name())
                 .status(ResponseTitle.CREATED.getStatus())
-                .detail("Заказ успешно создан")
+                .detail(ResponseDetailMessages.ORDER_CREATED.getDetail())
                 .build();
     }
 
@@ -59,7 +60,7 @@ public class OrderController {
         return ResponseBodyWithData.builder()
                 .title(ResponseTitle.SUCCESS.name())
                 .status(ResponseTitle.SUCCESS.getStatus())
-                .detail("Заказ успешно получен")
+                .detail(ResponseDetailMessages.GET_ORDER.getDetail())
                 .data(Map.of("order", order))
                 .build();
     }
@@ -75,7 +76,7 @@ public class OrderController {
         return ResponseBodyWithData.builder()
                 .title(ResponseTitle.SUCCESS.name())
                 .status(ResponseTitle.SUCCESS.getStatus())
-                .detail("Список заказов успешно получен")
+                .detail(ResponseDetailMessages.GET_ORDER_LIST.getDetail())
                 .data(Map.of("orders", orders))
                 .build();
     }
@@ -92,7 +93,7 @@ public class OrderController {
         return ResponseBodyWithData.builder()
                 .title(ResponseTitle.SUCCESS.name())
                 .status(ResponseTitle.SUCCESS.getStatus())
-                .detail("Статус заказа успешно получен")
+                .detail(ResponseDetailMessages.GET_STATUS.getDetail())
                 .data(Map.of("orderStatus", orderStatus))
                 .build();
     }

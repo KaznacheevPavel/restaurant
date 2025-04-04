@@ -14,7 +14,7 @@ import java.util.Map;
  */
 @AllArgsConstructor
 @Getter
-public class NewOrderDto {
+public class NewOrderRequest {
 
     /**
      * Идентификатор официанта.

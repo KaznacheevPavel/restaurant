@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import ru.kaznacheev.restaurant.common.exception.OrderNotFoundException;
-import ru.kaznacheev.restaurant.waiterservice.dto.NewOrderDto;
+import ru.kaznacheev.restaurant.waiterservice.dto.NewOrderRequest;
 import ru.kaznacheev.restaurant.waiterservice.entity.Order;
 import ru.kaznacheev.restaurant.waiterservice.entity.OrderStatus;
 import ru.kaznacheev.restaurant.waiterservice.exception.WaiterNotFoundException;
@@ -36,23 +36,23 @@ public class OrderServiceImpl implements OrderService {
     /**
      * {@inheritDoc}
      *
-     * @param newOrderDto {@inheritDoc}
+     * @param newOrderRequest {@inheritDoc}
      * @throws WaiterNotFoundException Если был передан неверный идентификатор официанта
      */
     @Transactional
     @Override
-    public void createOrder(@Valid NewOrderDto newOrderDto) {
-        if (!waiterService.existsWaiterById(newOrderDto.getWaiterId())) {
-            throw new WaiterNotFoundException(newOrderDto.getWaiterId());
+    public void createOrder(@Valid NewOrderRequest newOrderRequest) {
+        if (!waiterService.existsWaiterById(newOrderRequest.getWaiterId())) {
+            throw new WaiterNotFoundException(newOrderRequest.getWaiterId());
         }
         Order order = Order.builder()
-                .waiterId(newOrderDto.getWaiterId())
+                .waiterId(newOrderRequest.getWaiterId())
                 .status(OrderStatus.ACCEPTED)
                 .createdAt(OffsetDateTime.now(clock))
-                .tableNumber(newOrderDto.getTableNumber())
+                .tableNumber(newOrderRequest.getTableNumber())
                 .build();
         orderMapper.save(order);
-        orderPositionService.addDishesToOrder(order.getId(), newOrderDto.getDishes());
+        orderPositionService.addDishesToOrder(order.getId(), newOrderRequest.getDishes());
     }
 
     /**

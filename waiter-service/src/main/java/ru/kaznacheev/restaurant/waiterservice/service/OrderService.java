@@ -1,7 +1,7 @@
 package ru.kaznacheev.restaurant.waiterservice.service;
 
 import jakarta.validation.Valid;
-import ru.kaznacheev.restaurant.waiterservice.dto.NewOrderDto;
+import ru.kaznacheev.restaurant.waiterservice.dto.NewOrderRequest;
 import ru.kaznacheev.restaurant.waiterservice.entity.Order;
 import ru.kaznacheev.restaurant.waiterservice.entity.OrderStatus;
 
@@ -15,9 +15,9 @@ public interface OrderService {
     /**
      * Создает новый заказ на основе переданного DTO.
      *
-     * @param newOrderDto DTO, содержащий информацию о новом заказе
+     * @param newOrderRequest DTO, содержащий информацию о новом заказе
      */
-    void createOrder(@Valid NewOrderDto newOrderDto);
+    void createOrder(@Valid NewOrderRequest newOrderRequest);
 
     /**
      * Возвращает заказ по его идентификатору.

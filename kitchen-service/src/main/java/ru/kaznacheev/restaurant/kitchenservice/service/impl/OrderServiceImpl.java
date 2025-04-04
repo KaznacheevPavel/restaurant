@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import ru.kaznacheev.restaurant.common.exception.OrderNotFoundException;
-import ru.kaznacheev.restaurant.kitchenservice.dto.NewOrderDto;
+import ru.kaznacheev.restaurant.kitchenservice.dto.NewOrderRequest;
 import ru.kaznacheev.restaurant.kitchenservice.entity.Order;
 import ru.kaznacheev.restaurant.kitchenservice.entity.OrderStatus;
 import ru.kaznacheev.restaurant.kitchenservice.repository.OrderRepository;
@@ -33,18 +33,18 @@ public class OrderServiceImpl implements OrderService {
     /**
      * {@inheritDoc}
      *
-     * @param newOrderDto {@inheritDoc}
+     * @param newOrderRequest {@inheritDoc}
      */
     @Transactional
     @Override
-    public void createOrder(@Valid NewOrderDto newOrderDto) {
+    public void createOrder(@Valid NewOrderRequest newOrderRequest) {
         Order order = Order.builder()
-                .waiterOrderId(newOrderDto.getWaiterOrderId())
+                .waiterOrderId(newOrderRequest.getWaiterOrderId())
                 .status(OrderStatus.NEW)
                 .createdAt(OffsetDateTime.now(clock))
                 .build();
         orderRepository.save(order);
-        orderPositionService.addDishesToOrder(order.getId(), newOrderDto.getDishes());
+        orderPositionService.addDishesToOrder(order.getId(), newOrderRequest.getDishes());
         order.setStatus(OrderStatus.IN_PROGRESS);
     }
 

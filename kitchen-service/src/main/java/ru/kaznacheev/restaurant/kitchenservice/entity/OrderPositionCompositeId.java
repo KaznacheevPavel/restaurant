@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -37,9 +38,14 @@ public class OrderPositionCompositeId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrderPositionCompositeId that = (OrderPositionCompositeId) o;
-        return Objects.equals(orderId, that.orderId) &&
-                Objects.equals(dishId, that.dishId);
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o)
+                .getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this)
+                .getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        OrderPositionCompositeId orderPositionCompositeId = (OrderPositionCompositeId) o;
+        return Objects.equals(orderId, orderPositionCompositeId.orderId) &&
+                Objects.equals(dishId, orderPositionCompositeId.dishId);
     }
 
     /**
@@ -49,6 +55,7 @@ public class OrderPositionCompositeId implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(orderId, dishId);
+        return this instanceof HibernateProxy ? ((HibernateProxy) this)
+                .getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }
