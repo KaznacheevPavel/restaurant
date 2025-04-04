@@ -11,7 +11,9 @@ import ru.kaznacheev.restaurant.common.dto.response.ResponseBodyWithData;
 import ru.kaznacheev.restaurant.common.dto.response.ResponseDetailMessages;
 import ru.kaznacheev.restaurant.common.dto.response.ResponseTitle;
 import ru.kaznacheev.restaurant.common.exception.BaseException;
+import ru.kaznacheev.restaurant.common.exception.DishNotFoundException;
 import ru.kaznacheev.restaurant.common.exception.ExceptionWithData;
+import ru.kaznacheev.restaurant.common.exception.OrderNotFoundException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,36 +27,36 @@ import java.util.Map;
 public class GlobalExceptionHandlerControllerAdvice {
 
     /**
-     * Обрабатывает {@link ExceptionWithData}.
+     * Обрабатывает {@link DishNotFoundException}.
      *
      * @param e Исключение
-     * @return {@link ResponseEntity} {@link ResponseBodyWithData} с информацией о возникшем исключении
+     * @return {@link ResponseBodyWithData} с информацией о возникшем исключении
      */
-    @ExceptionHandler(ExceptionWithData.class)
-    public ResponseEntity<ResponseBodyWithData> handleBaseException(ExceptionWithData e) {
-        ResponseBodyWithData response = ResponseBodyWithData.builder()
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(DishNotFoundException.class)
+    public ResponseBodyWithData handleDishNotFoundException(DishNotFoundException e) {
+        return ResponseBodyWithData.builder()
                 .title(e.getTitle())
                 .status(e.getStatus())
                 .detail(e.getDetail())
                 .data(e.getData())
                 .build();
-        return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     /**
-     * Обрабатывает {@link BaseException}.
+     * Обрабатывает {@link OrderNotFoundException}.
      *
      * @param e Исключение
-     * @return {@link ResponseEntity} {@link BaseResponseBody} с информацией о возникшем исключении
+     * @return {@link BaseResponseBody} с информацией о возникшем исключении
      */
-    @ExceptionHandler(BaseException.class)
-    public ResponseEntity<BaseResponseBody> handleBaseException(BaseException e) {
-        BaseResponseBody response = BaseResponseBody.builder()
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(OrderNotFoundException.class)
+    public BaseResponseBody handleOrderNotFoundException(OrderNotFoundException e) {
+        return BaseResponseBody.builder()
                 .title(e.getTitle())
                 .status(e.getStatus())
                 .detail(e.getDetail())
                 .build();
-        return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     /**
