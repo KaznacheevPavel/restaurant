@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import ru.kaznacheev.restaurant.common.validation.constraint.DishAmountGreaterThanZero;
 
 import java.util.Map;
 
@@ -34,7 +33,7 @@ public class NewOrderRequest {
      * Ключ - название блюда, значение - количество порций.
      */
     @NotEmpty(message = "Состав заказа не может быть пустым")
-    @DishAmountGreaterThanZero
-    private final Map<String, Long> dishes;
+    private final Map< @NotBlank(message = "Название блюда не должно быть пустым") String,
+            @Min(value = 1, message = "Количество порций должно быть больше 0") Long> dishes;
 
 }
