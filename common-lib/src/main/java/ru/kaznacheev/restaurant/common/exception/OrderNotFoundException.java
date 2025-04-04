@@ -1,6 +1,6 @@
 package ru.kaznacheev.restaurant.common.exception;
 
-import ru.kaznacheev.restaurant.common.dto.response.ResponseTitle;
+import ru.kaznacheev.restaurant.common.dto.exception.ResponseTitle;
 
 /**
  * Исключение, выбрасываемое при попытке получения несуществующего заказа.

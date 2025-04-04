@@ -1,6 +1,7 @@
 package ru.kaznacheev.restaurant.common.exception;
 
-import ru.kaznacheev.restaurant.common.dto.response.ResponseTitle;
+import ru.kaznacheev.restaurant.common.dto.exception.ResponseDetailMessages;
+import ru.kaznacheev.restaurant.common.dto.exception.ResponseTitle;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ public class DishNotFoundException extends ExceptionWithData {
     public DishNotFoundException(List<?> notFoundedDishes) {
         super(ResponseTitle.NOT_FOUND.name(),
                 ResponseTitle.NOT_FOUND.getStatus(),
-                "Неверный состав заказа",
+                ResponseDetailMessages.ORDER_COMPOSITION_ERROR.getDetail(),
                 Map.of("Неверные блюда", notFoundedDishes));
     }
 

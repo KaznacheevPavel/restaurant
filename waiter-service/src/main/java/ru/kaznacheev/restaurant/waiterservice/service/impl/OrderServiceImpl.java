@@ -6,11 +6,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import ru.kaznacheev.restaurant.common.exception.OrderNotFoundException;
-import ru.kaznacheev.restaurant.waiterservice.dto.NewOrderDto;
+import ru.kaznacheev.restaurant.waiterservice.dto.request.NewOrderRequest;
+import ru.kaznacheev.restaurant.waiterservice.dto.response.OrderFullInfoResponse;
+import ru.kaznacheev.restaurant.waiterservice.dto.response.OrderShortInfoResponse;
+import ru.kaznacheev.restaurant.waiterservice.dto.response.OrderStatusResponse;
 import ru.kaznacheev.restaurant.waiterservice.entity.Order;
 import ru.kaznacheev.restaurant.waiterservice.entity.OrderStatus;
 import ru.kaznacheev.restaurant.waiterservice.exception.WaiterNotFoundException;
-import ru.kaznacheev.restaurant.waiterservice.mapper.OrderMapper;
+import ru.kaznacheev.restaurant.waiterservice.mapper.OrderFullInfoMapper;
+import ru.kaznacheev.restaurant.waiterservice.repository.OrderRepository;
 import ru.kaznacheev.restaurant.waiterservice.service.OrderPositionService;
 import ru.kaznacheev.restaurant.waiterservice.service.OrderService;
 import ru.kaznacheev.restaurant.waiterservice.service.WaiterService;
@@ -28,31 +32,34 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-    private final OrderMapper orderMapper;
+    private final OrderRepository orderRepository;
     private final Clock clock;
     private final WaiterService waiterService;
     private final OrderPositionService orderPositionService;
+    private final OrderFullInfoMapper orderFullInfoMapper;
 
     /**
      * {@inheritDoc}
      *
-     * @param newOrderDto {@inheritDoc}
+     * @param newOrderRequest {@inheritDoc}
+     * @return {@inheritDoc}
      * @throws WaiterNotFoundException Если был передан неверный идентификатор официанта
      */
     @Transactional
     @Override
-    public void createOrder(@Valid NewOrderDto newOrderDto) {
-        if (!waiterService.existsWaiterById(newOrderDto.getWaiterId())) {
-            throw new WaiterNotFoundException(newOrderDto.getWaiterId());
+    public OrderFullInfoResponse createOrder(@Valid NewOrderRequest newOrderRequest) {
+        if (!waiterService.existsWaiterById(newOrderRequest.getWaiterId())) {
+            throw new WaiterNotFoundException(newOrderRequest.getWaiterId());
         }
         Order order = Order.builder()
-                .waiterId(newOrderDto.getWaiterId())
+                .waiterId(newOrderRequest.getWaiterId())
                 .status(OrderStatus.ACCEPTED)
                 .createdAt(OffsetDateTime.now(clock))
-                .tableNumber(newOrderDto.getTableNumber())
+                .tableNumber(newOrderRequest.getTableNumber())
                 .build();
-        orderMapper.save(order);
-        orderPositionService.addDishesToOrder(order.getId(), newOrderDto.getDishes());
+        orderRepository.save(order);
+        orderPositionService.addDishesToOrder(order.getId(), newOrderRequest.getDishes());
+        return orderFullInfoMapper.toOrderFullInfoResponse(order, newOrderRequest.getDishes());
     }
 
     /**
@@ -62,9 +69,10 @@ public class OrderServiceImpl implements OrderService {
      * @return {@inheritDoc}
      * @throws OrderNotFoundException Если заказ не найден
      */
+    @Transactional(readOnly = true)
     @Override
-    public Order getOrderById(Long id) {
-        Optional<Order> order = orderMapper.getOrderById(id);
+    public OrderFullInfoResponse getOrderById(Long id) {
+        Optional<OrderFullInfoResponse> order = orderRepository.getOrderById(id);
         return order.orElseThrow(() -> new OrderNotFoundException(id));
     }
 
@@ -73,9 +81,10 @@ public class OrderServiceImpl implements OrderService {
      *
      * @return {@inheritDoc}
      */
+    @Transactional(readOnly = true)
     @Override
-    public List<Order> getAllOrders() {
-        return orderMapper.getAllOrders();
+    public List<OrderShortInfoResponse> getAllOrders() {
+        return orderRepository.getAllOrders();
     }
 
     /**
@@ -85,9 +94,10 @@ public class OrderServiceImpl implements OrderService {
      * @return {@inheritDoc}
      * @throws OrderNotFoundException Если заказ не найден
      */
+    @Transactional(readOnly = true)
     @Override
-    public OrderStatus getOrderStatusById(Long id) {
-        Optional<OrderStatus> orderStatus = orderMapper.getOrderStatusById(id);
+    public OrderStatusResponse getOrderStatusById(Long id) {
+        Optional<OrderStatusResponse> orderStatus = orderRepository.getOrderStatusById(id);
         return orderStatus.orElseThrow(() -> new OrderNotFoundException(id));
     }
 }

@@ -1,7 +1,10 @@
 package ru.kaznacheev.restaurant.kitchenservice.service;
 
 import jakarta.validation.Valid;
-import ru.kaznacheev.restaurant.kitchenservice.dto.NewOrderDto;
+import ru.kaznacheev.restaurant.kitchenservice.dto.request.NewOrderRequest;
+import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderFullInfoResponse;
+import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderShortInfoResponse;
+import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderStatusResponse;
 import ru.kaznacheev.restaurant.kitchenservice.entity.Order;
 
 import java.util.List;
@@ -14,23 +17,26 @@ public interface OrderService {
     /**
      * Создает новый заказ на основе переданного DTO.
      *
-     * @param newOrderDto DTO, содержащий информацию о заказе
+     * @param newOrderRequest DTO, содержащий информацию о заказе
+     * @return {@link OrderFullInfoResponse} с информацией о заказе
      */
-    void createOrder(@Valid NewOrderDto newOrderDto);
+    OrderFullInfoResponse createOrder(@Valid NewOrderRequest newOrderRequest);
 
     /**
      * Отклоняет заказ по его идентификатору.
      *
      * @param id Идентификатор заказа
+     * @return {@link OrderStatusResponse} с информацией о статусе заказа
      */
-    void rejectOrder(Long id);
+    OrderStatusResponse rejectOrder(Long id);
 
     /**
      * Завершает заказ по его идентификатору.
      *
      * @param id Идентификатор заказа
+     * @return {@link OrderStatusResponse} с информацией о статусе заказа
      */
-    void completeOrder(Long id);
+    OrderStatusResponse completeOrder(Long id);
 
     /**
      * Возвращает заказ по его идентификатору.
@@ -43,8 +49,8 @@ public interface OrderService {
     /**
      * Возвращает список всех заказов.
      *
-     * @return {@link List} {@link Order} Список всех заказов
+     * @return {@link List} {@link OrderShortInfoResponse} с краткой информацией о заказе
      */
-    List<Order> getAllOrders();
+    List<OrderShortInfoResponse> getAllOrders();
 
 }

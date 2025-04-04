@@ -2,10 +2,16 @@ package ru.kaznacheev.restaurant.kitchenservice.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.proxy.HibernateProxy;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Сущность блюда.
@@ -41,4 +47,38 @@ public class Dish {
     @Column(name = "dish_composition")
     private String composition;
 
+    /**
+     * Позиции заказа.
+     */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dish")
+    private List<OrderPosition> orderPositions;
+
+    /**
+     * Сравнивает два блюда.
+     *
+     * @param o Объект для сравнения.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o)
+                .getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this)
+                .getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        Dish dish = (Dish) o;
+        return Objects.equals(id, dish.id);
+    }
+
+    /**
+     * Возвращает хэш-код блюда.
+     *
+     * @return Хэш-код
+     */
+    @Override
+    public int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this)
+                .getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
 }

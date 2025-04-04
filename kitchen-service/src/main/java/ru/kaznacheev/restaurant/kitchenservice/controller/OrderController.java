@@ -9,15 +9,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ru.kaznacheev.restaurant.common.dto.response.BaseResponseBody;
-import ru.kaznacheev.restaurant.common.dto.response.ResponseBodyWithData;
-import ru.kaznacheev.restaurant.common.dto.response.ResponseTitle;
-import ru.kaznacheev.restaurant.kitchenservice.dto.NewOrderDto;
-import ru.kaznacheev.restaurant.kitchenservice.entity.Order;
+import ru.kaznacheev.restaurant.kitchenservice.dto.request.NewOrderRequest;
+import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderFullInfoResponse;
+import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderShortInfoResponse;
+import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderStatusResponse;
 import ru.kaznacheev.restaurant.kitchenservice.service.OrderService;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Контроллер для обработки запросов, связанных с заказами.
@@ -32,66 +30,45 @@ public class OrderController {
     /**
      *  Создает новый заказ.
      *
-     * @param newOrderDto DTO, содержащий информацию о новом заказе
-     * @return {@link BaseResponseBody} с информацией о создании заказа
+     * @param newOrderRequest DTO, содержащий информацию о новом заказе
+     * @return {@link OrderFullInfoResponse} с информацией о заказе
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BaseResponseBody createOrder(@RequestBody NewOrderDto newOrderDto) {
-        orderService.createOrder(newOrderDto);
-        return BaseResponseBody.builder()
-                .title(ResponseTitle.CREATED.name())
-                .status(ResponseTitle.CREATED.getStatus())
-                .detail("Заказ успешно создан")
-                .build();
+    public OrderFullInfoResponse createOrder(@RequestBody NewOrderRequest newOrderRequest) {
+        return orderService.createOrder(newOrderRequest);
     }
 
     /**
      * Отклоняет заказ по идентификатору.
      *
      * @param id Идентификатор заказа
-     * @return {@link BaseResponseBody} с информацией об отмене заказа
+     * @return {@link OrderStatusResponse} с информацией о статусе заказа
      */
     @PostMapping("/{id}/reject")
-    public BaseResponseBody rejectOrder(@PathVariable Long id) {
-        orderService.rejectOrder(id);
-        return BaseResponseBody.builder()
-                .title(ResponseTitle.SUCCESS.name())
-                .status(ResponseTitle.SUCCESS.getStatus())
-                .detail("Заказ успешно отменен")
-                .build();
+    public OrderStatusResponse rejectOrder(@PathVariable Long id) {
+        return orderService.rejectOrder(id);
     }
 
     /**
      * Завершает заказ по идентификатору.
      *
      * @param id Идентификатор заказа
-     * @return {@link BaseResponseBody} с информацией о завершении заказа
+     * @return {@link OrderStatusResponse} с информацией о статусе заказа
      */
     @PostMapping("/{id}/complete")
-    public BaseResponseBody completeOrder(@PathVariable Long id) {
-        orderService.completeOrder(id);
-        return BaseResponseBody.builder()
-                .title(ResponseTitle.SUCCESS.name())
-                .status(ResponseTitle.SUCCESS.getStatus())
-                .detail("Заказ успешно выполнен")
-                .build();
+    public OrderStatusResponse completeOrder(@PathVariable Long id) {
+        return orderService.completeOrder(id);
     }
 
     /**
      *  Возвращает список всех заказов.
      *
-     * @return {@link ResponseBodyWithData} со списком заказов
+     * @return {@link List} {@link OrderShortInfoResponse} с краткой информацией о заказе
      */
     @GetMapping
-    public ResponseBodyWithData getAllOrders() {
-        List<Order> orders = orderService.getAllOrders();
-        return ResponseBodyWithData.builder()
-                .title(ResponseTitle.SUCCESS.name())
-                .status(ResponseTitle.SUCCESS.getStatus())
-                .detail("Список заказов успешно получен")
-                .data(Map.of("orders", orders))
-                .build();
+    public List<OrderShortInfoResponse> getAllOrders() {
+        return orderService.getAllOrders();
     }
 
 }

@@ -1,5 +1,9 @@
 package ru.kaznacheev.restaurant.kitchenservice.service;
 
+import ru.kaznacheev.restaurant.kitchenservice.entity.Order;
+import ru.kaznacheev.restaurant.kitchenservice.entity.OrderPosition;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -10,9 +14,10 @@ public interface OrderPositionService {
     /**
      * Добавляет блюда в заказ.
      *
-     * @param orderId Идентификатор заказа
+     * @param order Заказ
      * @param orderComposition Идентификаторы блюд и их количество
+     * @return {@link List} {@link OrderPosition} с позицией заказа
      */
-    void addDishesToOrder(Long orderId, Map<Long, Long> orderComposition);
+    List<OrderPosition> addDishesToOrder(Order order, Map<Long, Long> orderComposition);
 
 }

@@ -3,7 +3,7 @@ package ru.kaznacheev.restaurant.waiterservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kaznacheev.restaurant.waiterservice.mapper.WaiterMapper;
+import ru.kaznacheev.restaurant.waiterservice.repository.WaiterRepository;
 import ru.kaznacheev.restaurant.waiterservice.service.WaiterService;
 
 /**
@@ -13,7 +13,7 @@ import ru.kaznacheev.restaurant.waiterservice.service.WaiterService;
 @RequiredArgsConstructor
 public class WaiterServiceImpl implements WaiterService {
 
-    private final WaiterMapper waiterMapper;
+    private final WaiterRepository waiterRepository;
 
     /**
      * {@inheritDoc}
@@ -24,7 +24,7 @@ public class WaiterServiceImpl implements WaiterService {
     @Transactional(readOnly = true)
     @Override
     public boolean existsWaiterById(Long id) {
-        return waiterMapper.existsWaiterById(id);
+        return waiterRepository.existsWaiterById(id);
     }
 
 }

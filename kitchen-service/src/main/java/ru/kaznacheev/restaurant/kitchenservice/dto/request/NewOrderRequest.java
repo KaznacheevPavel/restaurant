@@ -1,10 +1,9 @@
-package ru.kaznacheev.restaurant.kitchenservice.dto;
+package ru.kaznacheev.restaurant.kitchenservice.dto.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import ru.kaznacheev.restaurant.common.validation.constraint.DishAmountGreaterThanZero;
 
 import java.util.Map;
 
@@ -13,7 +12,7 @@ import java.util.Map;
  */
 @AllArgsConstructor
 @Getter
-public class NewOrderDto {
+public class NewOrderRequest {
 
     /**
      * Идентификатор заказа у официанта.
@@ -27,7 +26,7 @@ public class NewOrderDto {
      * Ключ - идентификатор блюда, значение - количество порций.
      */
     @NotEmpty(message = "Состав заказа не может быть пустым")
-    @DishAmountGreaterThanZero
-    private final Map<Long, Long> dishes;
+    private final Map< @Min(value = 1, message = "Идентификатор заказа должен быть больше 0") Long,
+            @Min(value = 1, message = "Количество порций должно быть больше 0") Long> dishes;
 
 }
