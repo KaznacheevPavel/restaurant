@@ -3,18 +3,15 @@ package ru.kaznacheev.restaurant.waiterservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kaznacheev.restaurant.common.exception.DishNotFoundException;
 import ru.kaznacheev.restaurant.waiterservice.entity.Dish;
 import ru.kaznacheev.restaurant.waiterservice.entity.OrderPosition;
-import ru.kaznacheev.restaurant.waiterservice.mapper.OrderPositionMapper;
+import ru.kaznacheev.restaurant.waiterservice.repository.OrderPositionRepository;
 import ru.kaznacheev.restaurant.waiterservice.service.DishService;
 import ru.kaznacheev.restaurant.waiterservice.service.OrderPositionService;
 import ru.kaznacheev.restaurant.waiterservice.service.ValidationService;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Реализация интерфейса {@link OrderPositionService}.
@@ -23,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderPositionServiceImpl implements OrderPositionService {
 
-    private final OrderPositionMapper orderPositionMapper;
+    private final OrderPositionRepository orderPositionRepository;
     private final DishService dishService;
     private final ValidationService validationService;
 
@@ -45,7 +42,7 @@ public class OrderPositionServiceImpl implements OrderPositionService {
                         .amount(orderComposition.get(dish.getName()))
                         .build())
                 .toList();
-        orderPositionMapper.saveAll(orderPositions);
+        orderPositionRepository.saveAll(orderPositions);
     }
 
 }

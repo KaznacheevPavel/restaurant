@@ -2,12 +2,15 @@ package ru.kaznacheev.restaurant.kitchenservice.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -43,6 +46,12 @@ public class Dish {
      */
     @Column(name = "dish_composition")
     private String composition;
+
+    /**
+     * Позиции заказа.
+     */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dish")
+    private List<OrderPosition> orderPositions;
 
     /**
      * Сравнивает два блюда.

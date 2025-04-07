@@ -1,4 +1,4 @@
-package ru.kaznacheev.restaurant.waiterservice.mapper;
+package ru.kaznacheev.restaurant.waiterservice.repository;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
  */
 @Mapper
 @Repository
-public interface WaiterMapper {
+public interface WaiterRepository {
 
     /**
      * Проверяет, существует ли официант с заданным идентификатором.

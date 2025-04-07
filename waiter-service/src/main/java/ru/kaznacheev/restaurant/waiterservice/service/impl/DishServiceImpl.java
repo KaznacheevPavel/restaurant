@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kaznacheev.restaurant.waiterservice.entity.Dish;
-import ru.kaznacheev.restaurant.waiterservice.mapper.DishMapper;
+import ru.kaznacheev.restaurant.waiterservice.repository.DishRepository;
 import ru.kaznacheev.restaurant.waiterservice.service.DishService;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DishServiceImpl implements DishService {
 
-    private final DishMapper dishMapper;
+    private final DishRepository dishRepository;
 
     /**
      * {@inheritDoc}
@@ -27,7 +27,7 @@ public class DishServiceImpl implements DishService {
     @Transactional(readOnly = true)
     @Override
     public List<Dish> getAllDishesByTitles(List<String> dishTitles) {
-        return dishMapper.getAllDishesByTitles(dishTitles);
+        return dishRepository.getAllDishesByTitles(dishTitles);
     }
 
 }

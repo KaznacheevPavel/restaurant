@@ -1,4 +1,4 @@
-package ru.kaznacheev.restaurant.waiterservice.mapper;
+package ru.kaznacheev.restaurant.waiterservice.repository;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -8,11 +8,11 @@ import ru.kaznacheev.restaurant.waiterservice.entity.OrderPosition;
 import java.util.List;
 
 /**
- * Маппер для работы с позициями заказа.
+ * Репозиторий для работы с позициями заказа.
  */
 @Mapper
 @Repository
-public interface OrderPositionMapper {
+public interface OrderPositionRepository {
 
     /**
      * Сохраняет позиции заказа.

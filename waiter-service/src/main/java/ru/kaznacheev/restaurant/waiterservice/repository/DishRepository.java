@@ -1,4 +1,4 @@
-package ru.kaznacheev.restaurant.waiterservice.mapper;
+package ru.kaznacheev.restaurant.waiterservice.repository;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -8,11 +8,11 @@ import ru.kaznacheev.restaurant.waiterservice.entity.Dish;
 import java.util.List;
 
 /**
- * Маппер для работы с блюдами.
+ * Репозиторий для работы с блюдами.
  */
 @Mapper
 @Repository
-public interface DishMapper {
+public interface DishRepository {
 
     /**
      * Возвращает список блюд по названиям.

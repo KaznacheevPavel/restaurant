@@ -1,9 +1,10 @@
 package ru.kaznacheev.restaurant.waiterservice.service;
 
 import jakarta.validation.Valid;
-import ru.kaznacheev.restaurant.waiterservice.dto.NewOrderRequest;
-import ru.kaznacheev.restaurant.waiterservice.entity.Order;
-import ru.kaznacheev.restaurant.waiterservice.entity.OrderStatus;
+import ru.kaznacheev.restaurant.waiterservice.dto.request.NewOrderRequest;
+import ru.kaznacheev.restaurant.waiterservice.dto.response.OrderFullInfoResponse;
+import ru.kaznacheev.restaurant.waiterservice.dto.response.OrderShortInfoResponse;
+import ru.kaznacheev.restaurant.waiterservice.dto.response.OrderStatusResponse;
 
 import java.util.List;
 
@@ -16,30 +17,31 @@ public interface OrderService {
      * Создает новый заказ на основе переданного DTO.
      *
      * @param newOrderRequest DTO, содержащий информацию о новом заказе
+     * @return {@link OrderFullInfoResponse} с информацией о заказе
      */
-    void createOrder(@Valid NewOrderRequest newOrderRequest);
+    OrderFullInfoResponse createOrder(@Valid NewOrderRequest newOrderRequest);
 
     /**
      * Возвращает заказ по его идентификатору.
      *
      * @param id Идентификатор заказа
-     * @return {@link Order} Заказ
+     * @return {@link OrderFullInfoResponse} с информацией о заказе
      */
-    Order getOrderById(Long id);
+    OrderFullInfoResponse getOrderById(Long id);
 
     /**
      * Возвращает список всех заказов.
      *
-     * @return {@link List} {@link Order} Список всех заказов
+     * @return {@link List} {@link OrderShortInfoResponse} с краткой информацией о заказе
      */
-    List<Order> getAllOrders();
+    List<OrderShortInfoResponse> getAllOrders();
 
     /**
      * Возвращает статус заказа по его идентификатору.
      *
      * @param id Идентификатор заказа
-     * @return {@link OrderStatus} Статус заказа
+     * @return {@link OrderStatusResponse} со статусом заказа
      */
-    OrderStatus getOrderStatusById(Long id);
+    OrderStatusResponse getOrderStatusById(Long id);
 
 }

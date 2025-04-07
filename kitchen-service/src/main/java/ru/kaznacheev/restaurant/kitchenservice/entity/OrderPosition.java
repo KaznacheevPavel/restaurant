@@ -3,9 +3,14 @@ package ru.kaznacheev.restaurant.kitchenservice.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -18,6 +23,7 @@ import java.util.Objects;
 @Table(name = "order_to_dish")
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @Builder
 public class OrderPosition {
 
@@ -32,6 +38,22 @@ public class OrderPosition {
      */
     @Column(name = "dishes_number")
     private Long amount;
+
+    /**
+     * Заказ
+     */
+    @MapsId("orderId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "kitchen_order_id", nullable = false)
+    private Order order;
+
+    /**
+     * Блюдо
+     */
+    @MapsId("dishId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "dish_id", nullable = false)
+    private Dish dish;
 
     /**
      * Сравнивает две позиции заказов.

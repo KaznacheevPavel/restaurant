@@ -6,9 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import ru.kaznacheev.restaurant.common.exception.OrderNotFoundException;
-import ru.kaznacheev.restaurant.kitchenservice.dto.NewOrderRequest;
+import ru.kaznacheev.restaurant.kitchenservice.dto.request.NewOrderRequest;
+import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderFullInfoResponse;
+import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderShortInfoResponse;
+import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderStatusResponse;
 import ru.kaznacheev.restaurant.kitchenservice.entity.Order;
+import ru.kaznacheev.restaurant.kitchenservice.entity.OrderPosition;
 import ru.kaznacheev.restaurant.kitchenservice.entity.OrderStatus;
+import ru.kaznacheev.restaurant.kitchenservice.mapper.OrderMapper;
 import ru.kaznacheev.restaurant.kitchenservice.repository.OrderRepository;
 import ru.kaznacheev.restaurant.kitchenservice.service.OrderPositionService;
 import ru.kaznacheev.restaurant.kitchenservice.service.OrderService;
@@ -29,47 +34,55 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final Clock clock;
     private final OrderPositionService orderPositionService;
+    private final OrderMapper orderMapper;
 
     /**
      * {@inheritDoc}
      *
      * @param newOrderRequest {@inheritDoc}
+     * @return {@inheritDoc}
      */
     @Transactional
     @Override
-    public void createOrder(@Valid NewOrderRequest newOrderRequest) {
+    public OrderFullInfoResponse createOrder(@Valid NewOrderRequest newOrderRequest) {
         Order order = Order.builder()
                 .waiterOrderId(newOrderRequest.getWaiterOrderId())
                 .status(OrderStatus.NEW)
                 .createdAt(OffsetDateTime.now(clock))
                 .build();
         orderRepository.save(order);
-        orderPositionService.addDishesToOrder(order.getId(), newOrderRequest.getDishes());
+        List<OrderPosition> orderPositions = orderPositionService.addDishesToOrder(order, newOrderRequest.getDishes());
+        order.setOrderPositions(orderPositions);
         order.setStatus(OrderStatus.IN_PROGRESS);
+        return orderMapper.toOrderFullInfoResponse(order);
     }
 
     /**
      * {@inheritDoc}
      *
      * @param id {@inheritDoc}
+     * @return {@inheritDoc}
      */
     @Transactional
     @Override
-    public void rejectOrder(Long id) {
+    public OrderStatusResponse rejectOrder(Long id) {
         Order order = getOrderById(id);
         order.setStatus(OrderStatus.REJECTED);
+        return orderMapper.toOrderStatusResponse(order);
     }
 
     /**
      * {@inheritDoc}
      *
      * @param id {@inheritDoc}
+     * @return {@inheritDoc}
      */
     @Transactional
     @Override
-    public void completeOrder(Long id) {
+    public OrderStatusResponse completeOrder(Long id) {
         Order order = getOrderById(id);
         order.setStatus(OrderStatus.COMPLETED);
+        return orderMapper.toOrderStatusResponse(order);
     }
 
     /**
@@ -93,7 +106,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Transactional(readOnly = true)
     @Override
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public List<OrderShortInfoResponse> getAllOrders() {
+        return orderMapper.toListOrderShortInfoResponse(orderRepository.findAll());
     }
 }
