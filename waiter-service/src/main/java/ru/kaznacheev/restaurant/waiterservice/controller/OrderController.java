@@ -71,4 +71,15 @@ public class OrderController {
         return orderService.getOrderStatusById(id);
     }
 
+    /**
+     * Завершает заказ по идентификатору.
+     *
+     * @param id Идентификатор заказа
+     * @return {@link OrderStatusResponse} с информацией о статусе заказа
+     */
+    @PostMapping("/{id}/complete")
+    public OrderStatusResponse completeOrder(@PathVariable Long id) {
+        return orderService.completeOrder(id);
+    }
+
 }

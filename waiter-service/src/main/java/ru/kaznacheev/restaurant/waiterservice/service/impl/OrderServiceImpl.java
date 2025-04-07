@@ -15,6 +15,7 @@ import ru.kaznacheev.restaurant.waiterservice.entity.OrderStatus;
 import ru.kaznacheev.restaurant.waiterservice.exception.WaiterNotFoundException;
 import ru.kaznacheev.restaurant.waiterservice.mapper.OrderFullInfoMapper;
 import ru.kaznacheev.restaurant.waiterservice.repository.OrderRepository;
+import ru.kaznacheev.restaurant.waiterservice.service.CommunicationService;
 import ru.kaznacheev.restaurant.waiterservice.service.OrderPositionService;
 import ru.kaznacheev.restaurant.waiterservice.service.OrderService;
 import ru.kaznacheev.restaurant.waiterservice.service.WaiterService;
@@ -37,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
     private final WaiterService waiterService;
     private final OrderPositionService orderPositionService;
     private final OrderFullInfoMapper orderFullInfoMapper;
+    private final CommunicationService communicationService;
 
     /**
      * {@inheritDoc}
@@ -59,6 +61,7 @@ public class OrderServiceImpl implements OrderService {
                 .build();
         orderRepository.save(order);
         orderPositionService.addDishesToOrder(order.getId(), newOrderRequest.getDishes());
+        communicationService.sendOrderToKitchen(order.getId());
         return orderFullInfoMapper.toOrderFullInfoResponse(order, newOrderRequest.getDishes());
     }
 
@@ -99,5 +102,22 @@ public class OrderServiceImpl implements OrderService {
     public OrderStatusResponse getOrderStatusById(Long id) {
         Optional<OrderStatusResponse> orderStatus = orderRepository.getOrderStatusById(id);
         return orderStatus.orElseThrow(() -> new OrderNotFoundException(id));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param id {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws OrderNotFoundException Если заказ не найден
+     */
+    @Transactional
+    @Override
+    public OrderStatusResponse completeOrder(Long id) {
+        if (!orderRepository.existsById(id)) {
+            throw new OrderNotFoundException(id);
+        }
+        orderRepository.changeOrderStatus(id, OrderStatus.COMPLETED);
+        return new OrderStatusResponse(id, OrderStatus.COMPLETED);
     }
 }

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ru.kaznacheev.restaurant.kitchenservice.dto.request.NewOrderRequest;
-import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderFullInfoResponse;
+import ru.kaznacheev.restaurant.common.dto.request.NewOrderToKitchenRequest;
+import ru.kaznacheev.restaurant.common.dto.response.KitchenOrderFullInfoResponse;
 import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderShortInfoResponse;
 import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderStatusResponse;
 import ru.kaznacheev.restaurant.kitchenservice.service.OrderService;
@@ -30,13 +30,13 @@ public class OrderController {
     /**
      *  Создает новый заказ.
      *
-     * @param newOrderRequest DTO, содержащий информацию о новом заказе
-     * @return {@link OrderFullInfoResponse} с информацией о заказе
+     * @param newOrderToKitchenRequest DTO, содержащий информацию о новом заказе
+     * @return {@link KitchenOrderFullInfoResponse} с информацией о заказе
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderFullInfoResponse createOrder(@RequestBody NewOrderRequest newOrderRequest) {
-        return orderService.createOrder(newOrderRequest);
+    public KitchenOrderFullInfoResponse createOrder(@RequestBody NewOrderToKitchenRequest newOrderToKitchenRequest) {
+        return orderService.createOrder(newOrderToKitchenRequest);
     }
 
     /**

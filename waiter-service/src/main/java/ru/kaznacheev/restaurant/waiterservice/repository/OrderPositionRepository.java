@@ -21,4 +21,6 @@ public interface OrderPositionRepository {
      */
     void saveAll(@Param("orderPositions") List<OrderPosition> orderPositions);
 
+    List<OrderPosition> getAllByOrderId(@Param("id")Long orderId);
+
 }

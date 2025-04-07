@@ -44,4 +44,12 @@ public interface OrderService {
      */
     OrderStatusResponse getOrderStatusById(Long id);
 
+    /**
+     * Завершает заказ по идентификатору.
+     *
+     * @param id Идентификатор заказа
+     * @return {@link OrderStatusResponse} с информацией о статусе заказа
+     */
+    OrderStatusResponse completeOrder(Long id);
+
 }
