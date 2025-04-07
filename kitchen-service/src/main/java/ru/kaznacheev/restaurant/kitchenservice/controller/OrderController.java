@@ -1,18 +1,21 @@
 package ru.kaznacheev.restaurant.kitchenservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import ru.kaznacheev.restaurant.common.dto.NewOrderDto;
-import ru.kaznacheev.restaurant.common.dto.response.BaseResponseBody;
-import ru.kaznacheev.restaurant.common.dto.response.ResponseTitle;
-import ru.kaznacheev.restaurant.common.dto.response.ResponseBodyWithData;
-import ru.kaznacheev.restaurant.kitchenservice.entity.Order;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import ru.kaznacheev.restaurant.kitchenservice.dto.request.NewOrderRequest;
+import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderFullInfoResponse;
+import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderShortInfoResponse;
+import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderStatusResponse;
 import ru.kaznacheev.restaurant.kitchenservice.service.OrderService;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Контроллер для обработки запросов, связанных с заказами.
@@ -20,78 +23,52 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
-@Slf4j
 public class OrderController {
 
     private final OrderService orderService;
 
     /**
-     *  Принимает заказ на основе переданного DTO.
+     *  Создает новый заказ.
      *
-     * @param newOrderDto DTO, содержащий информацию о заказе
-     * @return {@link BaseResponseBody} с информацией о создании заказа
+     * @param newOrderRequest DTO, содержащий информацию о новом заказе
+     * @return {@link OrderFullInfoResponse} с информацией о заказе
      */
     @PostMapping
-    @org.springframework.web.bind.annotation.ResponseStatus(HttpStatus.CREATED)
-    public BaseResponseBody acceptOrder(@RequestBody NewOrderDto newOrderDto) {
-        log.info("POST: /api/v1/orders {}", newOrderDto.hashCode());
-        orderService.acceptOrder(newOrderDto);
-        return BaseResponseBody.builder()
-                .title(ResponseTitle.CREATED.name())
-                .status(ResponseTitle.CREATED.getStatus())
-                .detail("Заказ успешно принят")
-                .build();
+    @ResponseStatus(HttpStatus.CREATED)
+    public OrderFullInfoResponse createOrder(@RequestBody NewOrderRequest newOrderRequest) {
+        return orderService.createOrder(newOrderRequest);
     }
 
     /**
-     * Отклоняет заказ по указанному идентификатору.
+     * Отклоняет заказ по идентификатору.
      *
      * @param id Идентификатор заказа
-     * @return {@link BaseResponseBody} с информацией об отмене заказа
+     * @return {@link OrderStatusResponse} с информацией о статусе заказа
      */
     @PostMapping("/{id}/reject")
-    public BaseResponseBody rejectOrder(@PathVariable int id) {
-        log.info("GET: /api/v1/{}/reject", id);
-        orderService.rejectOrder(id);
-        return BaseResponseBody.builder()
-                .title(ResponseTitle.SUCCESS.name())
-                .status(ResponseTitle.SUCCESS.getStatus())
-                .detail("Заказ успешно отменен")
-                .build();
+    public OrderStatusResponse rejectOrder(@PathVariable Long id) {
+        return orderService.rejectOrder(id);
     }
 
     /**
-     * Завершает заказ по указанному идентификатору.
+     * Завершает заказ по идентификатору.
      *
      * @param id Идентификатор заказа
-     * @return {@link BaseResponseBody} с информацией о завершении заказа
+     * @return {@link OrderStatusResponse} с информацией о статусе заказа
      */
     @PostMapping("/{id}/complete")
-    public BaseResponseBody completeOrder(@PathVariable int id) {
-        log.info("GET: /api/v1/{}/complete", id);
-        orderService.completeOrder(id);
-        return BaseResponseBody.builder()
-                .title(ResponseTitle.SUCCESS.name())
-                .status(ResponseTitle.SUCCESS.getStatus())
-                .detail("Заказ успешно выполнен")
-                .build();
+    public OrderStatusResponse completeOrder(@PathVariable Long id) {
+        return orderService.completeOrder(id);
     }
 
     /**
      *  Возвращает список всех заказов.
      *
-     * @return {@link ResponseBodyWithData} со списком заказов
+     * @return {@link List} {@link OrderShortInfoResponse} с краткой информацией о заказе
      */
     @GetMapping
-    public ResponseBodyWithData getAllOrders() {
-        log.info("GET: /api/v1/orders");
-        List<Order> orders = orderService.getAllOrders();
-        return ResponseBodyWithData.builder()
-                .title(ResponseTitle.SUCCESS.name())
-                .status(ResponseTitle.SUCCESS.getStatus())
-                .detail("Список заказов успешно получен")
-                .data(Map.of("orders", orders))
-                .build();
+    public List<OrderShortInfoResponse> getAllOrders() {
+        return orderService.getAllOrders();
     }
 
 }

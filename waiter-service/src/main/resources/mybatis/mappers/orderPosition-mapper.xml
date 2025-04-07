@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+        'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="ru.kaznacheev.restaurant.waiterservice.repository.OrderPositionRepository">
+
+    <insert id="saveAll" parameterType="list" useGeneratedKeys="true" keyColumn="composition_id" keyProperty="id">
+        INSERT INTO order_positions
+            (dish_sum, order_no, menu_position_id)
+        VALUES
+        <foreach collection="orderPositions" item="position" separator=",">
+            (#{position.amount}, #{position.orderId}, #{position.dishId})
+        </foreach>
+    </insert>
+
+</mapper>

@@ -1,44 +1,47 @@
 package ru.kaznacheev.restaurant.waiterservice.service;
 
-import ru.kaznacheev.restaurant.common.dto.NewOrderDto;
-import ru.kaznacheev.restaurant.waiterservice.entity.Order;
-import ru.kaznacheev.restaurant.waiterservice.entity.OrderStatus;
+import jakarta.validation.Valid;
+import ru.kaznacheev.restaurant.waiterservice.dto.request.NewOrderRequest;
+import ru.kaznacheev.restaurant.waiterservice.dto.response.OrderFullInfoResponse;
+import ru.kaznacheev.restaurant.waiterservice.dto.response.OrderShortInfoResponse;
+import ru.kaznacheev.restaurant.waiterservice.dto.response.OrderStatusResponse;
 
 import java.util.List;
 
 /**
- * Интерфейс сервиса для обработки заказов.
+ * Интерфейс сервиса для работы с заказами.
  */
 public interface OrderService {
 
     /**
      * Создает новый заказ на основе переданного DTO.
      *
-     * @param newOrderDto DTO, содержащий информацию о новом заказе
+     * @param newOrderRequest DTO, содержащий информацию о новом заказе
+     * @return {@link OrderFullInfoResponse} с информацией о заказе
      */
-    void createOrder(NewOrderDto newOrderDto);
+    OrderFullInfoResponse createOrder(@Valid NewOrderRequest newOrderRequest);
 
     /**
      * Возвращает заказ по его идентификатору.
      *
      * @param id Идентификатор заказа
-     * @return Заказ
+     * @return {@link OrderFullInfoResponse} с информацией о заказе
      */
-    Order getOrderById(int id);
+    OrderFullInfoResponse getOrderById(Long id);
 
     /**
      * Возвращает список всех заказов.
      *
-     * @return Список всех заказов
+     * @return {@link List} {@link OrderShortInfoResponse} с краткой информацией о заказе
      */
-    List<Order> getAllOrders();
+    List<OrderShortInfoResponse> getAllOrders();
 
     /**
      * Возвращает статус заказа по его идентификатору.
      *
      * @param id Идентификатор заказа
-     * @return Статус заказа
+     * @return {@link OrderStatusResponse} со статусом заказа
      */
-    OrderStatus getOrderStatusById(int id);
+    OrderStatusResponse getOrderStatusById(Long id);
 
 }
