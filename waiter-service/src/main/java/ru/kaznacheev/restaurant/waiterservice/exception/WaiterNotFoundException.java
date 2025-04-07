@@ -1,6 +1,6 @@
 package ru.kaznacheev.restaurant.waiterservice.exception;
 
-import ru.kaznacheev.restaurant.common.dto.response.ResponseTitle;
+import ru.kaznacheev.restaurant.common.dto.exception.ResponseTitle;
 import ru.kaznacheev.restaurant.common.exception.BaseException;
 
 /**

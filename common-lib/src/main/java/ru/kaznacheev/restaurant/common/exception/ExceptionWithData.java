@@ -1,6 +1,7 @@
 package ru.kaznacheev.restaurant.common.exception;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class ExceptionWithData extends BaseException {
      * @param detail Детальное описание ошибки.
      * @param data Дополнительные данные
      */
-    public ExceptionWithData(String title, int status, String detail, Map<String, ?> data) {
+    public ExceptionWithData(String title, HttpStatus status, String detail, Map<String, ?> data) {
         super(title, status, detail);
         this.data = data;
     }

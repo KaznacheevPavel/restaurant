@@ -1,7 +1,8 @@
 package ru.kaznacheev.restaurant.kitchenservice.exception;
 
 import lombok.Getter;
-import ru.kaznacheev.restaurant.common.dto.response.ResponseTitle;
+import ru.kaznacheev.restaurant.common.dto.exception.ResponseDetailMessages;
+import ru.kaznacheev.restaurant.common.dto.exception.ResponseTitle;
 import ru.kaznacheev.restaurant.common.exception.ExceptionWithData;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class InsufficientDishException extends ExceptionWithData {
     public InsufficientDishException(List<Long> insufficientDishes) {
         super(ResponseTitle.CONFLICT.name(),
                 ResponseTitle.CONFLICT.getStatus(),
-                "Недостаточное количество порций",
+                ResponseDetailMessages.INSUFFICIENT_DISH_ERROR.getDetail(),
                 Map.of("Идентификаторы недостаточных блюд", insufficientDishes));
     }
 

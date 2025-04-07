@@ -1,4 +1,4 @@
-package ru.kaznacheev.restaurant.common.dto.response;
+package ru.kaznacheev.restaurant.common.dto.exception;
 
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
  */
 @Getter
 @SuperBuilder
-public class BaseResponseBody {
+public class BaseExceptionResponseBody {
 
     /**
      * Название результата операции из {@link ResponseTitle}.

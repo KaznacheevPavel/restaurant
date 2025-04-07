@@ -2,17 +2,14 @@ package ru.kaznacheev.restaurant.common.controller;
 
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.kaznacheev.restaurant.common.dto.response.BaseResponseBody;
-import ru.kaznacheev.restaurant.common.dto.response.ResponseBodyWithData;
-import ru.kaznacheev.restaurant.common.dto.response.ResponseDetailMessages;
-import ru.kaznacheev.restaurant.common.dto.response.ResponseTitle;
-import ru.kaznacheev.restaurant.common.exception.BaseException;
+import ru.kaznacheev.restaurant.common.dto.exception.BaseExceptionResponseBody;
+import ru.kaznacheev.restaurant.common.dto.exception.ExceptionResponseBodyWithData;
+import ru.kaznacheev.restaurant.common.dto.exception.ResponseDetailMessages;
+import ru.kaznacheev.restaurant.common.dto.exception.ResponseTitle;
 import ru.kaznacheev.restaurant.common.exception.DishNotFoundException;
-import ru.kaznacheev.restaurant.common.exception.ExceptionWithData;
 import ru.kaznacheev.restaurant.common.exception.OrderNotFoundException;
 
 import java.util.ArrayList;
@@ -30,14 +27,14 @@ public class GlobalExceptionHandlerControllerAdvice {
      * Обрабатывает {@link DishNotFoundException}.
      *
      * @param e Исключение
-     * @return {@link ResponseBodyWithData} с информацией о возникшем исключении
+     * @return {@link ExceptionResponseBodyWithData} с информацией о возникшем исключении
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(DishNotFoundException.class)
-    public ResponseBodyWithData handleDishNotFoundException(DishNotFoundException e) {
-        return ResponseBodyWithData.builder()
+    public ExceptionResponseBodyWithData handleDishNotFoundException(DishNotFoundException e) {
+        return ExceptionResponseBodyWithData.builder()
                 .title(e.getTitle())
-                .status(e.getStatus())
+                .status(e.getStatus().value())
                 .detail(e.getDetail())
                 .data(e.getData())
                 .build();
@@ -47,14 +44,14 @@ public class GlobalExceptionHandlerControllerAdvice {
      * Обрабатывает {@link OrderNotFoundException}.
      *
      * @param e Исключение
-     * @return {@link BaseResponseBody} с информацией о возникшем исключении
+     * @return {@link BaseExceptionResponseBody} с информацией о возникшем исключении
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(OrderNotFoundException.class)
-    public BaseResponseBody handleOrderNotFoundException(OrderNotFoundException e) {
-        return BaseResponseBody.builder()
+    public BaseExceptionResponseBody handleOrderNotFoundException(OrderNotFoundException e) {
+        return BaseExceptionResponseBody.builder()
                 .title(e.getTitle())
-                .status(e.getStatus())
+                .status(e.getStatus().value())
                 .detail(e.getDetail())
                 .build();
     }
@@ -63,11 +60,11 @@ public class GlobalExceptionHandlerControllerAdvice {
      * Обрабатывает {@link ConstraintViolationException}.
      *
      * @param e Исключение
-     * @return {@link ResponseBodyWithData} с информацией о возникшем исключении
+     * @return {@link ExceptionResponseBodyWithData} с информацией о возникшем исключении
      */
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseBodyWithData handleConstraintViolationException(ConstraintViolationException e) {
+    public ExceptionResponseBodyWithData handleConstraintViolationException(ConstraintViolationException e) {
         Map<String, List<String>> invalidFields = new HashMap<>();
         e.getConstraintViolations().forEach(constraintViolation -> {
             String fieldPath = constraintViolation.getPropertyPath().toString();
@@ -80,9 +77,9 @@ public class GlobalExceptionHandlerControllerAdvice {
                 invalidFields.put(fieldName, reasons);
             }
         });
-        return ResponseBodyWithData.builder()
+        return ExceptionResponseBodyWithData.builder()
                 .title(ResponseTitle.VALIDATION_ERROR.name())
-                .status(ResponseTitle.VALIDATION_ERROR.getStatus())
+                .status(ResponseTitle.VALIDATION_ERROR.getStatus().value())
                 .detail(ResponseDetailMessages.VALIDATION_ERROR.getDetail())
                 .data(invalidFields)
                 .build();
