@@ -2,12 +2,10 @@ package ru.kaznacheev.restaurant.waiterservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * Основной класс приложения waiter-service.
  */
-@EnableFeignClients
 @SpringBootApplication(scanBasePackages = {
 		"ru.kaznacheev.restaurant.waiterservice",
 		"ru.kaznacheev.restaurant.common"

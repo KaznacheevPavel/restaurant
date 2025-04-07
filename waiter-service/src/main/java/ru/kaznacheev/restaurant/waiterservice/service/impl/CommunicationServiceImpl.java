@@ -3,7 +3,7 @@ package ru.kaznacheev.restaurant.waiterservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.kaznacheev.restaurant.common.dto.request.NewOrderToKitchenRequest;
+import ru.kaznacheev.restaurant.common.dto.request.NewKitchenOrderRequest;
 import ru.kaznacheev.restaurant.common.dto.response.KitchenOrderFullInfoResponse;
 import ru.kaznacheev.restaurant.waiterservice.entity.OrderPosition;
 import ru.kaznacheev.restaurant.waiterservice.feign.KitchenFeignClient;
@@ -32,7 +32,7 @@ public class CommunicationServiceImpl implements CommunicationService {
     @Override
     public void sendOrderToKitchen(Long orderId) {
         List<OrderPosition> orderPositions = orderPositionService.getAllOrderPositionsByOrderId(orderId);
-        NewOrderToKitchenRequest request = NewOrderToKitchenRequest.builder()
+        NewKitchenOrderRequest request = NewKitchenOrderRequest.builder()
                 .waiterOrderId(orderId)
                 .dishes(orderPositions.stream()
                         .collect(Collectors.toMap(OrderPosition::getDishId, OrderPosition::getAmount)))

@@ -5,8 +5,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import ru.kaznacheev.restaurant.common.dto.response.OrderPositionResponse;
 import ru.kaznacheev.restaurant.common.dto.response.KitchenOrderFullInfoResponse;
-import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderShortInfoResponse;
-import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderStatusResponse;
+import ru.kaznacheev.restaurant.kitchenservice.dto.OrderShortInfoResponse;
+import ru.kaznacheev.restaurant.kitchenservice.dto.OrderStatusResponse;
 import ru.kaznacheev.restaurant.kitchenservice.entity.Order;
 
 import java.util.List;

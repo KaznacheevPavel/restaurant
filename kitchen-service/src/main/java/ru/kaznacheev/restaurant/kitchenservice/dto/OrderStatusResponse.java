@@ -1,17 +1,15 @@
-package ru.kaznacheev.restaurant.kitchenservice.dto.response;
+package ru.kaznacheev.restaurant.kitchenservice.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 import ru.kaznacheev.restaurant.common.entity.KitchenOrderStatus;
 
-import java.time.OffsetDateTime;
-
 /**
- * DTO, содержащий краткую информацию о заказе.
+ * DTO, содержащий статус заказа.
  */
 @Getter
 @Setter
-public class OrderShortInfoResponse {
+public class OrderStatusResponse {
 
     /**
      * Идентификатор заказа.
@@ -22,10 +20,5 @@ public class OrderShortInfoResponse {
      * Статус заказа из {@link KitchenOrderStatus}.
      */
     private KitchenOrderStatus status;
-
-    /**
-     * Дата и время создания заказа.
-     */
-    private OffsetDateTime createdAt;
 
 }

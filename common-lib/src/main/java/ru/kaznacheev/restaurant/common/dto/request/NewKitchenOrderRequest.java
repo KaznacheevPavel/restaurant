@@ -14,7 +14,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Getter
 @Builder
-public class NewOrderToKitchenRequest {
+public class NewKitchenOrderRequest {
 
     /**
      * Идентификатор заказа у официанта.

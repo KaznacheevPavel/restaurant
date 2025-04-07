@@ -2,12 +2,10 @@ package ru.kaznacheev.restaurant.kitchenservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * Основной класс приложения kitchen-service.
  */
-@EnableFeignClients
 @SpringBootApplication(scanBasePackages = {
 		"ru.kaznacheev.restaurant.kitchenservice",
 		"ru.kaznacheev.restaurant.common"

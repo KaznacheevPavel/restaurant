@@ -5,12 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import ru.kaznacheev.restaurant.common.dto.request.NewOrderToKitchenRequest;
+import ru.kaznacheev.restaurant.common.dto.request.NewKitchenOrderRequest;
 import ru.kaznacheev.restaurant.common.dto.response.KitchenOrderFullInfoResponse;
 import ru.kaznacheev.restaurant.common.entity.KitchenOrderStatus;
 import ru.kaznacheev.restaurant.common.exception.OrderNotFoundException;
-import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderShortInfoResponse;
-import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderStatusResponse;
+import ru.kaznacheev.restaurant.kitchenservice.dto.OrderShortInfoResponse;
+import ru.kaznacheev.restaurant.kitchenservice.dto.OrderStatusResponse;
 import ru.kaznacheev.restaurant.kitchenservice.entity.Order;
 import ru.kaznacheev.restaurant.kitchenservice.entity.OrderPosition;
 import ru.kaznacheev.restaurant.kitchenservice.mapper.OrderMapper;
@@ -41,19 +41,19 @@ public class OrderServiceImpl implements OrderService {
     /**
      * {@inheritDoc}
      *
-     * @param newOrderToKitchenRequest {@inheritDoc}
+     * @param newKitchenOrderRequest {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Transactional
     @Override
-    public KitchenOrderFullInfoResponse createOrder(@Valid NewOrderToKitchenRequest newOrderToKitchenRequest) {
+    public KitchenOrderFullInfoResponse createOrder(@Valid NewKitchenOrderRequest newKitchenOrderRequest) {
         Order order = Order.builder()
-                .waiterOrderId(newOrderToKitchenRequest.getWaiterOrderId())
+                .waiterOrderId(newKitchenOrderRequest.getWaiterOrderId())
                 .status(KitchenOrderStatus.NEW)
                 .createdAt(OffsetDateTime.now(clock))
                 .build();
         orderRepository.save(order);
-        List<OrderPosition> orderPositions = orderPositionService.addDishesToOrder(order, newOrderToKitchenRequest.getDishes());
+        List<OrderPosition> orderPositions = orderPositionService.addDishesToOrder(order, newKitchenOrderRequest.getDishes());
         order.setOrderPositions(orderPositions);
         order.setStatus(KitchenOrderStatus.IN_PROGRESS);
         return orderMapper.toOrderFullInfoResponse(order);

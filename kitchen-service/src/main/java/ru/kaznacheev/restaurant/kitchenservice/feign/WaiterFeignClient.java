@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * Интерфейс клиента для взаимодействия с сервисом официантов.
  */
-@FeignClient(value = "waiterFeignClient", url = "http://localhost:8082/api/v1/orders")
+@FeignClient(value = "waiterFeignClient", url = "${waiter-service.url}/api/v1/orders")
 public interface WaiterFeignClient {
 
     /**
