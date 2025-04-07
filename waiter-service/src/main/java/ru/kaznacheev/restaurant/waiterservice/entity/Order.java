@@ -2,34 +2,39 @@ package ru.kaznacheev.restaurant.waiterservice.entity;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.util.Map;
+import java.time.OffsetDateTime;
 
 /**
- * Класс, представляющий сущность заказа.
+ * Сущность заказа.
  */
 @Getter
-@Setter
 @Builder
 public class Order {
+
     /**
      * Идентификатор заказа.
      */
-    private Integer id;
+    private Long id;
 
     /**
-     * Список блюд в заказе и их количество.
-     */
-    private Map<String, Integer> dishes;
-
-    /**
-     * Комментарий к заказу.
-     */
-    private String comment;
-
-    /**
-     * Статус заказа {@link OrderStatus}.
+     * Статус заказа из {@link OrderStatus}.
      */
     private OrderStatus status;
+
+    /**
+     * Дата и время создания заказа.
+     */
+    private OffsetDateTime createdAt;
+
+    /**
+     * Идентификатор официанта.
+     */
+    private Long waiterId;
+
+    /**
+     * Номер стола.
+     */
+    private String tableNumber;
+
 }

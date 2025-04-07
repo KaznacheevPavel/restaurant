@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+        'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="ru.kaznacheev.restaurant.waiterservice.repository.OrderRepository">
+
+    <insert id="save" useGeneratedKeys="true" keyColumn="order_no" keyProperty="id">
+        INSERT INTO waiter_order
+            (status, create_dttm, waiter_id, table_no)
+        VALUES
+            (#{order.status}, #{order.createdAt}, #{order.waiterId}, #{order.tableNumber});
+    </insert>
+
+    <resultMap id="OrderFullInfoMap" type="ru.kaznacheev.restaurant.waiterservice.dto.response.OrderFullInfoResponse">
+        <id property="id" column="order_no"/>
+        <result property="status" column="status"/>
+        <result property="createdAt" column="create_dttm"/>
+        <result property="waiterId" column="waiter_id"/>
+        <result property="tableNumber" column="table_no"/>
+        <collection property="dishes" ofType="ru.kaznacheev.restaurant.common.dto.response.OrderPositionResponse">
+            <result property="dishName" column="dish_name"/>
+            <result property="amount" column="dish_sum"/>
+        </collection>
+    </resultMap>
+
+    <select id="getOrderById" resultMap="OrderFullInfoMap">
+        SELECT wo.order_no, wo.status, wo.create_dttm, wo.waiter_id, wo.table_no, m.dish_name, op.dish_sum
+        FROM waiter_order wo
+        LEFT JOIN order_positions op ON wo.order_no = op.order_no
+        LEFT JOIN menu m ON op.menu_position_id = m.id
+        WHERE wo.order_no = #{id};
+    </select>
+
+    <resultMap id="OrderShortInfoMap" type="ru.kaznacheev.restaurant.waiterservice.dto.response.OrderShortInfoResponse">
+        <id property="id" column="order_no"/>
+        <result property="status" column="status"/>
+        <result property="createdAt" column="create_dttm"/>
+    </resultMap>
+
+    <select id="getAllOrders" resultMap="OrderShortInfoMap">
+        SELECT order_no, status, create_dttm
+        FROM waiter_order
+    </select>
+
+    <resultMap id="OrderStatusMap" type="ru.kaznacheev.restaurant.waiterservice.dto.response.OrderStatusResponse">
+        <result property="orderId" column="order_no"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <select id="getOrderStatusById" resultMap="OrderStatusMap">
+        SELECT order_no, status
+        FROM waiter_order
+        WHERE order_no = #{id};
+    </select>
+
+</mapper>

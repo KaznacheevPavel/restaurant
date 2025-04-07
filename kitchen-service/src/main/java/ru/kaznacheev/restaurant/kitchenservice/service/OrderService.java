@@ -1,35 +1,42 @@
 package ru.kaznacheev.restaurant.kitchenservice.service;
 
-import ru.kaznacheev.restaurant.common.dto.NewOrderDto;
+import jakarta.validation.Valid;
+import ru.kaznacheev.restaurant.kitchenservice.dto.request.NewOrderRequest;
+import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderFullInfoResponse;
+import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderShortInfoResponse;
+import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderStatusResponse;
 import ru.kaznacheev.restaurant.kitchenservice.entity.Order;
 
 import java.util.List;
 
 /**
- * Интерфейс сервиса для обработки заказов.
+ * Интерфейс сервиса для работы с заказами.
  */
 public interface OrderService {
 
     /**
-     * Принимает заказ на основе переданного DTO.
+     * Создает новый заказ на основе переданного DTO.
      *
-     * @param newOrderDto DTO, содержащий информацию о заказе
+     * @param newOrderRequest DTO, содержащий информацию о заказе
+     * @return {@link OrderFullInfoResponse} с информацией о заказе
      */
-    void acceptOrder(NewOrderDto newOrderDto);
+    OrderFullInfoResponse createOrder(@Valid NewOrderRequest newOrderRequest);
 
     /**
      * Отклоняет заказ по его идентификатору.
      *
      * @param id Идентификатор заказа
+     * @return {@link OrderStatusResponse} с информацией о статусе заказа
      */
-    void rejectOrder(int id);
+    OrderStatusResponse rejectOrder(Long id);
 
     /**
      * Завершает заказ по его идентификатору.
      *
      * @param id Идентификатор заказа
+     * @return {@link OrderStatusResponse} с информацией о статусе заказа
      */
-    void completeOrder(int id);
+    OrderStatusResponse completeOrder(Long id);
 
     /**
      * Возвращает заказ по его идентификатору.
@@ -37,13 +44,13 @@ public interface OrderService {
      * @param id Идентификатор заказа
      * @return Заказ
      */
-    Order getOrderById(int id);
+    Order getOrderById(Long id);
 
     /**
      * Возвращает список всех заказов.
      *
-     * @return Список всех заказов
+     * @return {@link List} {@link OrderShortInfoResponse} с краткой информацией о заказе
      */
-    List<Order> getAllOrders();
+    List<OrderShortInfoResponse> getAllOrders();
 
 }
