@@ -18,7 +18,12 @@ public interface OrderPositionService {
      */
     void addDishesToOrder(Long orderId, Map<String, Long> orderComposition);
 
-
+    /**
+     * Получает все позиции заказа по его идентификатору.
+     *
+     * @param orderId Идентификатор заказа
+     * @return {@link List} {@link OrderPosition} с информацией о позиции заказа
+     */
     List<OrderPosition> getAllOrderPositionsByOrderId(Long orderId);
 
 }

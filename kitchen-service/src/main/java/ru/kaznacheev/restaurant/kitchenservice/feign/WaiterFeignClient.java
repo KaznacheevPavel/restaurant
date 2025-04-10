@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * Интерфейс клиента для взаимодействия с сервисом официантов.
  */
-@FeignClient(value = "waiterFeignClient", url = "${waiter-service.url}/api/v1/orders")
+@FeignClient(value = "waiterFeignClient", url = "${waiter-service.url}")
 public interface WaiterFeignClient {
 
     /**
@@ -16,7 +16,7 @@ public interface WaiterFeignClient {
      *
      * @param waiterOrderId Идентификатор заказа официанта
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/{orderId}/complete")
+    @RequestMapping(method = RequestMethod.POST, path = "/api/v1/orders/{orderId}/complete")
     void completeOrderOnWaiter(@PathVariable("orderId") Long waiterOrderId);
 
 }

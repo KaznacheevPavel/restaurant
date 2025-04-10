@@ -111,7 +111,6 @@ public class OrderServiceImpl implements OrderService {
      * @return {@inheritDoc}
      * @throws OrderNotFoundException Если заказ не найден
      */
-    @Transactional
     @Override
     public OrderStatusResponse completeOrder(Long id) {
         if (!orderRepository.existsById(id)) {

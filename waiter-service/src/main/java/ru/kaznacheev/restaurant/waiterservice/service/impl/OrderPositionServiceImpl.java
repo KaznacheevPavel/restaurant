@@ -45,6 +45,12 @@ public class OrderPositionServiceImpl implements OrderPositionService {
         orderPositionRepository.saveAll(orderPositions);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param orderId {@inheritDoc}
+     * @return {@inheritDoc}
+     */
     @Transactional(readOnly = true)
     @Override
     public List<OrderPosition> getAllOrderPositionsByOrderId(Long orderId) {
