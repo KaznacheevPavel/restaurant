@@ -1,11 +1,15 @@
 package ru.kaznacheev.restaurant.waiterservice.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import ru.kaznacheev.restaurant.waiterservice.entity.OrderStatus;
 
 /**
  * DTO, содержащий статус заказа.
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class OrderStatusResponse {
 

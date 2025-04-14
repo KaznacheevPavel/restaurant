@@ -1,9 +1,8 @@
-package ru.kaznacheev.restaurant.kitchenservice.dto.response;
+package ru.kaznacheev.restaurant.common.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.kaznacheev.restaurant.common.dto.response.OrderPositionResponse;
-import ru.kaznacheev.restaurant.kitchenservice.entity.OrderStatus;
+import ru.kaznacheev.restaurant.common.entity.KitchenOrderStatus;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class OrderFullInfoResponse {
+public class KitchenOrderFullInfoResponse {
 
     /**
      * Идентификатор заказа.
@@ -26,9 +25,9 @@ public class OrderFullInfoResponse {
     private Long waiterOrderId;
 
     /**
-     * Статус заказа из {@link OrderStatus}.
+     * Статус заказа из {@link KitchenOrderStatus}.
      */
-    private OrderStatus status;
+    private KitchenOrderStatus status;
 
     /**
      * Дата и время создания заказа.

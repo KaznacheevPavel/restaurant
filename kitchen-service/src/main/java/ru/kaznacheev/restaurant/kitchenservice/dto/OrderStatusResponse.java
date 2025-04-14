@@ -1,8 +1,8 @@
-package ru.kaznacheev.restaurant.kitchenservice.dto.response;
+package ru.kaznacheev.restaurant.kitchenservice.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.kaznacheev.restaurant.kitchenservice.entity.OrderStatus;
+import ru.kaznacheev.restaurant.common.entity.KitchenOrderStatus;
 
 /**
  * DTO, содержащий статус заказа.
@@ -17,8 +17,8 @@ public class OrderStatusResponse {
     private Long id;
 
     /**
-     * Статус заказа из {@link OrderStatus}.
+     * Статус заказа из {@link KitchenOrderStatus}.
      */
-    private OrderStatus status;
+    private KitchenOrderStatus status;
 
 }

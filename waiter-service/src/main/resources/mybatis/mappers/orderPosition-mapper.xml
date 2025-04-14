@@ -12,4 +12,10 @@
         </foreach>
     </insert>
 
+    <select id="getAllByOrderId" parameterType="Long" resultType="ru.kaznacheev.restaurant.waiterservice.entity.OrderPosition">
+        SELECT composition_id, order_no, menu_position_id, dish_sum
+        FROM order_positions
+        WHERE order_no = #{id}
+    </select>
+
 </mapper>

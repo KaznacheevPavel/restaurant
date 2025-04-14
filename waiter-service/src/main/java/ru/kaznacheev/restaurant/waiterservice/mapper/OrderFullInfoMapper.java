@@ -3,6 +3,7 @@ package ru.kaznacheev.restaurant.waiterservice.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
+import org.mapstruct.Named;
 import ru.kaznacheev.restaurant.waiterservice.dto.response.OrderFullInfoResponse;
 import ru.kaznacheev.restaurant.common.dto.response.OrderPositionResponse;
 import ru.kaznacheev.restaurant.waiterservice.entity.Order;
@@ -23,7 +24,7 @@ public interface OrderFullInfoMapper {
      * @param dishes Заказанные блюда и количество порций
      * @return {@link OrderFullInfoResponse} с информацией о заказе
      */
-    @Mapping(target = "dishes", expression = "java(toOrderPositionResponseList(dishes))")
+    @Mapping(target = "dishes", source = "dishes", qualifiedByName = "toOrderPositionResponseList")
     OrderFullInfoResponse toOrderFullInfoResponse(Order order, Map<String, Long> dishes);
 
     /**
@@ -32,6 +33,7 @@ public interface OrderFullInfoMapper {
      * @param dishes Заказанные блюда и количество порций
      * @return {@link List} {@link OrderPositionResponse} с информацией о заказанных блюдах
      */
+    @Named("toOrderPositionResponseList")
     default List<OrderPositionResponse> toOrderPositionResponseList(Map<String, Long> dishes) {
         return dishes.entrySet().stream()
                 .map(entry -> new OrderPositionResponse(entry.getKey(), entry.getValue()))

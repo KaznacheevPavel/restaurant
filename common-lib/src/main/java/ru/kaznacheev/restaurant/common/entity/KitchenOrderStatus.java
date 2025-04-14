@@ -1,9 +1,9 @@
-package ru.kaznacheev.restaurant.kitchenservice.entity;
+package ru.kaznacheev.restaurant.common.entity;
 
 /**
  * Статусы заказа.
  */
-public enum OrderStatus {
+public enum KitchenOrderStatus {
     NEW,
     IN_PROGRESS,
     COMPLETED,
