@@ -1,10 +1,15 @@
 package ru.kaznacheev.restaurant.waiterservice.entity;
 
+import lombok.Builder;
+import lombok.Getter;
+
 import java.time.OffsetDateTime;
 
 /**
  * Сущность официанта.
  */
+@Getter
+@Builder
 public class Waiter {
 
     /**
@@ -26,4 +31,5 @@ public class Waiter {
      * Пол официанта.
      */
     private Gender sex;
+
 }

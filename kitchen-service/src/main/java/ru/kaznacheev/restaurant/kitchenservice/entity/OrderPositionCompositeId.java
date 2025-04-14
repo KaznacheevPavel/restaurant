@@ -3,6 +3,7 @@ package ru.kaznacheev.restaurant.kitchenservice.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -10,11 +11,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Составной ключ для позиции заказа.
+ * Составной идентификатор для позиции заказа.
  */
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class OrderPositionCompositeId implements Serializable {
 
     /**
@@ -33,6 +35,7 @@ public class OrderPositionCompositeId implements Serializable {
      * Сравнивает два составных ключа.
      *
      * @param o Объект для сравнения
+     * @return {@code true} если объекты равны, {@code false} в противном случае
      */
     @Override
     public boolean equals(Object o) {
@@ -58,4 +61,5 @@ public class OrderPositionCompositeId implements Serializable {
         return this instanceof HibernateProxy ? ((HibernateProxy) this)
                 .getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
+
 }

@@ -3,19 +3,43 @@
         'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
 <mapper namespace="ru.kaznacheev.restaurant.waiterservice.repository.DishRepository">
 
-    <resultMap id="dishResultMap" type="Dish">
+    <insert id="save" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO menu
+            (dish_name, dish_cost)
+        VALUES
+            (#{dish.name}, #{dish.cost});
+    </insert>
+
+    <resultMap id="DishResponseMap" type="ru.kaznacheev.restaurant.waiterservice.dto.response.DishResponse">
         <id property="id" column="id"/>
         <result property="name" column="dish_name"/>
         <result property="cost" column="dish_cost"/>
     </resultMap>
 
-    <select id="getAllDishesByTitles" resultMap="dishResultMap">
+    <select id="findById" resultMap="DishResponseMap">
+        SELECT id, dish_name, dish_cost
+        FROM menu
+        WHERE id = #{id};
+    </select>
+
+    <select id="findAll" resultMap="DishResponseMap">
+        SELECT id, dish_name, dish_cost
+        FROM menu;
+    </select>
+
+    <select id="findAllByNames" resultMap="DishResponseMap">
         SELECT id, dish_name, dish_cost
         FROM menu
         WHERE dish_name IN
-        <foreach item="title" collection="dishTitles" open="(" separator="," close=")">
-            #{title}
+        <foreach item="name" collection="names" open="(" separator="," close=")">
+            #{name}
         </foreach>
+    </select>
+
+    <select id="existsByName" resultType="java.lang.Boolean">
+        SELECT COUNT(*)
+        FROM menu
+        WHERE dish_name = #{name};
     </select>
 
 </mapper>

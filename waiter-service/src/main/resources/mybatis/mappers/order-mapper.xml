@@ -10,23 +10,24 @@
             (#{order.status}, #{order.createdAt}, #{order.waiterId}, #{order.tableNumber});
     </insert>
 
-    <resultMap id="OrderFullInfoMap" type="ru.kaznacheev.restaurant.waiterservice.dto.response.OrderFullInfoResponse">
+    <resultMap id="OrderResponseMap" type="ru.kaznacheev.restaurant.waiterservice.dto.response.OrderResponse">
         <id property="id" column="order_no"/>
         <result property="status" column="status"/>
         <result property="createdAt" column="create_dttm"/>
         <result property="waiterId" column="waiter_id"/>
         <result property="tableNumber" column="table_no"/>
-        <collection property="dishes" ofType="ru.kaznacheev.restaurant.common.dto.response.OrderPositionResponse">
-            <result property="dishName" column="dish_name"/>
+        <collection property="composition" ofType="ru.kaznacheev.restaurant.common.dto.response.OrderPositionResponse">
+            <id property="dishId" column="id"/>
+            <result property="name" column="dish_name"/>
             <result property="amount" column="dish_sum"/>
         </collection>
     </resultMap>
 
-    <select id="getOrderById" resultMap="OrderFullInfoMap">
-        SELECT wo.order_no, wo.status, wo.create_dttm, wo.waiter_id, wo.table_no, m.dish_name, op.dish_sum
+    <select id="findById" resultMap="OrderResponseMap">
+        SELECT wo.order_no, wo.status, wo.create_dttm, wo.waiter_id, wo.table_no, m.id, m.dish_name, op.dish_sum
         FROM waiter_order wo
-        LEFT JOIN order_positions op ON wo.order_no = op.order_no
-        LEFT JOIN menu m ON op.menu_position_id = m.id
+                 LEFT JOIN order_positions op ON wo.order_no = op.order_no
+                 LEFT JOIN menu m ON m.id = op.menu_position_id
         WHERE wo.order_no = #{id};
     </select>
 
@@ -36,13 +37,13 @@
         <result property="createdAt" column="create_dttm"/>
     </resultMap>
 
-    <select id="getAllOrders" resultMap="OrderShortInfoMap">
+    <select id="findAll" resultMap="OrderShortInfoMap">
         SELECT order_no, status, create_dttm
-        FROM waiter_order
+        FROM waiter_order;
     </select>
 
-    <resultMap id="OrderStatusMap" type="ru.kaznacheev.restaurant.waiterservice.dto.response.OrderStatusResponse">
-        <result property="orderId" column="order_no"/>
+    <resultMap id="OrderStatusMap" type="ru.kaznacheev.restaurant.common.dto.response.OrderStatusResponse">
+        <id property="id" column="order_no"/>
         <result property="status" column="status"/>
     </resultMap>
 
@@ -50,12 +51,6 @@
         SELECT order_no, status
         FROM waiter_order
         WHERE order_no = #{id};
-    </select>
-
-    <select id="existsById" resultType="java.lang.Boolean">
-        SELECT COUNT(*)
-        FROM waiter_order
-        WHERE order_no = #{id}
     </select>
 
     <update id="changeOrderStatus">

@@ -8,12 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.kaznacheev.restaurant.common.dto.exception.BaseExceptionResponseBody;
-import ru.kaznacheev.restaurant.common.dto.exception.ExceptionResponseBodyWithData;
-import ru.kaznacheev.restaurant.common.dto.exception.ResponseDetailMessages;
-import ru.kaznacheev.restaurant.common.dto.exception.ResponseTitle;
-import ru.kaznacheev.restaurant.common.exception.DishNotFoundException;
-import ru.kaznacheev.restaurant.common.exception.OrderNotFoundException;
+import ru.kaznacheev.restaurant.common.dto.response.ExceptionResponse;
+import ru.kaznacheev.restaurant.common.exception.ConflictBaseException;
+import ru.kaznacheev.restaurant.common.exception.ExceptionDetail;
+import ru.kaznacheev.restaurant.common.exception.ExceptionTitle;
+import ru.kaznacheev.restaurant.common.exception.NotFoundBaseException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,35 +26,36 @@ import java.util.Map;
 public class GlobalExceptionHandlerControllerAdvice {
 
     /**
-     * Обрабатывает {@link DishNotFoundException}.
+     * Обрабатывает {@link NotFoundBaseException}.
      *
      * @param e Исключение
-     * @return {@link ExceptionResponseBodyWithData} с информацией о возникшем исключении
+     * @return {@link ExceptionResponse} с информацией о возникшем исключении
      */
+    @ExceptionHandler(NotFoundBaseException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(DishNotFoundException.class)
-    public ExceptionResponseBodyWithData handleDishNotFoundException(DishNotFoundException e) {
-        return ExceptionResponseBodyWithData.builder()
-                .title(e.getTitle())
-                .status(e.getStatus().value())
+    public ExceptionResponse handleNotFoundBaseException(NotFoundBaseException e) {
+        return ExceptionResponse.builder()
+                .title(ExceptionTitle.NOT_FOUND.getTitle())
+                .status(ExceptionTitle.NOT_FOUND.getStatus().value())
                 .detail(e.getDetail())
                 .data(e.getData())
                 .build();
     }
 
     /**
-     * Обрабатывает {@link OrderNotFoundException}.
+     * Обрабатывает {@link ConflictBaseException}.
      *
      * @param e Исключение
-     * @return {@link BaseExceptionResponseBody} с информацией о возникшем исключении
+     * @return {@link ExceptionResponse} с информацией о возникшем исключении
      */
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(OrderNotFoundException.class)
-    public BaseExceptionResponseBody handleOrderNotFoundException(OrderNotFoundException e) {
-        return BaseExceptionResponseBody.builder()
-                .title(e.getTitle())
-                .status(e.getStatus().value())
+    @ExceptionHandler(ConflictBaseException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ExceptionResponse handleConflictBaseException(ConflictBaseException e) {
+        return ExceptionResponse.builder()
+                .title(ExceptionTitle.CONFLICT.getTitle())
+                .status(ExceptionTitle.CONFLICT.getStatus().value())
                 .detail(e.getDetail())
+                .data(e.getData())
                 .build();
     }
 
@@ -63,11 +63,11 @@ public class GlobalExceptionHandlerControllerAdvice {
      * Обрабатывает {@link ConstraintViolationException}.
      *
      * @param e Исключение
-     * @return {@link ExceptionResponseBodyWithData} с информацией о возникшем исключении
+     * @return {@link ExceptionResponse} с информацией о возникшем исключении
      */
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionResponseBodyWithData handleConstraintViolationException(ConstraintViolationException e) {
+    public ExceptionResponse handleConstraintViolationException(ConstraintViolationException e) {
         Map<String, List<String>> invalidFields = new HashMap<>();
         e.getConstraintViolations().forEach(constraintViolation -> {
             String fieldPath = constraintViolation.getPropertyPath().toString();
@@ -80,10 +80,10 @@ public class GlobalExceptionHandlerControllerAdvice {
                 invalidFields.put(fieldName, reasons);
             }
         });
-        return ExceptionResponseBodyWithData.builder()
-                .title(ResponseTitle.VALIDATION_ERROR.name())
-                .status(ResponseTitle.VALIDATION_ERROR.getStatus().value())
-                .detail(ResponseDetailMessages.VALIDATION_ERROR.getDetail())
+        return ExceptionResponse.builder()
+                .title(ExceptionTitle.VALIDATION_EXCEPTION.getTitle())
+                .status(ExceptionTitle.VALIDATION_EXCEPTION.getStatus().value())
+                .detail(ExceptionDetail.VALIDATION_EXCEPTION.getTemplate())
                 .data(invalidFields)
                 .build();
     }

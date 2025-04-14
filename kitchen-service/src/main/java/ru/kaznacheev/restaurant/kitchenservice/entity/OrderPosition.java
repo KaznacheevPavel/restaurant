@@ -21,14 +21,14 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "order_to_dish")
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Builder
 public class OrderPosition {
 
     /**
-     * Идентификатор позиции заказа.
+     * Составной идентификатор позиции заказа.
      */
     @EmbeddedId
     private OrderPositionCompositeId id;
@@ -59,6 +59,7 @@ public class OrderPosition {
      * Сравнивает две позиции заказов.
      *
      * @param o Объект для сравнения
+     * @return {@code true} если объекты равны, {@code false} в противном случае@
      */
     @Override
     public boolean equals(Object o) {

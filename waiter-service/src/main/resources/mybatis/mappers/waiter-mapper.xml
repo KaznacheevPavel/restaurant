@@ -3,10 +3,40 @@
         'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
 <mapper namespace="ru.kaznacheev.restaurant.waiterservice.repository.WaiterRepository">
 
-    <select id="existsWaiterById" resultType="java.lang.Boolean">
+    <insert id="save" useGeneratedKeys="true" keyColumn="waiter_id" keyProperty="id">
+        INSERT INTO waiter_account
+            (name, employment_date, sex)
+        VALUES
+            (#{waiter.name}, #{waiter.employedAt}, #{waiter.sex});
+    </insert>
+
+    <resultMap id="WaiterResponseMap" type="ru.kaznacheev.restaurant.waiterservice.dto.response.WaiterResponse">
+        <id property="id" column="waiter_id"/>
+        <result property="name" column="name"/>
+        <result property="employedAt" column="employment_date"/>
+        <result property="sex" column="sex"/>
+    </resultMap>
+
+    <select id="findById" resultMap="WaiterResponseMap">
+        SELECT waiter_id, name, employment_date, sex
+        FROM waiter_account
+        WHERE waiter_id = #{id};
+    </select>
+
+    <resultMap id="WaiterShortInfoMap" type="ru.kaznacheev.restaurant.waiterservice.dto.response.WaiterShortInfoResponse">
+        <id property="id" column="waiter_id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="WaiterShortInfoMap">
+        SELECT waiter_id, name
+        FROM waiter_account;
+    </select>
+
+    <select id="existsById" resultType="java.lang.Boolean">
         SELECT COUNT(*)
         FROM waiter_account
-        WHERE waiter_id = #{id}
+        WHERE waiter_id = #{id};
     </select>
 
 </mapper>
