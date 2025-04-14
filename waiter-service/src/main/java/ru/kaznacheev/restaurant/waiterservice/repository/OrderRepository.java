@@ -7,6 +7,7 @@ import ru.kaznacheev.restaurant.waiterservice.dto.response.OrderFullInfoResponse
 import ru.kaznacheev.restaurant.waiterservice.dto.response.OrderShortInfoResponse;
 import ru.kaznacheev.restaurant.waiterservice.dto.response.OrderStatusResponse;
 import ru.kaznacheev.restaurant.waiterservice.entity.Order;
+import ru.kaznacheev.restaurant.waiterservice.entity.OrderStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,5 +48,20 @@ public interface OrderRepository {
      * @return {@link Optional} {@link OrderStatusResponse} со статусом заказа
      */
     Optional<OrderStatusResponse> getOrderStatusById(@Param("id") Long id);
+
+    /**
+     * Проверяет, существует ли заказ с указанным идентификатором.
+     *
+     * @param id Идентификатор заказа
+     * @return {@code true}, если заказ существует, {@code false} в противном случае
+     */
+    boolean existsById(@Param("id") Long id);
+
+    /**
+     * Завершает заказ по идентификатору.
+     *
+     * @param id Идентификатор заказа
+     */
+    void changeOrderStatus(@Param("id") Long id, @Param("status") OrderStatus status);
 
 }

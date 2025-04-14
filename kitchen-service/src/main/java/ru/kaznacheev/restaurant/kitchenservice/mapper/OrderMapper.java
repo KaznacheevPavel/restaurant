@@ -3,10 +3,11 @@ package ru.kaznacheev.restaurant.kitchenservice.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
+import org.mapstruct.Named;
 import ru.kaznacheev.restaurant.common.dto.response.OrderPositionResponse;
-import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderFullInfoResponse;
-import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderShortInfoResponse;
-import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderStatusResponse;
+import ru.kaznacheev.restaurant.common.dto.response.KitchenOrderFullInfoResponse;
+import ru.kaznacheev.restaurant.kitchenservice.dto.OrderShortInfoResponse;
+import ru.kaznacheev.restaurant.kitchenservice.dto.OrderStatusResponse;
 import ru.kaznacheev.restaurant.kitchenservice.entity.Order;
 
 import java.util.List;
@@ -42,13 +43,13 @@ public interface OrderMapper {
     List<OrderShortInfoResponse> toListOrderShortInfoResponse(List<Order> orders);
 
     /**
-     * Преобразует {@link Order} в {@link OrderFullInfoResponse}.
+     * Преобразует {@link Order} в {@link KitchenOrderFullInfoResponse}.
      *
      * @param order Заказ
-     * @return {@link OrderFullInfoResponse} с информацией о заказе
+     * @return {@link KitchenOrderFullInfoResponse} с информацией о заказе
      */
-    @Mapping(target = "dishes", expression = "java(toOrderPositionResponseList(order))")
-    OrderFullInfoResponse toOrderFullInfoResponse(Order order);
+    @Mapping(target = "dishes", source = "order" , qualifiedByName = "toOrderPositionResponseList")
+    KitchenOrderFullInfoResponse toOrderFullInfoResponse(Order order);
 
     /**
      * Преобразует список заказанных блюд из {@link Order} в {@link List} {@link OrderPositionResponse}.
@@ -56,6 +57,7 @@ public interface OrderMapper {
      * @param order Заказ
      * @return {@link List} {@link OrderPositionResponse} с информацией о заказанных блюдах
      */
+    @Named("toOrderPositionResponseList")
     default List<OrderPositionResponse> toOrderPositionResponseList(Order order) {
         return order.getOrderPositions().stream()
                 .map(orderPosition ->

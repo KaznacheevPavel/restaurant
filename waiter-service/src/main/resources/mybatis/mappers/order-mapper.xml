@@ -52,4 +52,16 @@
         WHERE order_no = #{id};
     </select>
 
+    <select id="existsById" resultType="java.lang.Boolean">
+        SELECT COUNT(*)
+        FROM waiter_order
+        WHERE order_no = #{id}
+    </select>
+
+    <update id="changeOrderStatus">
+        UPDATE waiter_order
+        SET status = #{status}
+        WHERE order_no = #{id}
+    </update>
+
 </mapper>

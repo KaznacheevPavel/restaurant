@@ -1,6 +1,9 @@
 server:
   port: 8081
 
+waiter-service:
+  url: http://localhost:8082
+
 spring:
   application:
     name: Kitchen service

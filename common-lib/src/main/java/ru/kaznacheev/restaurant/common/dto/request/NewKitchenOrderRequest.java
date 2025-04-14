@@ -1,8 +1,9 @@
-package ru.kaznacheev.restaurant.kitchenservice.dto.request;
+package ru.kaznacheev.restaurant.common.dto.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.Map;
@@ -12,7 +13,8 @@ import java.util.Map;
  */
 @AllArgsConstructor
 @Getter
-public class NewOrderRequest {
+@Builder
+public class NewKitchenOrderRequest {
 
     /**
      * Идентификатор заказа у официанта.

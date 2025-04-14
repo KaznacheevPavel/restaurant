@@ -1,10 +1,12 @@
 package ru.kaznacheev.restaurant.waiterservice.entity;
 
 import lombok.Builder;
+import lombok.Getter;
 
 /**
  * Сущность позиции заказа.
  */
+@Getter
 @Builder
 public class OrderPosition {
 

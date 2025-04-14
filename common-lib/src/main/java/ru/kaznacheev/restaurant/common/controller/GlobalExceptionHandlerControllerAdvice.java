@@ -1,7 +1,10 @@
 package ru.kaznacheev.restaurant.common.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import feign.FeignException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -83,6 +86,23 @@ public class GlobalExceptionHandlerControllerAdvice {
                 .detail(ResponseDetailMessages.VALIDATION_ERROR.getDetail())
                 .data(invalidFields)
                 .build();
+    }
+
+    /**
+     * Обрабатывает {@link FeignException}.
+     *
+     * @param e Исключение
+     * @return {@link ResponseEntity} с информацией о возникшем исключении
+     */
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<Object> handleFeignException(FeignException e) {
+        String responseBody = e.contentUTF8();
+        try {
+            Object errorBody = new ObjectMapper().readValue(responseBody, Object.class);
+            return ResponseEntity.status(e.status()).body(errorBody);
+        } catch (Exception ex) {
+            return ResponseEntity.status(e.status()).body(responseBody);
+        }
     }
 
 }

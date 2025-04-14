@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
+import ru.kaznacheev.restaurant.common.entity.KitchenOrderStatus;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -48,11 +49,11 @@ public class Order {
     private Long waiterOrderId;
 
     /**
-     * Статус заказа из {@link OrderStatus}.
+     * Статус заказа из {@link KitchenOrderStatus}.
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private OrderStatus status;
+    private KitchenOrderStatus status;
 
     /**
      * Дата и время создания заказа.
