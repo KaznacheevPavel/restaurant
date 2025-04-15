@@ -16,7 +16,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
-import ru.kaznacheev.restaurant.common.entity.KitchenOrderStatus;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -27,10 +26,10 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "kitchen_order")
-@NoArgsConstructor
 @AllArgsConstructor
-@Setter
+@NoArgsConstructor
 @Getter
+@Setter
 @Builder
 public class Order {
 
@@ -43,17 +42,17 @@ public class Order {
     private Long id;
 
     /**
-     * Идентификатор заказа у официанта.
+     * Идентификатор заказа у официантов.
      */
     @Column(name = "waiter_order_no")
     private Long waiterOrderId;
 
     /**
-     * Статус заказа из {@link KitchenOrderStatus}.
+     * Статус заказа из {@link OrderStatus}.
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private KitchenOrderStatus status;
+    private OrderStatus status;
 
     /**
      * Дата и время создания заказа.
@@ -62,7 +61,7 @@ public class Order {
     private OffsetDateTime createdAt;
 
     /**
-     * Позиции в заказе.
+     * Позиции заказа.
      */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
     private List<OrderPosition> orderPositions;
@@ -71,6 +70,7 @@ public class Order {
      * Сравнивает два заказа.
      *
      * @param o Объект для сравнения
+     * @return {@code true} если объекты равны, {@code false} в противном случае
      */
     @Override
     public boolean equals(Object o) {

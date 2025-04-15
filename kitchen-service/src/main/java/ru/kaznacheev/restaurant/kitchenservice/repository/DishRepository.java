@@ -9,4 +9,13 @@ import ru.kaznacheev.restaurant.kitchenservice.entity.Dish;
  */
 @Repository
 public interface DishRepository extends JpaRepository<Dish, Long> {
+
+    /**
+     * Проверяет, существует ли блюдо с заданным сокращенным названием.
+     *
+     * @param shortName Сокращенное название блюда.
+     * @return {@code true}, если блюдо с заданным сокращенным названием существует, {@code false} в противном случае.
+     */
+    boolean existsByShortName(String shortName);
+
 }

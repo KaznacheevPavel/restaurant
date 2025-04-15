@@ -1,11 +1,16 @@
 package ru.kaznacheev.restaurant.waiterservice.entity;
 
+import lombok.Builder;
+import lombok.Getter;
+
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 /**
  * Сущность платежа.
  */
+@Getter
+@Builder
 public class Payment {
 
     /**
