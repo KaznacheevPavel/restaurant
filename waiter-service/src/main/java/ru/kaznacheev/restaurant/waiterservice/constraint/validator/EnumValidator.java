@@ -5,6 +5,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import ru.kaznacheev.restaurant.waiterservice.constraint.ValidEnum;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Валидатор для проверки соответствия строки одному из значения перечисления.
@@ -32,7 +33,7 @@ public class EnumValidator implements ConstraintValidator<ValidEnum, String> {
      */
     @Override
     public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
-        if (value == null) {
+        if (Objects.isNull(value)) {
             return false;
         }
         return Arrays.stream(values)

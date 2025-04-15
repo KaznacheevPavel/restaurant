@@ -50,7 +50,12 @@ public class DishServiceImpl implements DishService {
                 .cost(new BigDecimal(request.getCost()))
                 .build();
         dishRepository.save(dish);
-        sendDishToKitchen(dish.getId(), request);
+        CreateKitchenDishRequest kitchenDishRequest = CreateKitchenDishRequest.builder()
+                .id(dish.getId())
+                .shortName(request.getShortName())
+                .composition(request.getComposition())
+                .build();
+        kitchenCommunicationService.sendDishToKitchen(kitchenDishRequest);
         return dishMapper.toDishResponse(dish);
     }
 
@@ -89,21 +94,6 @@ public class DishServiceImpl implements DishService {
     @Override
     public List<DishResponse> getAllDishesByNames(List<String> names) {
         return dishRepository.findAllByNames(names);
-    }
-
-    /**
-     * Создает запрос с новым блюдом и отправляет на кухню.
-     *
-     * @param id Идентификатор блюда
-     * @param dish DTO с информацией о блюде
-     */
-    private void sendDishToKitchen(Long id, CreateDishRequest dish) {
-        CreateKitchenDishRequest request = CreateKitchenDishRequest.builder()
-                .id(id)
-                .shortName(dish.getShortName())
-                .composition(dish.getComposition())
-                .build();
-        kitchenCommunicationService.sendDishToKitchen(request);
     }
 
 }

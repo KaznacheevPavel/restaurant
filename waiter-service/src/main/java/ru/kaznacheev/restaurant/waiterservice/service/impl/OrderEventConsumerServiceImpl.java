@@ -6,6 +6,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import ru.kaznacheev.restaurant.common.dto.kafka.OrderEvent;
 import ru.kaznacheev.restaurant.common.dto.kafka.OrderEventType;
+import ru.kaznacheev.restaurant.waiterservice.service.EventHandlerService;
 import ru.kaznacheev.restaurant.waiterservice.service.OrderEventConsumerService;
 import ru.kaznacheev.restaurant.waiterservice.service.OrderService;
 
@@ -17,7 +18,7 @@ import ru.kaznacheev.restaurant.waiterservice.service.OrderService;
 @RequiredArgsConstructor
 public class OrderEventConsumerServiceImpl implements OrderEventConsumerService {
 
-    private final OrderService orderService;
+    private final EventHandlerService<OrderEvent> eventHandlerService;
 
     /**
      * {@inheritDoc}
@@ -28,11 +29,7 @@ public class OrderEventConsumerServiceImpl implements OrderEventConsumerService 
     @Override
     public void consumeOrderEvent(OrderEvent orderEvent) {
         log.info("Получено событие {} заказа {}", orderEvent.getEventType().name(), orderEvent.getOrderId());
-        if (OrderEventType.COMPLETED.equals(orderEvent.getEventType())) {
-            orderService.cookOrder(orderEvent.getOrderId());
-        } else if (OrderEventType.REJECTED.equals(orderEvent.getEventType())) {
-            orderService.rejectOrder(orderEvent.getOrderId());
-        }
+        eventHandlerService.processEvent(orderEvent);
     }
 
 }

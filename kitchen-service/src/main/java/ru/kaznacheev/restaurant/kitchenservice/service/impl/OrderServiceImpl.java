@@ -56,6 +56,7 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
         List<OrderPositionResponse> dishes = orderPositionService.addDishesToOrder(order, request.getDishes());
         order.setStatus(OrderStatus.IN_PROGRESS);
+        System.out.println(order.getOrderPositions().get(0).getDish().getShortName());
         return orderMapper.toKitchenOrderResponse(order, dishes);
     }
 
