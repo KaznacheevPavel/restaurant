@@ -5,8 +5,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import ru.kaznacheev.restaurant.waiterservice.entity.OrderPosition;
 
-import java.util.List;
-
 /**
  * Репозиторий для работы с позициями заказа.
  */
@@ -19,8 +17,6 @@ public interface OrderPositionRepository {
      *
      * @param orderPositions Позиции заказа
      */
-    void saveAll(@Param("orderPositions") List<OrderPosition> orderPositions);
-
-    List<OrderPosition> getAllByOrderId(@Param("id")Long orderId);
+    void saveAll(@Param("orderPositions") Iterable<OrderPosition> orderPositions);
 
 }

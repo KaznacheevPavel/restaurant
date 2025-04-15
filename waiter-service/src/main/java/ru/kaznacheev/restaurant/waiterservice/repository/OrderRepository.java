@@ -3,9 +3,9 @@ package ru.kaznacheev.restaurant.waiterservice.repository;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-import ru.kaznacheev.restaurant.waiterservice.dto.response.OrderFullInfoResponse;
+import ru.kaznacheev.restaurant.waiterservice.dto.response.OrderResponse;
 import ru.kaznacheev.restaurant.waiterservice.dto.response.OrderShortInfoResponse;
-import ru.kaznacheev.restaurant.waiterservice.dto.response.OrderStatusResponse;
+import ru.kaznacheev.restaurant.common.dto.response.OrderStatusResponse;
 import ru.kaznacheev.restaurant.waiterservice.entity.Order;
 import ru.kaznacheev.restaurant.waiterservice.entity.OrderStatus;
 
@@ -22,45 +22,38 @@ public interface OrderRepository {
     /**
      * Сохраняет заказ.
      *
-     * @param order Заказ
+     * @param order Сущность заказа
      */
     void save(@Param("order") Order order);
 
     /**
-     * Возвращает заказ по его идентификатору.
+     * Возвращает информацию о заказе по его идентификатору.
      *
      * @param id Идентификатор заказа
-     * @return {@link Optional} {@link OrderFullInfoResponse} с информацией о заказе
+     * @return {@link Optional} {@link OrderResponse} с информацией о заказе
      */
-    Optional<OrderFullInfoResponse> getOrderById(@Param("id") Long id);
+    Optional<OrderResponse> findById(@Param("id") Long id);
 
     /**
-     * Возвращает список всех заказов.
+     * Возвращает список с краткой информацией о всех заказах.
      *
      * @return {@link List} {@link OrderShortInfoResponse} с краткой информацией о заказе
      */
-    List<OrderShortInfoResponse> getAllOrders();
+    List<OrderShortInfoResponse> findAll();
 
     /**
-     * Возвращает статус заказа по идентификатору.
+     * Возвращает информацию о статусе заказа по его идентификатору.
      *
      * @param id Идентификатор заказа
-     * @return {@link Optional} {@link OrderStatusResponse} со статусом заказа
+     * @return {@link Optional} {@link OrderStatusResponse} с информацией о статусе заказа
      */
     Optional<OrderStatusResponse> getOrderStatusById(@Param("id") Long id);
 
     /**
-     * Проверяет, существует ли заказ с указанным идентификатором.
+     * Изменяет статус заказа.
      *
      * @param id Идентификатор заказа
-     * @return {@code true}, если заказ существует, {@code false} в противном случае
-     */
-    boolean existsById(@Param("id") Long id);
-
-    /**
-     * Завершает заказ по идентификатору.
-     *
-     * @param id Идентификатор заказа
+     * @param status Новый статус заказа
      */
     void changeOrderStatus(@Param("id") Long id, @Param("status") OrderStatus status);
 

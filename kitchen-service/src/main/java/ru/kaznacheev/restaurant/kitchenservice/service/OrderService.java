@@ -1,11 +1,10 @@
 package ru.kaznacheev.restaurant.kitchenservice.service;
 
 import jakarta.validation.Valid;
-import ru.kaznacheev.restaurant.common.dto.request.NewKitchenOrderRequest;
-import ru.kaznacheev.restaurant.common.dto.response.KitchenOrderFullInfoResponse;
-import ru.kaznacheev.restaurant.kitchenservice.dto.OrderShortInfoResponse;
-import ru.kaznacheev.restaurant.kitchenservice.dto.OrderStatusResponse;
-import ru.kaznacheev.restaurant.kitchenservice.entity.Order;
+import ru.kaznacheev.restaurant.common.dto.request.CreateKitchenOrderRequest;
+import ru.kaznacheev.restaurant.common.dto.response.KitchenOrderResponse;
+import ru.kaznacheev.restaurant.common.dto.response.OrderStatusResponse;
+import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderShortInfoResponse;
 
 import java.util.List;
 
@@ -15,23 +14,38 @@ import java.util.List;
 public interface OrderService {
 
     /**
-     * Создает новый заказ на основе переданного DTO.
+     * Создает новый заказ.
      *
-     * @param newKitchenOrderRequest DTO, содержащий информацию о заказе
-     * @return {@link KitchenOrderFullInfoResponse} с информацией о заказе
+     * @param request DTO с информацией о новом заказе
+     * @return {@link KitchenOrderResponse} с информацией о созданном заказе
      */
-    KitchenOrderFullInfoResponse createOrder(@Valid NewKitchenOrderRequest newKitchenOrderRequest);
+    KitchenOrderResponse createOrder(@Valid CreateKitchenOrderRequest request);
 
     /**
-     * Отклоняет заказ по его идентификатору.
+     * Возвращает информацию о заказе по его идентификатору.
+     *
+     * @param id Идентификатор заказа
+     * @return {@link KitchenOrderResponse} с информацией о заказе
+     */
+    KitchenOrderResponse getOrderById(Long id);
+
+    /**
+     * Возвращает список с краткой информацией о всех заказах.
+     *
+     * @return {@link List} {@link OrderShortInfoResponse} с краткой информацией о заказе
+     */
+    List<OrderShortInfoResponse> getAllOrders();
+
+    /**
+     * Возвращает информацию о статусе заказа по его идентификатору.
      *
      * @param id Идентификатор заказа
      * @return {@link OrderStatusResponse} с информацией о статусе заказа
      */
-    OrderStatusResponse rejectOrder(Long id);
+    OrderStatusResponse getOrderStatus(Long id);
 
     /**
-     * Завершает заказ по его идентификатору.
+     * Завершает приготовление заказа.
      *
      * @param id Идентификатор заказа
      * @return {@link OrderStatusResponse} с информацией о статусе заказа
@@ -39,18 +53,11 @@ public interface OrderService {
     OrderStatusResponse completeOrder(Long id);
 
     /**
-     * Возвращает заказ по его идентификатору.
+     * Отклоняет заказ.
      *
      * @param id Идентификатор заказа
-     * @return Заказ
+     * @return {@link OrderStatusResponse} с информацией о статусе заказа
      */
-    Order getOrderById(Long id);
-
-    /**
-     * Возвращает список всех заказов.
-     *
-     * @return {@link List} {@link OrderShortInfoResponse} с краткой информацией о заказе
-     */
-    List<OrderShortInfoResponse> getAllOrders();
+    OrderStatusResponse rejectOrder(Long id);
 
 }

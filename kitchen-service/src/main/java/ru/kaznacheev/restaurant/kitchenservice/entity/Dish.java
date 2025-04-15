@@ -6,7 +6,10 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -18,8 +21,11 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "dish")
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Dish {
 
     /**
@@ -57,6 +63,7 @@ public class Dish {
      * Сравнивает два блюда.
      *
      * @param o Объект для сравнения.
+     * @return {@code true} если объекты равны, {@code false} в противном случае
      */
     @Override
     public boolean equals(Object o) {
@@ -81,4 +88,5 @@ public class Dish {
         return this instanceof HibernateProxy ? ((HibernateProxy) this)
                 .getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
+
 }

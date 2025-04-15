@@ -14,6 +14,22 @@ spring:
     driver-class-name: org.postgresql.Driver
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.xml
+  kafka:
+    bootstrap-servers:
+      - localhost:29092
+    producer:
+      order-event-topic: orderEventTopic
+    consumer:
+      group-id: waiterConsumer
+      concurrency: 1
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: 'ru.kaznacheev.restaurant.common.dto.kafka'
 
 mybatis:
   config-location: classpath:/mybatis/mybatis-config.xml

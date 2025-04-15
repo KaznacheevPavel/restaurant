@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+        'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="ru.kaznacheev.restaurant.waiterservice.repository.PaymentRepository">
+
+    <insert id="save" useGeneratedKeys="true" keyColumn="order_no" keyProperty="orderId">
+        INSERT INTO payment
+            (order_no, payment_type, payment_date, payment_sum)
+        VALUES
+            (#{payment.orderId}, #{payment.type}, #{payment.paymentDate}, #{payment.sum});
+    </insert>
+
+    <resultMap id="PaymentResponseMap" type="ru.kaznacheev.restaurant.waiterservice.dto.response.PaymentResponse">
+        <id property="orderId" column="order_no"/>
+        <result property="type" column="payment_type"/>
+        <result property="paymentDate" column="payment_date"/>
+        <result property="sum" column="payment_sum"/>
+    </resultMap>
+
+    <select id="findByOrderId" resultMap="PaymentResponseMap">
+        SELECT order_no, payment_type, payment_date, payment_sum
+        FROM payment
+        WHERE order_no = #{orderId};
+    </select>
+
+</mapper>

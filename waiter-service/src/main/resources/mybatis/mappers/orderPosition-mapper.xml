@@ -3,19 +3,13 @@
         'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
 <mapper namespace="ru.kaznacheev.restaurant.waiterservice.repository.OrderPositionRepository">
 
-    <insert id="saveAll" parameterType="list" useGeneratedKeys="true" keyColumn="composition_id" keyProperty="id">
+    <insert id="saveAll" parameterType="java.lang.Iterable" useGeneratedKeys="true" keyColumn="composition_id" keyProperty="id">
         INSERT INTO order_positions
-            (dish_sum, order_no, menu_position_id)
+        (dish_sum, order_no, menu_position_id)
         VALUES
-        <foreach collection="orderPositions" item="position" separator=",">
+        <foreach item="position" collection="orderPositions" separator=",">
             (#{position.amount}, #{position.orderId}, #{position.dishId})
         </foreach>
     </insert>
-
-    <select id="getAllByOrderId" parameterType="Long" resultType="ru.kaznacheev.restaurant.waiterservice.entity.OrderPosition">
-        SELECT composition_id, order_no, menu_position_id, dish_sum
-        FROM order_positions
-        WHERE order_no = #{id}
-    </select>
 
 </mapper>

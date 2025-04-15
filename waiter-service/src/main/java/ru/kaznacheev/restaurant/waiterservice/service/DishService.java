@@ -1,7 +1,8 @@
 package ru.kaznacheev.restaurant.waiterservice.service;
 
-import org.apache.ibatis.annotations.Param;
-import ru.kaznacheev.restaurant.waiterservice.entity.Dish;
+import jakarta.validation.Valid;
+import ru.kaznacheev.restaurant.waiterservice.dto.request.CreateDishRequest;
+import ru.kaznacheev.restaurant.waiterservice.dto.response.DishResponse;
 
 import java.util.List;
 
@@ -11,11 +12,34 @@ import java.util.List;
 public interface DishService {
 
     /**
-     * Возвращает список блюд по названиям.
+     * Создает новое блюдо.
      *
-     * @param dishTitles Названия блюд
-     * @return {@link List} {@link Dish} Список блюд
+     * @param request DTO с информацией о новом блюде
+     * @return {@link DishResponse} с информацией о созданном блюде
      */
-    List<Dish> getAllDishesByTitles(@Param("dishTitles") List<String> dishTitles);
+    DishResponse createDish(@Valid CreateDishRequest request);
+
+    /**
+     * Возвращает информацию о блюде по его идентификатору.
+     *
+     * @param id Идентификатор блюда
+     * @return {@link DishResponse} с информацией о блюде
+     */
+    DishResponse getDishById(Long id);
+
+    /**
+     * Возвращает список с информацией о всех блюдах.
+     *
+     * @return {@link List} {@link DishResponse} с информацией о блюде
+     */
+    List<DishResponse> getAllDishes();
+
+    /**
+     * Возвращает список с информацией о блюдах по их названиям.
+     *
+     * @param names Названия блюд
+     * @return {@link List} {@link DishResponse} с информацией о блюде
+     */
+    List<DishResponse> getAllDishesByNames(List<String> names);
 
 }

@@ -1,13 +1,11 @@
 package ru.kaznacheev.restaurant.kitchenservice.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-import org.mapstruct.Named;
+import ru.kaznacheev.restaurant.common.dto.response.KitchenOrderResponse;
 import ru.kaznacheev.restaurant.common.dto.response.OrderPositionResponse;
-import ru.kaznacheev.restaurant.common.dto.response.KitchenOrderFullInfoResponse;
-import ru.kaznacheev.restaurant.kitchenservice.dto.OrderShortInfoResponse;
-import ru.kaznacheev.restaurant.kitchenservice.dto.OrderStatusResponse;
+import ru.kaznacheev.restaurant.common.dto.response.OrderStatusResponse;
+import ru.kaznacheev.restaurant.kitchenservice.dto.response.OrderShortInfoResponse;
 import ru.kaznacheev.restaurant.kitchenservice.entity.Order;
 
 import java.util.List;
@@ -19,50 +17,28 @@ import java.util.List;
 public interface OrderMapper {
 
     /**
-     * Преобразует {@link Order} в {@link OrderStatusResponse}.
+     * Преобразует {@link Order} и {@link List} {@link OrderPositionResponse} в {@link KitchenOrderResponse}.
      *
-     * @param order Заказ
-     * @return {@link OrderStatusResponse} со статусом заказа
+     * @param order Сущность заказа
+     * @param dishes Список позиций заказа
+     * @return {@link KitchenOrderResponse} с информацией о заказе
      */
-    OrderStatusResponse toOrderStatusResponse(Order order);
-
-    /**
-     * Преобразует {@link Order} в {@link OrderShortInfoResponse}.
-     *
-     * @param order Заказ
-     * @return {@link OrderShortInfoResponse} с краткой информацией о заказе
-     */
-    OrderShortInfoResponse toOrderShortInfoResponse(Order order);
+    KitchenOrderResponse toKitchenOrderResponse(Order order, List<OrderPositionResponse> dishes);
 
     /**
      * Преобразует {@link List} {@link Order} в {@link List} {@link OrderShortInfoResponse}.
      *
-     * @param orders Заказы
+     * @param order Список сущностей заказов
      * @return {@link List} {@link OrderShortInfoResponse} с краткой информацией о заказе
      */
-    List<OrderShortInfoResponse> toListOrderShortInfoResponse(List<Order> orders);
+    List<OrderShortInfoResponse> toOrderShortInfoResponseList(List<Order> order);
 
     /**
-     * Преобразует {@link Order} в {@link KitchenOrderFullInfoResponse}.
+     * Преобразует {@link Order} в {@link OrderStatusResponse}.
      *
-     * @param order Заказ
-     * @return {@link KitchenOrderFullInfoResponse} с информацией о заказе
+     * @param order Сущность заказа
+     * @return {@link OrderStatusResponse} с информацией о статусе заказа
      */
-    @Mapping(target = "dishes", source = "order" , qualifiedByName = "toOrderPositionResponseList")
-    KitchenOrderFullInfoResponse toOrderFullInfoResponse(Order order);
-
-    /**
-     * Преобразует список заказанных блюд из {@link Order} в {@link List} {@link OrderPositionResponse}.
-     *
-     * @param order Заказ
-     * @return {@link List} {@link OrderPositionResponse} с информацией о заказанных блюдах
-     */
-    @Named("toOrderPositionResponseList")
-    default List<OrderPositionResponse> toOrderPositionResponseList(Order order) {
-        return order.getOrderPositions().stream()
-                .map(orderPosition ->
-                        new OrderPositionResponse(orderPosition.getDish().getShortName(), orderPosition.getAmount()))
-                .toList();
-    }
+    OrderStatusResponse toOrderStatusResponse(Order order);
 
 }

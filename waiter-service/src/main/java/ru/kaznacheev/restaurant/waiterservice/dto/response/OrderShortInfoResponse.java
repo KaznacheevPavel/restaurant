@@ -1,14 +1,20 @@
 package ru.kaznacheev.restaurant.waiterservice.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.kaznacheev.restaurant.waiterservice.entity.OrderStatus;
 
 import java.time.OffsetDateTime;
 
 /**
- * DTO, содержащий краткую информацию о заказе.
+ * DTO для ответа с краткой информацией о заказе.
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
+@Setter
 public class OrderShortInfoResponse {
 
     /**
