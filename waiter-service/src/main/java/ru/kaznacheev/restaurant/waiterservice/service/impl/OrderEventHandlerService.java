@@ -42,9 +42,10 @@ public class OrderEventHandlerService implements EventHandlerService<OrderEvent>
     public void processEvent(OrderEvent event) {
         Consumer<OrderEvent> handler = handlers.get(event.getEventType());
         if (handler != null) {
+            log.info("Обработка события {} заказа с id: {}", event.getEventType(), event.getOrderId());
             handler.accept(event);
         } else {
-            log.error("Получен неизвестный тип события заказа: {}", event.getEventType());
+            log.error("Получен неизвестный тип события {} заказа с id: {}", event.getEventType(), event.getOrderId());
         }
     }
 

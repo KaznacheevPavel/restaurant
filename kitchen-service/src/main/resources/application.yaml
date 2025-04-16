@@ -14,10 +14,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
   kafka:
     bootstrap-servers:
       - localhost:29092
@@ -36,3 +32,10 @@ management:
     web:
       exposure:
         include: health, metrics
+
+springdoc:
+  swagger-ui:
+    path:
+      "/api/v1/docs/swagger-ui.html"
+  api-docs:
+    path: "/api/v1/docs/api-docs.json"
