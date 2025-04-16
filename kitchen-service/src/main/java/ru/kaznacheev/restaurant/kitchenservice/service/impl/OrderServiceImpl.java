@@ -2,6 +2,7 @@ package ru.kaznacheev.restaurant.kitchenservice.service.impl;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -29,6 +30,7 @@ import java.util.List;
  * Реализация интерфейса {@link OrderService}.
  */
 @Service
+@Slf4j
 @Validated
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
@@ -48,6 +50,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public KitchenOrderResponse createOrder(@Valid CreateKitchenOrderRequest request) {
+        log.info("Создание заказа для официанта с id: {} и составом: {}", request.getWaiterOrderId(), request.getDishes());
         Order order = Order.builder()
                 .waiterOrderId(request.getWaiterOrderId())
                 .status(OrderStatus.NEW)
@@ -56,7 +59,8 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
         List<OrderPositionResponse> dishes = orderPositionService.addDishesToOrder(order, request.getDishes());
         order.setStatus(OrderStatus.IN_PROGRESS);
-        System.out.println(order.getOrderPositions().get(0).getDish().getShortName());
+        log.info("Заказ для официанта с id: {} успешно создан, id заказа: {} ,состав: {}",
+                order.getWaiterOrderId(), order.getId(), request.getDishes());
         return orderMapper.toKitchenOrderResponse(order, dishes);
     }
 
@@ -70,6 +74,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(readOnly = true)
     @Override
     public KitchenOrderResponse getOrderById(Long id) {
+        log.info("Получение информации о заказе с id: {}", id);
         Order order = orderRepository.findById(id).orElseThrow(() ->
                 new NotFoundBaseException(ExceptionDetail.ORDER_NOT_FOUND_BY_ID.format(id)));
         List<OrderPositionResponse> dishes = orderPositionService.getOrderPositions(order);
@@ -84,6 +89,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(readOnly = true)
     @Override
     public List<OrderShortInfoResponse> getAllOrders() {
+        log.info("Получение информации о всех заказах");
         return orderMapper.toOrderShortInfoResponseList(orderRepository.findAll());
     }
 
@@ -97,6 +103,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(readOnly = true)
     @Override
     public OrderStatusResponse getOrderStatus(Long id) {
+        log.info("Получение информации о статусе заказа с id: {}", id);
         Order order = orderRepository.findById(id).orElseThrow(() ->
                 new NotFoundBaseException(ExceptionDetail.ORDER_NOT_FOUND_BY_ID.format(id)));
         return orderMapper.toOrderStatusResponse(order);
@@ -113,6 +120,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public OrderStatusResponse completeOrder(Long id) {
+        log.info("Завершение приготовления заказа с id: {}", id);
         Order order = orderRepository.findById(id).orElseThrow(() ->
                 new NotFoundBaseException(ExceptionDetail.ORDER_NOT_FOUND_BY_ID.format(id)));
         if (!OrderStatus.IN_PROGRESS.equals(order.getStatus())) {
@@ -120,6 +128,7 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setStatus(OrderStatus.COMPLETED);
         orderEventProducerService.sendOrderCompletedEvent(order.getWaiterOrderId());
+        log.info("Заказ с id: {} успешно завершен", id);
         return orderMapper.toOrderStatusResponse(order);
     }
 
@@ -134,6 +143,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public OrderStatusResponse rejectOrder(Long id) {
+        log.info("Отклонение заказа с id: {}", id);
         Order order = orderRepository.findById(id).orElseThrow(() ->
                 new NotFoundBaseException(ExceptionDetail.ORDER_NOT_FOUND_BY_ID.format(id)));
         if (!OrderStatus.IN_PROGRESS.equals(order.getStatus())) {
@@ -141,6 +151,7 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setStatus(OrderStatus.REJECTED);
         orderEventProducerService.sendOrderRejectedEvent(order.getWaiterOrderId());
+        log.info("Заказ с id: {} успешно отклонен", id);
         return orderMapper.toOrderStatusResponse(order);
     }
 

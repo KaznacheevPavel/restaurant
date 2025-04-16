@@ -2,6 +2,7 @@ package ru.kaznacheev.restaurant.waiterservice.service.impl;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +25,7 @@ import java.util.List;
  * Реализация интерфейса {@link DishService}.
  */
 @Service
+@Slf4j
 @Validated
 @RequiredArgsConstructor
 public class DishServiceImpl implements DishService {
@@ -42,6 +44,7 @@ public class DishServiceImpl implements DishService {
     @Transactional
     @Override
     public DishResponse createDish(@Valid CreateDishRequest request) {
+        log.info("Создание блюда: {}", request.getName());
         if (dishRepository.existsByName(request.getName())) {
             throw new ConflictBaseException(ExceptionDetail.DISH_TITLE_ALREADY_EXISTS.format(request.getName()));
         }
@@ -56,6 +59,7 @@ public class DishServiceImpl implements DishService {
                 .composition(request.getComposition())
                 .build();
         kitchenCommunicationService.sendDishToKitchen(kitchenDishRequest);
+        log.info("Блюдо - {} успешно создано с id: {}", request.getName(), dish.getId());
         return dishMapper.toDishResponse(dish);
     }
 
@@ -69,6 +73,7 @@ public class DishServiceImpl implements DishService {
     @Transactional(readOnly = true)
     @Override
     public DishResponse getDishById(Long id) {
+        log.info("Получение информации о блюде с id: {}", id);
         return dishRepository.findById(id).orElseThrow(() ->
                 new NotFoundBaseException(ExceptionDetail.DISH_NOT_FOUND_BY_ID.format(id)));
     }
@@ -81,6 +86,7 @@ public class DishServiceImpl implements DishService {
     @Transactional(readOnly = true)
     @Override
     public List<DishResponse> getAllDishes() {
+        log.info("Получение информации о всех блюдах");
         return dishRepository.findAll();
     }
 
@@ -93,6 +99,7 @@ public class DishServiceImpl implements DishService {
     @Transactional(readOnly = true)
     @Override
     public List<DishResponse> getAllDishesByNames(List<String> names) {
+        log.info("Получение информации о блюдах с названиями: {}", names);
         return dishRepository.findAllByNames(names);
     }
 

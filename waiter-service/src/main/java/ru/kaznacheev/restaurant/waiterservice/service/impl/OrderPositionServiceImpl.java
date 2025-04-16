@@ -1,6 +1,7 @@
 package ru.kaznacheev.restaurant.waiterservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.kaznacheev.restaurant.common.dto.response.OrderPositionResponse;
 import ru.kaznacheev.restaurant.common.exception.ConflictBaseException;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
  * Реализация интерфейса {@link OrderPositionService}.
  */
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class OrderPositionServiceImpl implements OrderPositionService {
 
@@ -38,6 +40,7 @@ public class OrderPositionServiceImpl implements OrderPositionService {
      */
     @Override
     public List<OrderPositionResponse> createOrderComposition(Long orderId, Map<String, Long> composition) {
+        log.info("Добавление позиций: {} к заказу с id: {}", composition, orderId);
         List<String> orderedDishTitles = composition.keySet().stream().toList();
         List<DishResponse> foundedDishes = dishService.getAllDishesByNames(orderedDishTitles);
         validateFoundedDishes(foundedDishes, orderedDishTitles);
@@ -49,6 +52,7 @@ public class OrderPositionServiceImpl implements OrderPositionService {
                         .build())
                 .toList();
         orderPositionRepository.saveAll(orderPositions);
+        log.info("Позиции: {} успешно добавлены к заказу с id: {}", composition, orderId);
         return orderPositionMapper.toOrderPositionResponseList(composition, foundedDishes);
     }
 

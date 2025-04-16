@@ -2,6 +2,7 @@ package ru.kaznacheev.restaurant.waiterservice.service.impl;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -26,6 +27,7 @@ import java.time.OffsetDateTime;
  * Реализация интерфейса {@link PaymentService}.
  */
 @Service
+@Slf4j
 @Validated
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
@@ -45,6 +47,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     @Override
     public PaymentResponse createPayment(@Valid CreatePaymentRequest request) {
+        log.info("Создание платежа для заказа с id: {}", request.getOrderId());
         OrderResponse order = orderService.getOrderById(request.getOrderId());
         if (!order.getCost().equals(new BigDecimal(request.getSum()))) {
             throw new ConflictBaseException(ExceptionDetail.PAYMENT_AMOUNT_MISMATCH.format(request.getSum(), order.getCost()));
@@ -57,6 +60,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .sum(new BigDecimal(request.getSum()))
                 .build();
         paymentRepository.save(payment);
+        log.info("Платеж для заказа с id: {} успешно создан на сумму: {}", payment.getOrderId(), payment.getSum());
         return paymentMapper.toPaymentResponse(payment);
     }
 
@@ -70,6 +74,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional(readOnly = true)
     @Override
     public PaymentResponse getPaymentByOrderId(Long orderId) {
+        log.info("Получение информации о платеже для заказа с id: {}", orderId);
         return paymentRepository.findByOrderId(orderId).orElseThrow(() ->
                 new NotFoundBaseException(ExceptionDetail.PAYMENT_NOT_FOUND_BY_ID.format(orderId)));
     }
