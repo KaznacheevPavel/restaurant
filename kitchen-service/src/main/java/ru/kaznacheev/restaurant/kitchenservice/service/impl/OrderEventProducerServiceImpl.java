@@ -35,6 +35,7 @@ public class OrderEventProducerServiceImpl implements OrderEventProducerService 
      */
     @Override
     public void sendOrderCompletedEvent(Long orderId) {
+        log.info("Создание события о завершении заказа с id: {}", orderId);
         OrderEvent orderEvent = OrderEvent.builder()
                 .orderId(orderId)
                 .eventType(OrderEventType.COMPLETED)
@@ -50,6 +51,7 @@ public class OrderEventProducerServiceImpl implements OrderEventProducerService 
      */
     @Override
     public void sendOrderRejectedEvent(Long orderId) {
+        log.info("Создание события об отмене заказа с id {}", orderId);
         OrderEvent orderEvent = OrderEvent.builder()
                 .orderId(orderId)
                 .eventType(OrderEventType.REJECTED)

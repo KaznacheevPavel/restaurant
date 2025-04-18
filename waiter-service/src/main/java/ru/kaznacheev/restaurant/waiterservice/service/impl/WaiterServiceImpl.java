@@ -2,6 +2,7 @@ package ru.kaznacheev.restaurant.waiterservice.service.impl;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +25,7 @@ import java.util.List;
  * Реализация интерфейса {@link WaiterService}.
  */
 @Service
+@Slf4j
 @Validated
 @RequiredArgsConstructor
 public class WaiterServiceImpl implements WaiterService {
@@ -39,12 +41,14 @@ public class WaiterServiceImpl implements WaiterService {
      */
     @Override
     public WaiterResponse createWaiter(@Valid CreateWaiterRequest request) {
+        log.info("Создание официанта с именем: {}", request.getName());
         Waiter waiter = Waiter.builder()
                 .name(request.getName())
                 .employedAt(OffsetDateTime.now(clock))
                 .sex(Gender.valueOf(request.getSex()))
                 .build();
         waiterRepository.save(waiter);
+        log.info("Официант с именем: {} успешно создан, id: {}", request.getName(), waiter.getId());
         return waiterMapper.toWaiterResponse(waiter);
     }
 
@@ -58,6 +62,7 @@ public class WaiterServiceImpl implements WaiterService {
     @Transactional(readOnly = true)
     @Override
     public WaiterResponse getWaiterById(Long id) {
+        log.info("Получение информации об официанте с id: {}", id);
         return waiterRepository.findById(id).orElseThrow(() ->
                 new NotFoundBaseException(ExceptionDetail.WAITER_NOT_FOUND_BY_ID.format(id)));
     }
@@ -70,6 +75,7 @@ public class WaiterServiceImpl implements WaiterService {
     @Transactional(readOnly = true)
     @Override
     public List<WaiterShortInfoResponse> getAllWaiters() {
+        log.info("Получение информации о всех официантах");
         return waiterRepository.findAll();
     }
 
@@ -82,6 +88,7 @@ public class WaiterServiceImpl implements WaiterService {
     @Transactional(readOnly = true)
     @Override
     public boolean existsWaiterById(Long id) {
+        log.info("Проверка существования официанта с id: {}", id);
         return waiterRepository.existsById(id);
     }
 

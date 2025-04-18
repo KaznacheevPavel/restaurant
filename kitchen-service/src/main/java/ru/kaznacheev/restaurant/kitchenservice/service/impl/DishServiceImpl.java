@@ -2,6 +2,7 @@ package ru.kaznacheev.restaurant.kitchenservice.service.impl;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +23,7 @@ import java.util.List;
  * Реализация интерфейса {@link DishService}.
  */
 @Service
+@Slf4j
 @Validated
 @RequiredArgsConstructor
 public class DishServiceImpl implements DishService {
@@ -41,6 +43,7 @@ public class DishServiceImpl implements DishService {
         if (dishRepository.existsByShortName(request.getShortName())) {
             throw new ConflictBaseException(ExceptionDetail.DISH_TITLE_ALREADY_EXISTS.format(request.getShortName()));
         }
+        log.info("Создание блюда: {}", request.getShortName());
         Dish dish = Dish.builder()
                 .id(request.getId())
                 .shortName(request.getShortName())
@@ -48,6 +51,7 @@ public class DishServiceImpl implements DishService {
                 .balance(0L)
                 .build();
         dishRepository.save(dish);
+        log.info("Блюдо - {} успешно создано, id: {}", request.getShortName(), dish.getId());
         return dishMapper.toKitchenDishResponse(dish);
     }
 
@@ -61,6 +65,7 @@ public class DishServiceImpl implements DishService {
     @Transactional(readOnly = true)
     @Override
     public KitchenDishResponse getDishById(Long id) {
+        log.info("Получение информации о блюде, id: {}", id);
         return dishMapper.toKitchenDishResponse(dishRepository.findById(id)
                 .orElseThrow(() -> new NotFoundBaseException(ExceptionDetail.DISH_NOT_FOUND_BY_ID.format(id))));
     }
@@ -73,6 +78,7 @@ public class DishServiceImpl implements DishService {
     @Transactional(readOnly = true)
     @Override
     public List<KitchenDishResponse> getAllDishes() {
+        log.info("Получение информации о всех блюдах");
         return dishMapper.toKitchenDishResponseList(dishRepository.findAll());
     }
 
@@ -85,6 +91,7 @@ public class DishServiceImpl implements DishService {
     @Transactional(readOnly = true)
     @Override
     public List<Dish> getAllDishesByIds(Iterable<Long> ids) {
+        log.info("Получение информации о блюдах с id: {}", ids);
         return dishRepository.findAllById(ids);
     }
 
@@ -99,9 +106,11 @@ public class DishServiceImpl implements DishService {
     @Transactional
     @Override
     public KitchenDishResponse addDishBalance(Long id, AddDishBalanceRequest request) {
+        log.info("Добавление порций к блюду id: {}", id);
         Dish dish = dishRepository.findById(id)
                 .orElseThrow(() -> new NotFoundBaseException(ExceptionDetail.DISH_NOT_FOUND_BY_ID.format(id)));
         dish.setBalance(dish.getBalance() + request.getBalance());
+        log.info("Порции к блюду с id: {} успешно добавлены в количестве: {}", id, request.getBalance());
         return dishMapper.toKitchenDishResponse(dish);
     }
 

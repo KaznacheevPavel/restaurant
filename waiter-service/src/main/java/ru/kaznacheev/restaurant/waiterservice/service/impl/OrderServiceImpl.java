@@ -2,6 +2,7 @@ package ru.kaznacheev.restaurant.waiterservice.service.impl;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -36,6 +37,7 @@ import java.util.stream.Collectors;
  * Реализация интерфейса {@link OrderService}.
  */
 @Service
+@Slf4j
 @Validated
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
@@ -58,6 +60,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public OrderResponse createOrder(@Valid CreateOrderRequest request) {
+        log.info("Создание заказа для официанта с id: {} и составом: {}", request.getWaiterId(), request.getDishes());
         if (!waiterService.existsWaiterById(request.getWaiterId())) {
             throw new NotFoundBaseException(ExceptionDetail.WAITER_NOT_FOUND_BY_ID.format(request.getWaiterId()));
         }
@@ -73,6 +76,8 @@ public class OrderServiceImpl implements OrderService {
         BigDecimal cost = calculateOrderCost(request.getDishes());
         sendOrderToKitchen(order.getId());
         orderRepository.changeOrderStatus(order.getId(), OrderStatus.IN_PROGRESS);
+        log.info("Заказ для официанта с id: {} успешно создан, id заказа: {}, состав: {}",
+                order.getWaiterId(), order.getId(), request.getDishes());
         return orderMapper.toOrderResponse(order, cost, composition);
     }
 
@@ -86,6 +91,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(readOnly = true)
     @Override
     public OrderResponse getOrderById(Long id) {
+        log.info("Получения информации о заказе с id: {}", id);
         OrderResponse order = orderRepository.findById(id).orElseThrow(() ->
                 new NotFoundBaseException(ExceptionDetail.ORDER_NOT_FOUND_BY_ID.format(id)));
         Map<String, Long> composition = order.getComposition().stream()
@@ -102,6 +108,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(readOnly = true)
     @Override
     public List<OrderShortInfoResponse> getAllOrders() {
+        log.info("Получение информации о всех заказах");
         return orderRepository.findAll();
     }
 
@@ -115,6 +122,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(readOnly = true)
     @Override
     public OrderStatusResponse getOrderStatus(Long id) {
+        log.info("Получение информации о статусе заказа с id: {}", id);
         return orderRepository.getOrderStatusById(id).orElseThrow(() ->
                 new NotFoundBaseException(ExceptionDetail.ORDER_NOT_FOUND_BY_ID.format(id)));
     }
@@ -128,29 +136,35 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public void paidForOrder(Long id) {
+        log.info("Оплата заказа с id: {}", id);
         OrderStatusResponse status = getOrderStatus(id);
         if (!OrderStatus.COOKED.name().equals(status.getStatus())) {
             throw new ConflictBaseException(ExceptionDetail.ORDER_PAYMENT_EXCEPTION.format(OrderStatus.COOKED));
         }
         orderRepository.changeOrderStatus(id, OrderStatus.COMPLETED);
+        log.info("Заказ с id {} успешно оплачен", id);
     }
 
     @Override
     public void cookOrder(Long id) {
+        log.info("Подтверждение приготовления заказа с id: {}", id);
         OrderStatusResponse status = getOrderStatus(id);
         if (!OrderStatus.IN_PROGRESS.name().equals(status.getStatus())) {
             throw new ConflictBaseException(ExceptionDetail.ORDER_COOK_EXCEPTION.format(OrderStatus.IN_PROGRESS));
         }
         orderRepository.changeOrderStatus(id, OrderStatus.COOKED);
+        log.info("Заказ с id {} успешно приготовлен", id);
     }
 
     @Override
     public void rejectOrder(Long id) {
+        log.info("Отклонение заказа с id: {}", id);
         OrderStatusResponse status = getOrderStatus(id);
         if (!OrderStatus.IN_PROGRESS.name().equals(status.getStatus())) {
             throw new ConflictBaseException(ExceptionDetail.ORDER_REJECT_EXCEPTION.format(OrderStatus.IN_PROGRESS));
         }
         orderRepository.changeOrderStatus(id, OrderStatus.REJECTED);
+        log.info("Заказ с id {} успешно отклонен", id);
     }
 
     /**

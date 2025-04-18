@@ -2,6 +2,7 @@ package ru.kaznacheev.restaurant.waiterservice.entity;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.OffsetDateTime;
 
@@ -9,6 +10,7 @@ import java.time.OffsetDateTime;
  * Сущность официанта.
  */
 @Getter
+@Setter
 @Builder
 public class Waiter {
 

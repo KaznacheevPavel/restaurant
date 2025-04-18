@@ -1,6 +1,7 @@
 package ru.kaznacheev.restaurant.kitchenservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kaznacheev.restaurant.common.dto.response.OrderPositionResponse;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
  * Реализация интерфейса {@link OrderPositionService}.
  */
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class OrderPositionServiceImpl implements OrderPositionService {
 
@@ -42,6 +44,7 @@ public class OrderPositionServiceImpl implements OrderPositionService {
     @Transactional
     @Override
     public List<OrderPositionResponse> addDishesToOrder(Order order, Map<Long, Long> composition) {
+        log.info("Добавление позиций: {} к заказу с id: {}", composition, order.getId());
         List<Dish> foundedDishes = dishService.getAllDishesByIds(composition.keySet());
         validateAllDishesFound(foundedDishes, composition.keySet().stream().toList());
         validateAllDishesSufficient(foundedDishes, composition);
@@ -59,6 +62,7 @@ public class OrderPositionServiceImpl implements OrderPositionService {
                 .toList();
         orderPositionRepository.saveAll(orderPositions);
         order.setOrderPositions(orderPositions);
+        log.info("Позиции: {} успешно добавлены к заказу с id: {}", composition, order.getId());
         return orderPositionMapper.toOrderPositionResponseList(orderPositions);
     }
 
@@ -71,6 +75,7 @@ public class OrderPositionServiceImpl implements OrderPositionService {
     @Transactional(readOnly = true)
     @Override
     public List<OrderPositionResponse> getOrderPositions(Order order) {
+        log.info("Получение информации о позициях заказа с id: {}", order.getId());
         List<OrderPosition> orderPositions = orderPositionRepository.findAllWithDishesByOrderId(order.getId());
         return orderPositionMapper.toOrderPositionResponseList(orderPositions);
     }

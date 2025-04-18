@@ -2,7 +2,9 @@ package ru.kaznacheev.restaurant.common.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.FeignException;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,6 +25,8 @@ import java.util.Map;
  * Контроллер для обработки исключений.
  */
 @RestControllerAdvice
+@Slf4j
+@Hidden
 public class GlobalExceptionHandlerControllerAdvice {
 
     /**
@@ -34,6 +38,7 @@ public class GlobalExceptionHandlerControllerAdvice {
     @ExceptionHandler(NotFoundBaseException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionResponse handleNotFoundBaseException(NotFoundBaseException e) {
+        log.warn("Возникло исключение NotFoundBaseException: {}", e.getDetail(), e);
         return ExceptionResponse.builder()
                 .title(ExceptionTitle.NOT_FOUND.getTitle())
                 .status(ExceptionTitle.NOT_FOUND.getStatus().value())
@@ -51,6 +56,7 @@ public class GlobalExceptionHandlerControllerAdvice {
     @ExceptionHandler(ConflictBaseException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ExceptionResponse handleConflictBaseException(ConflictBaseException e) {
+        log.warn("Возникло исключение ConflictBaseException: {}", e.getDetail(), e);
         return ExceptionResponse.builder()
                 .title(ExceptionTitle.CONFLICT.getTitle())
                 .status(ExceptionTitle.CONFLICT.getStatus().value())
@@ -68,6 +74,7 @@ public class GlobalExceptionHandlerControllerAdvice {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionResponse handleConstraintViolationException(ConstraintViolationException e) {
+        log.warn("Возникло исключение ConstraintViolationException: {}", e.getMessage(), e);
         Map<String, List<String>> invalidFields = new HashMap<>();
         e.getConstraintViolations().forEach(constraintViolation -> {
             String fieldPath = constraintViolation.getPropertyPath().toString();
@@ -96,6 +103,7 @@ public class GlobalExceptionHandlerControllerAdvice {
      */
     @ExceptionHandler(FeignException.class)
     public ResponseEntity<Object> handleFeignException(FeignException e) {
+        log.warn("Возникло исключение FeignException: {}", e.getMessage(), e);
         String responseBody = e.contentUTF8();
         try {
             Object errorBody = new ObjectMapper().readValue(responseBody, Object.class);
