@@ -20,7 +20,8 @@ public class CreateKitchenOrderRequest {
     /**
      * Идентификатор заказа у официантов.
      */
-    @Schema(description = "Идентификатор заказа у официантов", example = "3", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Идентификатор заказа у официантов", example = "3",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "Идентификатор заказа у официантов не должен быть пустым")
     @Min(value = 1, message = "Идентификатор заказа у официантов должен быть больше 0")
     private final Long waiterOrderId;

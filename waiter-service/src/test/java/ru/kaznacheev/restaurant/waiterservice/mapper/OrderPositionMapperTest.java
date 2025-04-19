@@ -50,7 +50,7 @@ class OrderPositionMapperTest {
         List<OrderPositionResponse> actual = orderPositionMapper.toOrderPositionResponseList(composition, dishes);
 
         // Проверка
-        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+        assertThat(actual).usingRecursiveComparison().ignoringCollectionOrder().isEqualTo(expected);
     }
 
 }

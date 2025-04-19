@@ -39,16 +39,22 @@ public class OrderPositionCompositeId implements Serializable {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o)
                 .getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this)
                 .getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
+        if (thisEffectiveClass != oEffectiveClass) {
+            return false;
+        }
         OrderPositionCompositeId orderPositionCompositeId = (OrderPositionCompositeId) o;
-        return Objects.equals(orderId, orderPositionCompositeId.orderId) &&
-                Objects.equals(dishId, orderPositionCompositeId.dishId);
+        return Objects.equals(orderId, orderPositionCompositeId.orderId)
+                && Objects.equals(dishId, orderPositionCompositeId.dishId);
     }
 
     /**

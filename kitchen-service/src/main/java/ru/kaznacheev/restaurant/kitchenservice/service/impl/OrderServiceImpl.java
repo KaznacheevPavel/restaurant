@@ -50,7 +50,8 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public KitchenOrderResponse createOrder(@Valid CreateKitchenOrderRequest request) {
-        log.info("Создание заказа для официанта с id: {} и составом: {}", request.getWaiterOrderId(), request.getDishes());
+        log.info("Создание заказа для официанта с id: {} и составом: {}",
+                request.getWaiterOrderId(), request.getDishes());
         Order order = Order.builder()
                 .waiterOrderId(request.getWaiterOrderId())
                 .status(OrderStatus.NEW)

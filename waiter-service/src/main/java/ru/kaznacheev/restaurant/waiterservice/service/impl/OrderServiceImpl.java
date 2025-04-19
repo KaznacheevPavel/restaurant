@@ -131,8 +131,7 @@ public class OrderServiceImpl implements OrderService {
      * {@inheritDoc}
      *
      * @param id {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NotFoundBaseException Если заказ не был найден
+     * @throws NotFoundBaseException Если заказ не может быть оплачен
      */
     @Override
     public void paidForOrder(Long id) {
@@ -145,6 +144,12 @@ public class OrderServiceImpl implements OrderService {
         log.info("Заказ с id {} успешно оплачен", id);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param id {@inheritDoc}
+     * @throws ConflictBaseException Если заказ не может быть приготовлен
+     */
     @Override
     public void cookOrder(Long id) {
         log.info("Подтверждение приготовления заказа с id: {}", id);
@@ -156,6 +161,12 @@ public class OrderServiceImpl implements OrderService {
         log.info("Заказ с id {} успешно приготовлен", id);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param id {@inheritDoc}
+     * @throws ConflictBaseException Если заказ не может быть отклонен
+     */
     @Override
     public void rejectOrder(Long id) {
         log.info("Отклонение заказа с id: {}", id);

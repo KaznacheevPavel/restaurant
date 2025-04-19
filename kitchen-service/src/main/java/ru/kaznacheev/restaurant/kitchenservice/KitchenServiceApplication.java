@@ -6,19 +6,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Основной класс приложения kitchen-service.
  */
-@SpringBootApplication(scanBasePackages = {
-		"ru.kaznacheev.restaurant.kitchenservice",
-		"ru.kaznacheev.restaurant.common"
-})
+@SpringBootApplication
 public class KitchenServiceApplication {
 
-	/**
-	 * Точка входа для запуска Spring Boot приложения.
-	 *
-	 * @param args Аргументы командной строки, переданные при запуске приложения.
-	 */
-	public static void main(String[] args) {
-		SpringApplication.run(KitchenServiceApplication.class, args);
-	}
+    /**
+     * Точка входа для запуска Spring Boot приложения.
+     *
+     * @param args Аргументы командной строки, переданные при запуске приложения.
+     */
+    public static void main(String[] args) {
+        SpringApplication.run(KitchenServiceApplication.class, args);
+    }
 
 }

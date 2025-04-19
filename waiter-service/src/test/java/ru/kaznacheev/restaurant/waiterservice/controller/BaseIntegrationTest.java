@@ -13,7 +13,6 @@ public abstract class BaseIntegrationTest {
     private static final PostgreSQLContainer<?> postgres =
             new PostgreSQLContainer<>("postgres:17.4-alpine3.21");
 
-    // Динамически подставляем параметры подключения к БД
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", postgres::getJdbcUrl);

@@ -50,7 +50,8 @@ public class PaymentServiceImpl implements PaymentService {
         log.info("Создание платежа для заказа с id: {}", request.getOrderId());
         OrderResponse order = orderService.getOrderById(request.getOrderId());
         if (!order.getCost().equals(new BigDecimal(request.getSum()))) {
-            throw new ConflictBaseException(ExceptionDetail.PAYMENT_AMOUNT_MISMATCH.format(request.getSum(), order.getCost()));
+            throw new ConflictBaseException(ExceptionDetail.PAYMENT_AMOUNT_MISMATCH
+                    .format(request.getSum(), order.getCost()));
         }
         orderService.paidForOrder(request.getOrderId());
         Payment payment = Payment.builder()

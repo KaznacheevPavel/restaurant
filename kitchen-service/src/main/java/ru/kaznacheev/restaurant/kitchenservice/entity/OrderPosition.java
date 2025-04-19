@@ -40,7 +40,7 @@ public class OrderPosition {
     private Long amount;
 
     /**
-     * Заказ
+     * Заказ.
      */
     @MapsId("orderId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -48,7 +48,7 @@ public class OrderPosition {
     private Order order;
 
     /**
-     * Блюдо
+     * Блюдо.
      */
     @MapsId("dishId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -63,15 +63,21 @@ public class OrderPosition {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o)
                 .getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this)
                 .getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
-        OrderPosition dish = (OrderPosition) o;
-        return Objects.equals(id, dish.id);
+        if (thisEffectiveClass != oEffectiveClass) {
+            return false;
+        }
+        OrderPosition orderPosition = (OrderPosition) o;
+        return Objects.equals(id, orderPosition.id);
     }
 
     /**

@@ -21,7 +21,8 @@ public class CreateDishRequest {
     /**
      * Название блюда.
      */
-    @Schema(description = "Название блюда", example = "Картофель по-деревенски", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Название блюда", example = "Картофель по-деревенски",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "Название блюда не должно быть пустым")
     @Size(max = 64, message = "Название блюда не должно быть больше 64 символов")
     private final String name;
@@ -29,7 +30,8 @@ public class CreateDishRequest {
     /**
      * Сокращенное название блюда.
      */
-    @Schema(description = "Сокращенное название блюда", example = "По-деревенски", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Сокращенное название блюда", example = "По-деревенски",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "Сокращенное название блюда не должно быть пустым")
     @Size(max = 32, message = "Сокращенное название блюда не должно быть больше 32 символов")
     private final String shortName;
@@ -37,7 +39,8 @@ public class CreateDishRequest {
     /**
      * Состав блюда.
      */
-    @Schema(description = "Состав блюда", example = "Картофель, масло, соль", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Состав блюда", example = "Картофель, масло, соль",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "Состав блюда не должен быть пустым")
     @Size(max = 255, message = "Состав блюда не должен быть больше 255 символов")
     private final String composition;
