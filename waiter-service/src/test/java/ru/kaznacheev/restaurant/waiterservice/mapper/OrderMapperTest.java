@@ -26,38 +26,12 @@ class OrderMapperTest {
     void shouldMapToOrderResponse() {
         // Подготовка
         Clock clock = Clock.fixed(Instant.parse("2024-01-01T12:00:00Z"), ZoneId.systemDefault());
-        Order order = Order.builder()
-                .id(1L)
-                .waiterId(1L)
-                .tableNumber("3a")
-                .status(OrderStatus.IN_PROGRESS)
-                .createdAt(OffsetDateTime.now(clock))
-                .build();
-        BigDecimal cost = new BigDecimal("100.00");
-        List<OrderPositionResponse> positions = List.of(
-                OrderPositionResponse.builder()
-                        .dishId(12L)
-                        .name("Борщ")
-                        .amount(3L)
-                        .build(),
-                OrderPositionResponse.builder()
-                        .dishId(16L)
-                        .name("Карбонара")
-                        .amount(2L)
-                        .build()
-        );
-        OrderResponse expected = OrderResponse.builder()
-                .id(1L)
-                .status(OrderStatus.IN_PROGRESS)
-                .createdAt(OffsetDateTime.now(clock))
-                .waiterId(1L)
-                .tableNumber("3a")
-                .cost(cost)
-                .composition(positions)
-                .build();
+        Order order = createOrder(clock);
+        List<OrderPositionResponse> positions = createPositions();
+        OrderResponse expected = createOrderResponse(clock, positions);
 
         // Действие
-        OrderResponse actual = dishMapper.toOrderResponse(order, cost, positions);
+        OrderResponse actual = dishMapper.toOrderResponse(order, new BigDecimal("100.00"), positions);
 
         // Проверка
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
@@ -71,6 +45,43 @@ class OrderMapperTest {
 
         // Проверка
         assertThat(actual).isNull();
+    }
+
+    private Order createOrder(Clock clock) {
+        return Order.builder()
+                .id(1L)
+                .waiterId(1L)
+                .tableNumber("3a")
+                .status(OrderStatus.IN_PROGRESS)
+                .createdAt(OffsetDateTime.now(clock))
+                .build();
+    }
+
+    private List<OrderPositionResponse> createPositions() {
+        return List.of(
+                OrderPositionResponse.builder()
+                        .dishId(12L)
+                        .name("Борщ")
+                        .amount(3L)
+                        .build(),
+                OrderPositionResponse.builder()
+                        .dishId(16L)
+                        .name("Карбонара")
+                        .amount(2L)
+                        .build()
+        );
+    }
+
+    private OrderResponse createOrderResponse(Clock clock, List<OrderPositionResponse> positions) {
+        return OrderResponse.builder()
+                .id(1L)
+                .status(OrderStatus.IN_PROGRESS)
+                .createdAt(OffsetDateTime.now(clock))
+                .waiterId(1L)
+                .tableNumber("3a")
+                .cost(new BigDecimal("100.00"))
+                .composition(positions)
+                .build();
     }
 
 }

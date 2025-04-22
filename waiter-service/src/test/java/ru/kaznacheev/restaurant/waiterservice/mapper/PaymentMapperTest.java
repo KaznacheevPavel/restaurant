@@ -24,18 +24,8 @@ class PaymentMapperTest {
     void shouldMapToPaymentResponse() {
         // Подготовка
         Clock clock = Clock.fixed(Instant.parse("2024-01-01T12:00:00Z"), ZoneId.systemDefault());
-        Payment payment = Payment.builder()
-                .orderId(12L)
-                .type(PaymentType.CARD)
-                .paymentDate(OffsetDateTime.now(clock))
-                .sum(new BigDecimal("100.00"))
-                .build();
-        PaymentResponse expected = PaymentResponse.builder()
-                .orderId(12L)
-                .type(PaymentType.CARD)
-                .paymentDate(OffsetDateTime.now(clock))
-                .sum(new BigDecimal("100.00"))
-                .build();
+        Payment payment = createPayment(clock);
+        PaymentResponse expected = createPaymentResponse(clock);
 
         // Действие
         PaymentResponse actual = paymentMapper.toPaymentResponse(payment);
@@ -52,6 +42,24 @@ class PaymentMapperTest {
 
         // Проверка
         assertThat(actual).isNull();
+    }
+
+    private Payment createPayment(Clock clock) {
+        return Payment.builder()
+                .orderId(12L)
+                .type(PaymentType.CARD)
+                .paymentDate(OffsetDateTime.now(clock))
+                .sum(new BigDecimal("100.00"))
+                .build();
+    }
+
+    private PaymentResponse createPaymentResponse(Clock clock) {
+        return PaymentResponse.builder()
+                .orderId(12L)
+                .type(PaymentType.CARD)
+                .paymentDate(OffsetDateTime.now(clock))
+                .sum(new BigDecimal("100.00"))
+                .build();
     }
 
 }

@@ -31,13 +31,6 @@ public class OrderPositionServiceImpl implements OrderPositionService {
     private final DishService dishService;
     private final OrderPositionMapper orderPositionMapper;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param orderId {@inheritDoc}
-     * @param composition {@inheritDoc}
-     * @return {@inheritDoc}
-     */
     @Override
     public List<OrderPositionResponse> createOrderComposition(Long orderId, Map<String, Long> composition) {
         log.info("Добавление позиций: {} к заказу с id: {}", composition, orderId);

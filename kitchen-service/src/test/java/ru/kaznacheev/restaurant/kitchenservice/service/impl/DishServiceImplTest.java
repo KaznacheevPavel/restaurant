@@ -88,7 +88,7 @@ class DishServiceImplTest {
         // Проверка
         ConflictBaseException actualException = assertThrows(ConflictBaseException.class, executable);
         verify(dishRepository).existsByShortName("Борщ");
-        assertThat(actualException.getDetail()).isEqualTo("Блюдо с названием Борщ уже существует");
+        assertThat(actualException.getDetail()).isEqualTo(expectedDetail);
     }
 
     @Test

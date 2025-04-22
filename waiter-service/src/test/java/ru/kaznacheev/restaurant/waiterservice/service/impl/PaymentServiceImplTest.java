@@ -122,7 +122,7 @@ class PaymentServiceImplTest {
                 .id(12L)
                 .cost(new BigDecimal("100.00"))
                 .build();
-        String expectedDetail = "Сумма оплаты 99.00 не совпадает с суммой заказа 100.00";
+        String expectedDetail = "Неверная сумма оплаты для заказа 12, получено 99.00, требуется 100.00";
         when(orderService.getOrderById(request.getOrderId())).thenReturn(order);
 
         // Действие

@@ -93,7 +93,8 @@ public class WaiterController {
             summary = "Возвращает информацию об официанте по его идентификатору",
             parameters = @Parameter(name = "id", description = "Идентификатор официанта")
     )
-    @ApiResponse(responseCode = "200", description = "Информация об официанте успешно получена", useReturnTypeSchema = true)
+    @ApiResponse(responseCode = "200", description = "Информация об официанте успешно получена",
+            useReturnTypeSchema = true)
     @ApiResponse(responseCode = "404", description = "Официант с указанным идентификатором не найден",
             content = @Content(
                     schema = @Schema(implementation = ExceptionResponse.class),
@@ -137,7 +138,8 @@ public class WaiterController {
                                     ]
                                     """
                     ),
-                            @ExampleObject(name = "Пустой список", value = "[]", description = "Пустой список, если официантов нет")}
+                            @ExampleObject(name = "Пустой список", value = "[]",
+                                    description = "Пустой список, если официантов нет")}
             )
     )
     @GetMapping

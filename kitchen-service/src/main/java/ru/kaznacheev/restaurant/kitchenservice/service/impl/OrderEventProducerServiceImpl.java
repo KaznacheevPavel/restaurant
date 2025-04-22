@@ -28,11 +28,6 @@ public class OrderEventProducerServiceImpl implements OrderEventProducerService 
     @Value("${spring.kafka.producer.order-event-topic}")
     private String topicName;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param orderId {@inheritDoc}
-     */
     @Override
     public void sendOrderCompletedEvent(Long orderId) {
         log.info("Создание события о завершении заказа с id: {}", orderId);
@@ -44,11 +39,6 @@ public class OrderEventProducerServiceImpl implements OrderEventProducerService 
         sendEvent(orderEvent);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param orderId {@inheritDoc}
-     */
     @Override
     public void sendOrderRejectedEvent(Long orderId) {
         log.info("Создание события об отмене заказа с id {}", orderId);

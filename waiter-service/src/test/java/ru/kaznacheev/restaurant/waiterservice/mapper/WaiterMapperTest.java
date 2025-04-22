@@ -23,18 +23,8 @@ class WaiterMapperTest {
     void shouldMapToWaiterResponse() {
         // Подготовка
         Clock clock = Clock.fixed(Instant.parse("2024-01-01T12:00:00Z"), ZoneId.systemDefault());
-        Waiter waiter = Waiter.builder()
-                .id(1L)
-                .name("Иван")
-                .employedAt(OffsetDateTime.now(clock))
-                .sex(Gender.MALE)
-                .build();
-        WaiterResponse expected = WaiterResponse.builder()
-                .id(1L)
-                .name("Иван")
-                .employedAt(OffsetDateTime.now(clock))
-                .sex(Gender.MALE)
-                .build();
+        Waiter waiter = createWaiter(clock);
+        WaiterResponse expected = createWaiterResponse(clock);
 
         // Действие
         WaiterResponse actual = waiterMapper.toWaiterResponse(waiter);
@@ -52,4 +42,23 @@ class WaiterMapperTest {
         // Проверка
         assertThat(actual).isNull();
     }
+
+    private Waiter createWaiter(Clock clock) {
+        return Waiter.builder()
+                .id(1L)
+                .name("Иван")
+                .employedAt(OffsetDateTime.now(clock))
+                .sex(Gender.MALE)
+                .build();
+    }
+
+    private WaiterResponse createWaiterResponse(Clock clock) {
+        return WaiterResponse.builder()
+                .id(1L)
+                .name("Иван")
+                .employedAt(OffsetDateTime.now(clock))
+                .sex(Gender.MALE)
+                .build();
+    }
+
 }

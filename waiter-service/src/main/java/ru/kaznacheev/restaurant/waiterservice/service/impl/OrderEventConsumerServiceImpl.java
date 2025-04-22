@@ -5,10 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import ru.kaznacheev.restaurant.common.dto.kafka.OrderEvent;
-import ru.kaznacheev.restaurant.common.dto.kafka.OrderEventType;
 import ru.kaznacheev.restaurant.waiterservice.service.EventHandlerService;
 import ru.kaznacheev.restaurant.waiterservice.service.OrderEventConsumerService;
-import ru.kaznacheev.restaurant.waiterservice.service.OrderService;
 
 /**
  * Реализация интерфейса {@link OrderEventConsumerService}.
@@ -20,12 +18,8 @@ public class OrderEventConsumerServiceImpl implements OrderEventConsumerService 
 
     private final EventHandlerService<OrderEvent> eventHandlerService;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param orderEvent {@inheritDoc}
-     */
-    @KafkaListener(topics = "${spring.kafka.producer.order-event-topic}", concurrency = "${spring.kafka.consumer.concurrency}")
+    @KafkaListener(topics = "${spring.kafka.producer.order-event-topic}",
+            concurrency = "${spring.kafka.consumer.concurrency}")
     @Override
     public void consumeOrderEvent(OrderEvent orderEvent) {
         log.info("Получено событие {} заказа {}", orderEvent.getEventType().name(), orderEvent.getOrderId());

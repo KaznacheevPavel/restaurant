@@ -130,7 +130,8 @@ public class PaymentController {
             summary = "Возвращает информацию о платеже по идентификатору заказа",
             parameters = @Parameter(name = "orderId", description = "Идентификатор заказа")
     )
-    @ApiResponse(responseCode = "200", description = "Информация о платеже успешно получена", useReturnTypeSchema = true)
+    @ApiResponse(responseCode = "200", description = "Информация о платеже успешно получена",
+            useReturnTypeSchema = true)
     @ApiResponse(responseCode = "404", description = "Платеж с указанным идентификатором заказа не найден",
             content = @Content(
                     schema = @Schema(implementation = ExceptionResponse.class),

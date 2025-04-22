@@ -6,19 +6,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Основной класс приложения waiter-service.
  */
-@SpringBootApplication(scanBasePackages = {
-		"ru.kaznacheev.restaurant.waiterservice",
-		"ru.kaznacheev.restaurant.common"
-})
+@SpringBootApplication
 public class WaiterServiceApplication {
 
-	/**
-	 * Точка входа для запуска Spring Boot приложения.
-	 *
-	 * @param args Аргументы командной строки, переданные при запуске приложения.
-	 */
-	public static void main(String[] args) {
-		SpringApplication.run(WaiterServiceApplication.class, args);
-	}
+    /**
+     * Точка входа для запуска Spring Boot приложения.
+     *
+     * @param args Аргументы командной строки, переданные при запуске приложения.
+     */
+    public static void main(String[] args) {
+        SpringApplication.run(WaiterServiceApplication.class, args);
+    }
 
 }

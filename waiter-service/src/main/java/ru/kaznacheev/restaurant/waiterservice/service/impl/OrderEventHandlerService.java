@@ -33,11 +33,6 @@ public class OrderEventHandlerService implements EventHandlerService<OrderEvent>
         handlers.put(OrderEventType.REJECTED, event -> orderService.rejectOrder(event.getOrderId()));
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param event {@inheritDoc}
-     */
     @Override
     public void processEvent(OrderEvent event) {
         Consumer<OrderEvent> handler = handlers.get(event.getEventType());

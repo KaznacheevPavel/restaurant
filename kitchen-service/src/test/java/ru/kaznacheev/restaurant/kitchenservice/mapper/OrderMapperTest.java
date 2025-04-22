@@ -27,31 +27,9 @@ class OrderMapperTest {
     void shouldMapToKitchenOrderResponse() {
         // Подготовка
         Clock clock = Clock.fixed(Instant.parse("2024-01-01T12:00:00Z"), ZoneId.systemDefault());
-        Order order = Order.builder()
-                .id(11L)
-                .waiterOrderId(12L)
-                .status(OrderStatus.COMPLETED)
-                .createdAt(OffsetDateTime.now(clock))
-                .build();
-        List<OrderPositionResponse> positions = List.of(
-                OrderPositionResponse.builder()
-                        .dishId(1L)
-                        .name("Борщ")
-                        .amount(3L)
-                        .build(),
-                OrderPositionResponse.builder()
-                        .dishId(2L)
-                        .name("Карбонара")
-                        .amount(2L)
-                        .build()
-        );
-        KitchenOrderResponse excepted = KitchenOrderResponse.builder()
-                .id(11L)
-                .waiterOrderId(12L)
-                .status(OrderStatus.COMPLETED.name())
-                .createdAt(OffsetDateTime.now(clock))
-                .dishes(positions)
-                .build();
+        Order order = createOrder(clock);
+        List<OrderPositionResponse> positions = createOrderPositionResponses();
+        KitchenOrderResponse excepted = createKitchenOrderResponse(clock, positions);
 
         // Действие
         KitchenOrderResponse actual = orderMapper.toKitchenOrderResponse(order, positions);
@@ -75,34 +53,8 @@ class OrderMapperTest {
     void shouldMapToOrderShortInfoResponseList() {
         // Подготовка
         Clock clock = Clock.fixed(Instant.parse("2024-01-01T12:00:00Z"), ZoneId.systemDefault());
-        List<Order> orders = List.of(
-                Order.builder()
-                        .id(1L)
-                        .waiterOrderId(1L)
-                        .status(OrderStatus.COMPLETED)
-                        .createdAt(OffsetDateTime.now(clock))
-                        .build(),
-                Order.builder()
-                        .id(2L)
-                        .waiterOrderId(2L)
-                        .status(OrderStatus.REJECTED)
-                        .createdAt(OffsetDateTime.now(clock))
-                        .build()
-        );
-        List<OrderShortInfoResponse> expected = List.of(
-                OrderShortInfoResponse.builder()
-                        .id(1L)
-                        .waiterOrderId(1L)
-                        .status(OrderStatus.COMPLETED)
-                        .createdAt(OffsetDateTime.now(clock))
-                        .build(),
-                OrderShortInfoResponse.builder()
-                        .id(2L)
-                        .waiterOrderId(2L)
-                        .status(OrderStatus.REJECTED)
-                        .createdAt(OffsetDateTime.now(clock))
-                        .build()
-        );
+        List<Order> orders = createOrders(clock);
+        List<OrderShortInfoResponse> expected = createOrderShortInfoResponses(clock);
 
         // Действие
         List<OrderShortInfoResponse> actual = orderMapper.toOrderShortInfoResponseList(orders);
@@ -126,15 +78,10 @@ class OrderMapperTest {
     void shouldMapToOrderStatusResponse() {
         // Подготовка
         Clock clock = Clock.fixed(Instant.parse("2024-01-01T12:00:00Z"), ZoneId.systemDefault());
-        Order order = Order.builder()
-                .id(2L)
-                .waiterOrderId(2L)
-                .status(OrderStatus.REJECTED)
-                .createdAt(OffsetDateTime.now(clock))
-                .build();
+        Order order = createOrder(clock);
         OrderStatusResponse expected = OrderStatusResponse.builder()
-                .id(2L)
-                .status(OrderStatus.REJECTED.name())
+                .id(11L)
+                .status(OrderStatus.COMPLETED.name())
                 .build();
 
         // Действие
@@ -152,6 +99,74 @@ class OrderMapperTest {
 
         // Проверка
         assertThat(actual).isNull();
+    }
+
+    private Order createOrder(Clock clock) {
+        return Order.builder()
+                .id(11L)
+                .waiterOrderId(12L)
+                .status(OrderStatus.COMPLETED)
+                .createdAt(OffsetDateTime.now(clock))
+                .build();
+    }
+
+    private List<OrderPositionResponse> createOrderPositionResponses() {
+        return List.of(
+                OrderPositionResponse.builder()
+                        .dishId(1L)
+                        .name("Борщ")
+                        .amount(3L)
+                        .build(),
+                OrderPositionResponse.builder()
+                        .dishId(2L)
+                        .name("Карбонара")
+                        .amount(2L)
+                        .build()
+        );
+    }
+
+    private KitchenOrderResponse createKitchenOrderResponse(Clock clock, List<OrderPositionResponse> positions) {
+        return KitchenOrderResponse.builder()
+                .id(11L)
+                .waiterOrderId(12L)
+                .status(OrderStatus.COMPLETED.name())
+                .createdAt(OffsetDateTime.now(clock))
+                .dishes(positions)
+                .build();
+    }
+
+    private List<Order> createOrders(Clock clock) {
+        return List.of(
+                Order.builder()
+                        .id(1L)
+                        .waiterOrderId(1L)
+                        .status(OrderStatus.COMPLETED)
+                        .createdAt(OffsetDateTime.now(clock))
+                        .build(),
+                Order.builder()
+                        .id(2L)
+                        .waiterOrderId(2L)
+                        .status(OrderStatus.REJECTED)
+                        .createdAt(OffsetDateTime.now(clock))
+                        .build()
+        );
+    }
+
+    private List<OrderShortInfoResponse> createOrderShortInfoResponses(Clock clock) {
+        return List.of(
+                OrderShortInfoResponse.builder()
+                        .id(1L)
+                        .waiterOrderId(1L)
+                        .status(OrderStatus.COMPLETED)
+                        .createdAt(OffsetDateTime.now(clock))
+                        .build(),
+                OrderShortInfoResponse.builder()
+                        .id(2L)
+                        .waiterOrderId(2L)
+                        .status(OrderStatus.REJECTED)
+                        .createdAt(OffsetDateTime.now(clock))
+                        .build()
+        );
     }
 
 }

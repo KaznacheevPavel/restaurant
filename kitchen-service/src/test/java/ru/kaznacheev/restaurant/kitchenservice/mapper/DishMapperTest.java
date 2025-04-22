@@ -18,18 +18,8 @@ class DishMapperTest {
     @DisplayName("Should map Dish to KitchenDishResponse")
     void shouldMapToKitchenDishResponse() {
         // Подготовка
-        Dish dish = Dish.builder()
-                .id(1L)
-                .shortName("Борщ")
-                .composition("Свекла, капуста, картофель, морковь, лук, мясо, зелень")
-                .balance(12L)
-                .build();
-        KitchenDishResponse excepted = KitchenDishResponse.builder()
-                .id(1L)
-                .shortName("Борщ")
-                .composition("Свекла, капуста, картофель, морковь, лук, мясо, зелень")
-                .balance(12L)
-                .build();
+        Dish dish = createDish();
+        KitchenDishResponse excepted = createKitchenDishResponse();
 
         // Действие
         KitchenDishResponse actual = dishMapper.toKitchenDishResponse(dish);
@@ -52,34 +42,8 @@ class DishMapperTest {
     @DisplayName("Should map list of Dish to list of KitchenDishResponse")
     void shouldMapToKitchenDishResponseList() {
         // Подготовка
-        List<Dish> dishes = List.of(
-                Dish.builder()
-                        .id(1L)
-                        .shortName("Борщ")
-                        .composition("Свекла, капуста, картофель, морковь, лук, мясо, зелень")
-                        .balance(12L)
-                        .build(),
-                Dish.builder()
-                        .id(2L)
-                        .shortName("Карбонара")
-                        .composition("Паста, панчетта, сыр, яйца")
-                        .balance(2L)
-                        .build()
-        );
-        List<KitchenDishResponse> expected = List.of(
-                KitchenDishResponse.builder()
-                        .id(1L)
-                        .shortName("Борщ")
-                        .composition("Свекла, капуста, картофель, морковь, лук, мясо, зелень")
-                        .balance(12L)
-                        .build(),
-                KitchenDishResponse.builder()
-                        .id(2L)
-                        .shortName("Карбонара")
-                        .composition("Паста, панчетта, сыр, яйца")
-                        .balance(2L)
-                        .build()
-        );
+        List<Dish> dishes = createDishes();
+        List<KitchenDishResponse> expected = createKitchenDishResponses();
 
         // Действие
         List<KitchenDishResponse> actual = dishMapper.toKitchenDishResponseList(dishes);
@@ -96,6 +60,58 @@ class DishMapperTest {
 
         // Проверка
         assertThat(actual).isNull();
+    }
+
+    private Dish createDish() {
+        return Dish.builder()
+                .id(1L)
+                .shortName("Борщ")
+                .composition("Свекла, капуста, картофель, морковь, лук, мясо, зелень")
+                .balance(12L)
+                .build();
+    }
+
+    private KitchenDishResponse createKitchenDishResponse() {
+        return KitchenDishResponse.builder()
+                .id(1L)
+                .shortName("Борщ")
+                .composition("Свекла, капуста, картофель, морковь, лук, мясо, зелень")
+                .balance(12L)
+                .build();
+    }
+
+    private List<Dish> createDishes() {
+        return List.of(
+                Dish.builder()
+                        .id(1L)
+                        .shortName("Борщ")
+                        .composition("Свекла, капуста, картофель, морковь, лук, мясо, зелень")
+                        .balance(12L)
+                        .build(),
+                Dish.builder()
+                        .id(2L)
+                        .shortName("Карбонара")
+                        .composition("Паста, панчетта, сыр, яйца")
+                        .balance(2L)
+                        .build()
+        );
+    }
+
+    private List<KitchenDishResponse> createKitchenDishResponses() {
+        return List.of(
+                KitchenDishResponse.builder()
+                        .id(1L)
+                        .shortName("Борщ")
+                        .composition("Свекла, капуста, картофель, морковь, лук, мясо, зелень")
+                        .balance(12L)
+                        .build(),
+                KitchenDishResponse.builder()
+                        .id(2L)
+                        .shortName("Карбонара")
+                        .composition("Паста, панчетта, сыр, яйца")
+                        .balance(2L)
+                        .build()
+        );
     }
 
 }
