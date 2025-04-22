@@ -18,11 +18,6 @@ public class OrderEventConsumerServiceImpl implements OrderEventConsumerService 
 
     private final EventHandlerService<OrderEvent> eventHandlerService;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param orderEvent {@inheritDoc}
-     */
     @KafkaListener(topics = "${spring.kafka.producer.order-event-topic}",
             concurrency = "${spring.kafka.consumer.concurrency}")
     @Override

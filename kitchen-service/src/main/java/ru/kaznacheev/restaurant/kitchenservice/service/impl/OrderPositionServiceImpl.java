@@ -34,13 +34,6 @@ public class OrderPositionServiceImpl implements OrderPositionService {
     private final DishService dishService;
     private final OrderPositionMapper orderPositionMapper;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param order {@inheritDoc}
-     * @param composition {@inheritDoc}
-     * @return {@inheritDoc}
-     */
     @Transactional
     @Override
     public List<OrderPositionResponse> addDishesToOrder(Order order, Map<Long, Long> composition) {
@@ -66,16 +59,10 @@ public class OrderPositionServiceImpl implements OrderPositionService {
         return orderPositionMapper.toOrderPositionResponseList(orderPositions);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param order {@inheritDoc}
-     * @return {@inheritDoc}
-     */
     @Transactional(readOnly = true)
     @Override
     public List<OrderPositionResponse> getOrderPositions(Order order) {
-        log.info("Получение информации о позициях заказа с id: {}", order.getId());
+        log.debug("Получение информации о позициях заказа с id: {}", order.getId());
         List<OrderPosition> orderPositions = orderPositionRepository.findAllWithDishesByOrderId(order.getId());
         return orderPositionMapper.toOrderPositionResponseList(orderPositions);
     }

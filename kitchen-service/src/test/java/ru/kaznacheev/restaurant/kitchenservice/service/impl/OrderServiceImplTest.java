@@ -297,7 +297,7 @@ class OrderServiceImplTest {
                 .id(1L)
                 .status(OrderStatus.COMPLETED)
                 .build();
-        String expectedDetail = "Заказ может быть приготовлен только в статусе IN_PROGRESS";
+        String expectedDetail = "Заказ 1 может быть приготовлен только в статусе IN_PROGRESS";
         when(orderRepository.findById(1L)).thenReturn(Optional.of(expectedOrder));
 
         // Действие
@@ -360,7 +360,7 @@ class OrderServiceImplTest {
                 .id(1L)
                 .status(OrderStatus.COMPLETED)
                 .build();
-        String expectedDetail = "Заказ может быть отменен только в статусе IN_PROGRESS";
+        String expectedDetail = "Заказ 1 может быть отменен только в статусе IN_PROGRESS";
         when(orderRepository.findById(1L)).thenReturn(Optional.of(expectedOrder));
 
         // Действие

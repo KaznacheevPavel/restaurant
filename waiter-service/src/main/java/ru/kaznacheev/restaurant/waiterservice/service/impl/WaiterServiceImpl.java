@@ -34,11 +34,6 @@ public class WaiterServiceImpl implements WaiterService {
     private final Clock clock;
     private final WaiterMapper waiterMapper;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param request {@inheritDoc}
-     */
     @Override
     public WaiterResponse createWaiter(@Valid CreateWaiterRequest request) {
         log.info("Создание официанта с именем: {}", request.getName());
@@ -52,43 +47,25 @@ public class WaiterServiceImpl implements WaiterService {
         return waiterMapper.toWaiterResponse(waiter);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param id {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NotFoundBaseException Если официант не найден
-     */
     @Transactional(readOnly = true)
     @Override
     public WaiterResponse getWaiterById(Long id) {
-        log.info("Получение информации об официанте с id: {}", id);
+        log.debug("Получение информации об официанте с id: {}", id);
         return waiterRepository.findById(id).orElseThrow(() ->
                 new NotFoundBaseException(ExceptionDetail.WAITER_NOT_FOUND_BY_ID.format(id)));
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
     @Transactional(readOnly = true)
     @Override
     public List<WaiterShortInfoResponse> getAllWaiters() {
-        log.info("Получение информации о всех официантах");
+        log.debug("Получение информации о всех официантах");
         return waiterRepository.findAll();
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param id {@inheritDoc}
-     * @return {@inheritDoc}
-     */
     @Transactional(readOnly = true)
     @Override
     public boolean existsWaiterById(Long id) {
-        log.info("Проверка существования официанта с id: {}", id);
+        log.debug("Проверка существования официанта с id: {}", id);
         return waiterRepository.existsById(id);
     }
 

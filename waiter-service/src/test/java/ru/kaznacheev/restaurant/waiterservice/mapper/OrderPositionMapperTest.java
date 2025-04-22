@@ -21,7 +21,18 @@ class OrderPositionMapperTest {
     void shouldMapToOrderPositionResponseList() {
         // Подготовка
         Map<String, Long> composition = Map.of("Борщ", 3L, "Солянка", 2L);
-        List<DishResponse> dishes = List.of(
+        List<DishResponse> dishes = createDishResponses();
+        List<OrderPositionResponse> expected = createOrderPositionResponses();
+
+        // Действие
+        List<OrderPositionResponse> actual = orderPositionMapper.toOrderPositionResponseList(composition, dishes);
+
+        // Проверка
+        assertThat(actual).usingRecursiveComparison().ignoringCollectionOrder().isEqualTo(expected);
+    }
+
+    private List<DishResponse> createDishResponses() {
+        return List.of(
                 DishResponse.builder()
                         .id(1L)
                         .name("Борщ")
@@ -33,7 +44,10 @@ class OrderPositionMapperTest {
                         .cost(new BigDecimal("50.00"))
                         .build()
         );
-        List<OrderPositionResponse> expected = List.of(
+    }
+
+    private List<OrderPositionResponse> createOrderPositionResponses() {
+        return List.of(
                 OrderPositionResponse.builder()
                         .dishId(1L)
                         .name("Борщ")
@@ -45,12 +59,6 @@ class OrderPositionMapperTest {
                         .amount(2L)
                         .build()
         );
-
-        // Действие
-        List<OrderPositionResponse> actual = orderPositionMapper.toOrderPositionResponseList(composition, dishes);
-
-        // Проверка
-        assertThat(actual).usingRecursiveComparison().ignoringCollectionOrder().isEqualTo(expected);
     }
 
 }

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.kaznacheev.restaurant.common.dto.response.ExceptionResponse;
 import ru.kaznacheev.restaurant.common.dto.response.KitchenDishResponse;
@@ -20,9 +21,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
 @Transactional
-class DishControllerIntegrationTest extends BaseIntegrationTest {
+class DishControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;

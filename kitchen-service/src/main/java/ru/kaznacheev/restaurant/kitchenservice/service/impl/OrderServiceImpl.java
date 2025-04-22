@@ -41,12 +41,6 @@ public class OrderServiceImpl implements OrderService {
     private final OrderEventProducerService orderEventProducerService;
     private final OrderMapper orderMapper;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param request {@inheritDoc}
-     * @return {@inheritDoc}
-     */
     @Transactional
     @Override
     public KitchenOrderResponse createOrder(@Valid CreateKitchenOrderRequest request) {
@@ -65,59 +59,32 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.toKitchenOrderResponse(order, dishes);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param id {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NotFoundBaseException Если заказ не был найден
-     */
     @Transactional(readOnly = true)
     @Override
     public KitchenOrderResponse getOrderById(Long id) {
-        log.info("Получение информации о заказе с id: {}", id);
+        log.debug("Получение информации о заказе с id: {}", id);
         Order order = orderRepository.findById(id).orElseThrow(() ->
                 new NotFoundBaseException(ExceptionDetail.ORDER_NOT_FOUND_BY_ID.format(id)));
         List<OrderPositionResponse> dishes = orderPositionService.getOrderPositions(order);
         return orderMapper.toKitchenOrderResponse(order, dishes);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
     @Transactional(readOnly = true)
     @Override
     public List<OrderShortInfoResponse> getAllOrders() {
-        log.info("Получение информации о всех заказах");
+        log.debug("Получение информации о всех заказах");
         return orderMapper.toOrderShortInfoResponseList(orderRepository.findAll());
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param id {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NotFoundBaseException Если заказ не был найден
-     */
     @Transactional(readOnly = true)
     @Override
     public OrderStatusResponse getOrderStatus(Long id) {
-        log.info("Получение информации о статусе заказа с id: {}", id);
+        log.debug("Получение информации о статусе заказа с id: {}", id);
         Order order = orderRepository.findById(id).orElseThrow(() ->
                 new NotFoundBaseException(ExceptionDetail.ORDER_NOT_FOUND_BY_ID.format(id)));
         return orderMapper.toOrderStatusResponse(order);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param id {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NotFoundBaseException Если заказ не был найден
-     * @throws ConflictBaseException Если заказ не может быть завершен
-     */
     @Transactional
     @Override
     public OrderStatusResponse completeOrder(Long id) {
@@ -125,7 +92,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id).orElseThrow(() ->
                 new NotFoundBaseException(ExceptionDetail.ORDER_NOT_FOUND_BY_ID.format(id)));
         if (!OrderStatus.IN_PROGRESS.equals(order.getStatus())) {
-            throw new ConflictBaseException(ExceptionDetail.ORDER_COOK_EXCEPTION.format(OrderStatus.IN_PROGRESS));
+            throw new ConflictBaseException(ExceptionDetail.ORDER_COOK_EXCEPTION.format(id, OrderStatus.IN_PROGRESS));
         }
         order.setStatus(OrderStatus.COMPLETED);
         orderEventProducerService.sendOrderCompletedEvent(order.getWaiterOrderId());
@@ -133,14 +100,6 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.toOrderStatusResponse(order);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param id {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NotFoundBaseException Если заказ не был найден
-     * @throws ConflictBaseException Если заказ не может быть отклонен
-     */
     @Transactional
     @Override
     public OrderStatusResponse rejectOrder(Long id) {
@@ -148,7 +107,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id).orElseThrow(() ->
                 new NotFoundBaseException(ExceptionDetail.ORDER_NOT_FOUND_BY_ID.format(id)));
         if (!OrderStatus.IN_PROGRESS.equals(order.getStatus())) {
-            throw new ConflictBaseException(ExceptionDetail.ORDER_REJECT_EXCEPTION.format(OrderStatus.IN_PROGRESS));
+            throw new ConflictBaseException(ExceptionDetail.ORDER_REJECT_EXCEPTION.format(id, OrderStatus.IN_PROGRESS));
         }
         order.setStatus(OrderStatus.REJECTED);
         orderEventProducerService.sendOrderRejectedEvent(order.getWaiterOrderId());

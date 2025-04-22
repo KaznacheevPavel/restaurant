@@ -18,16 +18,8 @@ class DishMapperTest {
     @DisplayName("Should map Dish to DishResponse")
     void shouldMapToDishResponse() {
         // Подготовка
-        Dish dish = Dish.builder()
-                .id(1L)
-                .name("Борщ с пампушками")
-                .cost(new BigDecimal("100.00"))
-                .build();
-        DishResponse expected = DishResponse.builder()
-                .id(1L)
-                .name("Борщ с пампушками")
-                .cost(new BigDecimal("100.00"))
-                .build();
+        Dish dish = createDish();
+        DishResponse expected = createDishResponse();
 
         // Действие
         DishResponse actual = dishMapper.toDishResponse(dish);
@@ -44,6 +36,22 @@ class DishMapperTest {
 
         // Проверка
         assertThat(actual).isNull();
+    }
+
+    private Dish createDish() {
+        return Dish.builder()
+                .id(1L)
+                .name("Борщ с пампушками")
+                .cost(new BigDecimal("100.00"))
+                .build();
+    }
+
+    private DishResponse createDishResponse() {
+        return DishResponse.builder()
+                .id(1L)
+                .name("Борщ с пампушками")
+                .cost(new BigDecimal("100.00"))
+                .build();
     }
 
 }

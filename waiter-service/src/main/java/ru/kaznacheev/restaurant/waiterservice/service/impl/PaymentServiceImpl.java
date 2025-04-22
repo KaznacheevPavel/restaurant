@@ -37,13 +37,6 @@ public class PaymentServiceImpl implements PaymentService {
     private final OrderService orderService;
     private final PaymentMapper paymentMapper;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param request {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws ConflictBaseException Если сумма платежа не соответствует стоимости заказа
-     */
     @Transactional
     @Override
     public PaymentResponse createPayment(@Valid CreatePaymentRequest request) {
@@ -51,7 +44,7 @@ public class PaymentServiceImpl implements PaymentService {
         OrderResponse order = orderService.getOrderById(request.getOrderId());
         if (!order.getCost().equals(new BigDecimal(request.getSum()))) {
             throw new ConflictBaseException(ExceptionDetail.PAYMENT_AMOUNT_MISMATCH
-                    .format(request.getSum(), order.getCost()));
+                    .format(order.getId(), request.getSum(), order.getCost()));
         }
         orderService.paidForOrder(request.getOrderId());
         Payment payment = Payment.builder()
@@ -65,17 +58,10 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentMapper.toPaymentResponse(payment);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param orderId {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NotFoundBaseException Если платеж не был найден
-     */
     @Transactional(readOnly = true)
     @Override
     public PaymentResponse getPaymentByOrderId(Long orderId) {
-        log.info("Получение информации о платеже для заказа с id: {}", orderId);
+        log.debug("Получение информации о платеже для заказа с id: {}", orderId);
         return paymentRepository.findByOrderId(orderId).orElseThrow(() ->
                 new NotFoundBaseException(ExceptionDetail.PAYMENT_NOT_FOUND_BY_ID.format(orderId)));
     }

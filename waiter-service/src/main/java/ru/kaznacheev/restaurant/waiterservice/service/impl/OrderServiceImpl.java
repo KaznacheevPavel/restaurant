@@ -50,13 +50,6 @@ public class OrderServiceImpl implements OrderService {
     private final KitchenCommunicationService kitchenCommunicationService;
     private final OrderMapper orderMapper;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param request {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NotFoundBaseException Если официант не был найден
-     */
     @Transactional
     @Override
     public OrderResponse createOrder(@Valid CreateOrderRequest request) {
@@ -81,17 +74,10 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.toOrderResponse(order, cost, composition);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param id {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NotFoundBaseException Если заказ не был найден
-     */
     @Transactional(readOnly = true)
     @Override
     public OrderResponse getOrderById(Long id) {
-        log.info("Получения информации о заказе с id: {}", id);
+        log.debug("Получения информации о заказе с id: {}", id);
         OrderResponse order = orderRepository.findById(id).orElseThrow(() ->
                 new NotFoundBaseException(ExceptionDetail.ORDER_NOT_FOUND_BY_ID.format(id)));
         Map<String, Long> composition = order.getComposition().stream()
@@ -100,79 +86,49 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
     @Transactional(readOnly = true)
     @Override
     public List<OrderShortInfoResponse> getAllOrders() {
-        log.info("Получение информации о всех заказах");
+        log.debug("Получение информации о всех заказах");
         return orderRepository.findAll();
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param id {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NotFoundBaseException Если заказ не был найден
-     */
     @Transactional(readOnly = true)
     @Override
     public OrderStatusResponse getOrderStatus(Long id) {
-        log.info("Получение информации о статусе заказа с id: {}", id);
+        log.debug("Получение информации о статусе заказа с id: {}", id);
         return orderRepository.getOrderStatusById(id).orElseThrow(() ->
                 new NotFoundBaseException(ExceptionDetail.ORDER_NOT_FOUND_BY_ID.format(id)));
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param id {@inheritDoc}
-     * @throws NotFoundBaseException Если заказ не может быть оплачен
-     */
     @Override
     public void paidForOrder(Long id) {
         log.info("Оплата заказа с id: {}", id);
         OrderStatusResponse status = getOrderStatus(id);
         if (!OrderStatus.COOKED.name().equals(status.getStatus())) {
-            throw new ConflictBaseException(ExceptionDetail.ORDER_PAYMENT_EXCEPTION.format(OrderStatus.COOKED));
+            throw new ConflictBaseException(ExceptionDetail.ORDER_PAYMENT_EXCEPTION.format(id, OrderStatus.COOKED));
         }
         orderRepository.changeOrderStatus(id, OrderStatus.COMPLETED);
         log.info("Заказ с id {} успешно оплачен", id);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param id {@inheritDoc}
-     * @throws ConflictBaseException Если заказ не может быть приготовлен
-     */
     @Override
     public void cookOrder(Long id) {
         log.info("Подтверждение приготовления заказа с id: {}", id);
         OrderStatusResponse status = getOrderStatus(id);
         if (!OrderStatus.IN_PROGRESS.name().equals(status.getStatus())) {
-            throw new ConflictBaseException(ExceptionDetail.ORDER_COOK_EXCEPTION.format(OrderStatus.IN_PROGRESS));
+            throw new ConflictBaseException(ExceptionDetail.ORDER_COOK_EXCEPTION.format(id, OrderStatus.IN_PROGRESS));
         }
         orderRepository.changeOrderStatus(id, OrderStatus.COOKED);
         log.info("Заказ с id {} успешно приготовлен", id);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param id {@inheritDoc}
-     * @throws ConflictBaseException Если заказ не может быть отклонен
-     */
     @Override
     public void rejectOrder(Long id) {
         log.info("Отклонение заказа с id: {}", id);
         OrderStatusResponse status = getOrderStatus(id);
         if (!OrderStatus.IN_PROGRESS.name().equals(status.getStatus())) {
-            throw new ConflictBaseException(ExceptionDetail.ORDER_REJECT_EXCEPTION.format(OrderStatus.IN_PROGRESS));
+            throw new ConflictBaseException(ExceptionDetail.ORDER_REJECT_EXCEPTION.format(id, OrderStatus.IN_PROGRESS));
         }
         orderRepository.changeOrderStatus(id, OrderStatus.REJECTED);
         log.info("Заказ с id {} успешно отклонен", id);
@@ -186,9 +142,12 @@ public class OrderServiceImpl implements OrderService {
      */
     private BigDecimal calculateOrderCost(Map<String, Long> composition) {
         List<DishResponse> dishes = dishService.getAllDishesByNames(composition.keySet().stream().toList());
-        return dishes.stream()
-                .map(dish -> dish.getCost().multiply(BigDecimal.valueOf(composition.get(dish.getName()))))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal cost = BigDecimal.ZERO;
+        for (DishResponse dish : dishes) {
+            long amount = composition.get(dish.getName());
+            cost = cost.add(dish.getCost().multiply(BigDecimal.valueOf(amount)));
+        }
+        return cost;
     }
 
     /**

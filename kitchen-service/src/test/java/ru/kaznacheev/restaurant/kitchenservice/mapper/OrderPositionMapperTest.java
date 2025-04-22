@@ -20,7 +20,18 @@ class OrderPositionMapperTest {
     @DisplayName("Should map list of OrderPosition to list of OrderPositionResponse")
     void shouldMapToOrderPositionResponseList() {
         // Подготовка
-        List<OrderPosition> orderPositions = List.of(
+        List<OrderPosition> orderPositions = createOrderPositions();
+        List<OrderPositionResponse> expected = createOrderPositionResponses();
+
+        // Действие
+        List<OrderPositionResponse> actual = orderPositionMapper.toOrderPositionResponseList(orderPositions);
+
+        // Проверка
+        assertThat(actual).usingRecursiveComparison().ignoringCollectionOrder().isEqualTo(expected);
+    }
+
+    private List<OrderPosition> createOrderPositions() {
+        return List.of(
                 OrderPosition.builder()
                         .id(new OrderPositionCompositeId(1L, 12L))
                         .dish(Dish.builder()
@@ -38,7 +49,10 @@ class OrderPositionMapperTest {
                         .amount(2L)
                         .build()
         );
-        List<OrderPositionResponse> expected = List.of(
+    }
+
+    private List<OrderPositionResponse> createOrderPositionResponses() {
+        return List.of(
                 OrderPositionResponse.builder()
                         .dishId(12L)
                         .name("Борщ")
@@ -50,12 +64,6 @@ class OrderPositionMapperTest {
                         .amount(2L)
                         .build()
         );
-
-        // Действие
-        List<OrderPositionResponse> actual = orderPositionMapper.toOrderPositionResponseList(orderPositions);
-
-        // Проверка
-        assertThat(actual).usingRecursiveComparison().ignoringCollectionOrder().isEqualTo(expected);
     }
 
 }

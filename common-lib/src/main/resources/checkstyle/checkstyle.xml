@@ -97,7 +97,9 @@
     <!-- Checks for Javadoc comments.                     -->
     <!-- See https://checkstyle.org/checks/javadoc/index.html -->
     <module name="InvalidJavadocPosition"/>
-    <module name="JavadocMethod"/>
+    <module name="JavadocMethod">
+      <property name="allowedAnnotations" value="Override"/>
+    </module>
     <module name="JavadocType"/>
     <module name="JavadocStyle"/>
     <module name="MissingJavadocMethod">
@@ -173,7 +175,9 @@
 
     <!-- Checks for class design                         -->
     <!-- See https://checkstyle.org/checks/design/index.html -->
-    <module name="DesignForExtension"/>
+    <module name="DesignForExtension">
+      <property name="ignoredAnnotations" value="Override"/>
+    </module>
     <module name="FinalClass"/>
     <module name="HideUtilityClassConstructor">
       <property name="ignoreAnnotatedBy" value="SpringBootApplication"/>
