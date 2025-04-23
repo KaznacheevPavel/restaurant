@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:17.4-alpine3.21:///testContainer-waiter_db
+    username: admin
+    password: admin
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml

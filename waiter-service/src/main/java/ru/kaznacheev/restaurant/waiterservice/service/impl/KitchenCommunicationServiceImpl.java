@@ -19,11 +19,6 @@ public class KitchenCommunicationServiceImpl implements KitchenCommunicationServ
 
     private final KitchenFeignClient kitchenFeignClient;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param request {@inheritDoc}
-     */
     @Override
     public void sendDishToKitchen(CreateKitchenDishRequest request) {
         log.info("Блюдо {} отправляется на кухню", request.getId());
@@ -31,11 +26,6 @@ public class KitchenCommunicationServiceImpl implements KitchenCommunicationServ
         log.info("Блюдо {} успешно отправлено на кухню", request.getId());
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param request {@inheritDoc}
-     */
     @Override
     public void sendOrderToKitchen(CreateKitchenOrderRequest request) {
         log.info("Заказ {} отправляется на кухню", request.getWaiterOrderId());

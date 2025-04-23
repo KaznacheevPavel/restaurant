@@ -34,13 +34,6 @@ public class DishServiceImpl implements DishService {
     private final KitchenCommunicationService kitchenCommunicationService;
     private final DishMapper dishMapper;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param request {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws ConflictBaseException Если блюдо с таким названием уже существует
-     */
     @Transactional
     @Override
     public DishResponse createDish(@Valid CreateDishRequest request) {
@@ -63,43 +56,25 @@ public class DishServiceImpl implements DishService {
         return dishMapper.toDishResponse(dish);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param id {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NotFoundBaseException Если блюдо не было найдено
-     */
     @Transactional(readOnly = true)
     @Override
     public DishResponse getDishById(Long id) {
-        log.info("Получение информации о блюде с id: {}", id);
+        log.debug("Получение информации о блюде с id: {}", id);
         return dishRepository.findById(id).orElseThrow(() ->
                 new NotFoundBaseException(ExceptionDetail.DISH_NOT_FOUND_BY_ID.format(id)));
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
     @Transactional(readOnly = true)
     @Override
     public List<DishResponse> getAllDishes() {
-        log.info("Получение информации о всех блюдах");
+        log.debug("Получение информации о всех блюдах");
         return dishRepository.findAll();
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param names {@inheritDoc}
-     * @return {@inheritDoc}
-     */
     @Transactional(readOnly = true)
     @Override
     public List<DishResponse> getAllDishesByNames(List<String> names) {
-        log.info("Получение информации о блюдах с названиями: {}", names);
+        log.debug("Получение информации о блюдах с названиями: {}", names);
         return dishRepository.findAllByNames(names);
     }
 

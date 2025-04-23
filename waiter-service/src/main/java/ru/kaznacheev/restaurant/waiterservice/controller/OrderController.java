@@ -142,7 +142,8 @@ public class OrderController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public OrderResponse createOrder(@RequestBody CreateOrderRequest request) {
-        log.debug("POST | /api/v1/orders | id официанта: {}, состав заказа: {}", request.getWaiterId(), request.getDishes());
+        log.debug("POST | /api/v1/orders | id официанта: {}, состав заказа: {}",
+                request.getWaiterId(), request.getDishes());
         return orderService.createOrder(request);
     }
 
@@ -204,7 +205,8 @@ public class OrderController {
                                     ]
                                     """
                     ),
-                            @ExampleObject(name = "Пустой список", value = "[]", description = "Пустой список, если заказов нет")}
+                            @ExampleObject(name = "Пустой список", value = "[]",
+                                    description = "Пустой список, если заказов нет")}
             )
     )
     @GetMapping
@@ -223,7 +225,8 @@ public class OrderController {
             summary = "Возвращает информацию о статусе заказе по его идентификатору",
             parameters = @Parameter(name = "id", description = "Идентификатор заказа")
     )
-    @ApiResponse(responseCode = "200", description = "Информация о статусе заказе успешно получена", useReturnTypeSchema = true)
+    @ApiResponse(responseCode = "200", description = "Информация о статусе заказе успешно получена",
+            useReturnTypeSchema = true)
     @ApiResponse(responseCode = "404", description = "Заказ с указанным идентификатором не найден",
             content = @Content(
                     schema = @Schema(implementation = ExceptionResponse.class),

@@ -10,7 +10,7 @@ import java.util.Map;
  */
 @AllArgsConstructor
 @Getter
-public class BaseException extends RuntimeException{
+public class BaseException extends RuntimeException {
 
     /**
      * Подробное описание исключения.

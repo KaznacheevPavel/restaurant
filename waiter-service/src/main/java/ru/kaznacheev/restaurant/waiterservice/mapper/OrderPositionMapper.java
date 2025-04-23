@@ -23,8 +23,10 @@ public interface OrderPositionMapper {
      * @param dishes Список блюд
      * @return {@link List} {@link OrderPositionResponse} с информацией о позиции заказа
      */
-    default List<OrderPositionResponse> toOrderPositionResponseList(Map<String, Long> composition, List<DishResponse> dishes) {
-        Map<String, Long> dishesIds = dishes.stream().collect(Collectors.toMap(DishResponse::getName, DishResponse::getId));
+    default List<OrderPositionResponse> toOrderPositionResponseList(Map<String, Long> composition,
+                                                                    List<DishResponse> dishes) {
+        Map<String, Long> dishesIds = dishes.stream()
+                .collect(Collectors.toMap(DishResponse::getName, DishResponse::getId));
         return composition.entrySet().stream()
                 .map(entry -> OrderPositionResponse.builder()
                         .dishId(dishesIds.get(entry.getKey()))

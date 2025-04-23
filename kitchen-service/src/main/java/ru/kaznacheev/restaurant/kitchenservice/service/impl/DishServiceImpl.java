@@ -31,13 +31,6 @@ public class DishServiceImpl implements DishService {
     private final DishRepository dishRepository;
     private final DishMapper dishMapper;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param request {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws ConflictBaseException Если блюдо с таким сокращенным названием уже существует
-     */
     @Override
     public KitchenDishResponse createDish(@Valid CreateKitchenDishRequest request) {
         if (dishRepository.existsByShortName(request.getShortName())) {
@@ -55,54 +48,28 @@ public class DishServiceImpl implements DishService {
         return dishMapper.toKitchenDishResponse(dish);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param id {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NotFoundBaseException Если блюдо не было найдено
-     */
     @Transactional(readOnly = true)
     @Override
     public KitchenDishResponse getDishById(Long id) {
-        log.info("Получение информации о блюде, id: {}", id);
+        log.debug("Получение информации о блюде, id: {}", id);
         return dishMapper.toKitchenDishResponse(dishRepository.findById(id)
                 .orElseThrow(() -> new NotFoundBaseException(ExceptionDetail.DISH_NOT_FOUND_BY_ID.format(id))));
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
     @Transactional(readOnly = true)
     @Override
     public List<KitchenDishResponse> getAllDishes() {
-        log.info("Получение информации о всех блюдах");
+        log.debug("Получение информации о всех блюдах");
         return dishMapper.toKitchenDishResponseList(dishRepository.findAll());
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param ids {@inheritDoc}
-     * @return {@inheritDoc}
-     */
     @Transactional(readOnly = true)
     @Override
     public List<Dish> getAllDishesByIds(Iterable<Long> ids) {
-        log.info("Получение информации о блюдах с id: {}", ids);
+        log.debug("Получение информации о блюдах с id: {}", ids);
         return dishRepository.findAllById(ids);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param id {@inheritDoc}
-     * @param request {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NotFoundBaseException Если блюдо не было найдено
-     */
     @Transactional
     @Override
     public KitchenDishResponse addDishBalance(Long id, AddDishBalanceRequest request) {

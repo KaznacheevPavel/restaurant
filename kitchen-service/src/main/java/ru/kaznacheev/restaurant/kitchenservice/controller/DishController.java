@@ -156,7 +156,8 @@ public class DishController {
                                     ]
                                     """
                     ),
-                            @ExampleObject(name = "Пустой список", value = "[]", description = "Пустой список, если блюд нет")}
+                            @ExampleObject(name = "Пустой список", value = "[]",
+                                    description = "Пустой список, если блюд нет")}
             )
     )
     @GetMapping

@@ -1,7 +1,9 @@
 package ru.kaznacheev.restaurant.waiterservice.service;
 
 /**
- * Интерфейс для обработки событий определенного типа.
+ * Интерфейс для обработки событий.
+ *
+ * @param <T> Тип события
  */
 public interface EventHandlerService<T> {
 

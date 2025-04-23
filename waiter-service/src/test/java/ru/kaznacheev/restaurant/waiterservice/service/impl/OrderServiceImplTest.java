@@ -281,7 +281,7 @@ class OrderServiceImplTest {
                 .id(1L)
                 .status(OrderStatus.IN_PROGRESS.name())
                 .build();
-        String expectedDetail = "Заказ может быть оплачен только в статусе COOKED";
+        String expectedDetail = "Заказ 1 может быть оплачен только в статусе COOKED";
         when(orderRepository.getOrderStatusById(1L)).thenReturn(Optional.of(expectedOrderStatusResponse));
 
         // Действие
@@ -317,7 +317,7 @@ class OrderServiceImplTest {
                 .id(1L)
                 .status(OrderStatus.COMPLETED.name())
                 .build();
-        String expectedDetail = "Заказ может быть приготовлен только в статусе IN_PROGRESS";
+        String expectedDetail = "Заказ 1 может быть приготовлен только в статусе IN_PROGRESS";
         when(orderRepository.getOrderStatusById(1L)).thenReturn(Optional.of(expectedOrderStatusResponse));
 
         // Действие
@@ -353,7 +353,7 @@ class OrderServiceImplTest {
                 .id(1L)
                 .status(OrderStatus.COMPLETED.name())
                 .build();
-        String expectedDetail = "Заказ может быть отменен только в статусе IN_PROGRESS";
+        String expectedDetail = "Заказ 1 может быть отменен только в статусе IN_PROGRESS";
         when(orderRepository.getOrderStatusById(1L)).thenReturn(Optional.of(expectedOrderStatusResponse));
 
         // Действие

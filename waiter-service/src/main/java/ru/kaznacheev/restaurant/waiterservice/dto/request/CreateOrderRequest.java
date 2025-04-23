@@ -42,7 +42,8 @@ public class CreateOrderRequest {
      * <p>
      * Ключ - название блюда, значение - количество порций.
      */
-    @Schema(description = "Заказанные блюда", example = "\"{\\\"Паста карбонара\\\": 1, \\\"Борщ с пампушками\\\": 3}\"",
+    @Schema(description = "Заказанные блюда",
+            example = "\"{\\\"Паста карбонара\\\": 1, \\\"Борщ с пампушками\\\": 3}\"",
             requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "Состав заказа не должен быть пустым")
     private final Map<@NotBlank(message = "Название блюда не должно быть пустым") String,
